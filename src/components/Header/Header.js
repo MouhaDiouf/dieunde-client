@@ -39,9 +39,17 @@ function Header() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            News
+          <Typography
+            variant="h6"
+            className={classes.title}
+            component={Link}
+            to="/"
+          >
+            Dieunde
           </Typography>
+          <Button color="inherit" component={Link} to="/vendre-produit">
+            Vendre
+          </Button>
           <Button component={Link} to="/connexion" color="inherit">
             Connexion
           </Button>
