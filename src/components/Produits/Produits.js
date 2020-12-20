@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { produits } from '../../data';
 import Grid from '@material-ui/core/Grid';
 import Produit from './Produit/Produit';
+import Search from '../Search/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,26 +17,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Produits() {
-  const [loading, setLoading] = useState(false);
+function Produits({
+  produits,
+  setmaxprix,
+  setminprix,
+  setsearchcat,
+  setsearchnom,
+}) {
   const classes = useStyles();
-
-  if (loading) {
+  if (!produits.length) {
     return 'Chargement produits...';
   }
 
   return (
-    <Grid
-      alignContent="center"
-      alignItems="center"
-      container
-      className={classes.root}
-      spacing={2}
-    >
-      {produits.map((produit) => {
-        return <Produit key={produit.id} {...produit} />;
-      })}
-    </Grid>
+    <>
+      <Search
+        produits={produits}
+        setminprix={setminprix}
+        setmaxprix={setmaxprix}
+        setsearchnom={setsearchnom}
+        setsearchcat={setsearchcat}
+      />
+
+      <Grid
+        alignContent="center"
+        alignItems="center"
+        container
+        className={classes.root}
+        spacing={4}
+      >
+        {produits.map((produit) => {
+          console.log('proudit is ', produit);
+
+          return (
+            <Grid item>
+              <Produit key={produit.id} {...produit} />;
+            </Grid>
+          );
+        })}
+      </Grid>
+    </>
   );
 }
 

@@ -19,3 +19,7 @@ export const createProduct = (formData) => {
     body: formData,
   });
 };
+
+export const getOneProduct = (id) => {
+  return axios.get(`${baseUrl}/produits/${id}`);
+};

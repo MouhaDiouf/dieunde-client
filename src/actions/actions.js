@@ -1,4 +1,9 @@
-import { createProduct, fetchProducts, registerUser } from '../api/api';
+import {
+  createProduct,
+  fetchProducts,
+  getOneProduct,
+  registerUser,
+} from '../api/api';
 export const CREATE_USER_SUCCESS = 'CREATE_USER';
 export const CREATE_USER_ERROR = 'CREATE_USER_ERROR';
 export const PRODUCT_CREATION_SUCCESS = 'PRODUCT_CREATION_SUCCESS';
@@ -8,7 +13,6 @@ export const CREATING_PRODUCT = 'CREATING_PRODUCT';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
-  console.log('data is ', data);
   dispatch({
     type: FETCH_ALL_PRODUCTS,
     payload: data,
@@ -41,6 +45,8 @@ export const newProduct = (formData) => async (dispatch) => {
       body: formData,
     });
 
+    const resp = await response.json();
+    console.log(resp);
     dispatch({
       type: PRODUCT_CREATION_SUCCESS,
       payload: response.data,
@@ -51,4 +57,9 @@ export const newProduct = (formData) => async (dispatch) => {
       payload: error.message,
     });
   }
+};
+
+export const fetchOneProduct = (id) => async (dispatch) => {
+  const { data } = await getOneProduct(id);
+  console.log('one product is ', data);
 };

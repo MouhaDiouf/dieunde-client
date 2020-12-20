@@ -4,10 +4,10 @@ import {
   PRODUCT_CREATION_FAILURE,
   PRODUCT_CREATION_SUCCESS,
 } from '../actions/actions';
-const products = (state = {}, action) => {
+const products = (state = [], action) => {
   switch (action.type) {
     case FETCH_ALL_PRODUCTS:
-      return action.payload;
+      return { ...state, produits: [action.payload] };
     case CREATING_PRODUCT:
       return { ...state, creatingProduct: true };
     case PRODUCT_CREATION_SUCCESS:
