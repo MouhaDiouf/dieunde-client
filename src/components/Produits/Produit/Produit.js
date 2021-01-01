@@ -49,18 +49,18 @@ function Produit({ nom, description, image, id }) {
   return (
     <Card className={classes.root}>
       <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            P
-          </Avatar>
-        }
+        // avatar={
+        //   <Avatar aria-label="recipe" className={classes.avatar}>
+        //     P
+        //   </Avatar>
+        // }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
         title={`${nom}`}
-        subheader="September 14, 2016"
+        // subheader="September 14, 2016"
       />
       <CardMedia className={classes.media} image={image?.url} title={nom} />
       <CardContent>
