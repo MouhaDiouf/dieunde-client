@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NouveauProduit from './pages/NouveauProduit/NouveauProduit';
 import Footer from './components/Footer/Footer';
 import ProductPage from './pages/ProductPage/ProductPage';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 function App() {
   const [minprix, setminprix] = useState(0);
@@ -58,6 +59,9 @@ function App() {
         </Route>
         <Route exact path="/vendre-produit">
           <NouveauProduit />
+        </Route>
+        <Route exact path="/dashboard">
+          <Dashboard />
         </Route>
         <Route exact path="/produits/:id">
           <ProductPage />

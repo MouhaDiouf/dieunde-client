@@ -2,6 +2,7 @@ import React from 'react';
 import Produits from '../../components/Produits/Produits';
 import { Container, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import Hero from '../../components/Hero/Hero';
 
 function Home({
   produits,
@@ -12,12 +13,7 @@ function Home({
 }) {
   return (
     <>
-      <Container maxWidth="lg">
-        <h1>Bienvenue!</h1>
-        <Button component={Link} to="/" variant="contained" color="primary">
-          Voir Produits
-        </Button>
-      </Container>
+      <Hero />
       <Produits
         produits={produits}
         setminprix={setminprix}

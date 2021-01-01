@@ -1,6 +1,7 @@
 import {
   CREATING_PRODUCT,
   FETCH_ALL_PRODUCTS,
+  ONE_PRODUCT_FETCH_SUCCESS,
   PRODUCT_CREATION_FAILURE,
   PRODUCT_CREATION_SUCCESS,
 } from '../actions/actions';
@@ -14,6 +15,8 @@ const products = (state = [], action) => {
       return { ...state, product: action.payload };
     case PRODUCT_CREATION_FAILURE:
       return { ...state, productCreationErro: action.payload };
+    case ONE_PRODUCT_FETCH_SUCCESS:
+      return { ...state, productToShow: action.payload };
     default:
       return state;
   }

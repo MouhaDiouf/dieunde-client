@@ -10,6 +10,8 @@ export const PRODUCT_CREATION_SUCCESS = 'PRODUCT_CREATION_SUCCESS';
 export const PRODUCT_CREATION_FAILURE = 'PRODUCT_CREATION_FAILURE';
 export const FETCH_ALL_PRODUCTS = 'FETCH_ALL_PRODUCTS';
 export const CREATING_PRODUCT = 'CREATING_PRODUCT';
+export const ONE_PRODUCT_FETCH_SUCCESS = 'ONE_PRODUCT_FETCH_SUCCESS';
+export const ONE_PRODUCT_FETCH_ERROR = 'ONE_PRODUCT_FETCH_ERROR';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
@@ -60,6 +62,17 @@ export const newProduct = (formData) => async (dispatch) => {
 };
 
 export const fetchOneProduct = (id) => async (dispatch) => {
-  const { data } = await getOneProduct(id);
-  console.log('one product is ', data);
+  try {
+    const { data } = await getOneProduct(id);
+
+    dispatch({
+      type: ONE_PRODUCT_FETCH_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ONE_PRODUCT_FETCH_ERROR,
+      payload: error,
+    });
+  }
 };
