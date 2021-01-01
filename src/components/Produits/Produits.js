@@ -7,6 +7,10 @@ import Search from '../Search/Search';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '30px',
   },
   paper: {
     height: 140,

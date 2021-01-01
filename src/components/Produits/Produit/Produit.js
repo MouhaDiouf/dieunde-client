@@ -20,7 +20,8 @@ import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    maxWidth: 500,
+    minWidth: 400,
   },
   media: {
     height: 0,

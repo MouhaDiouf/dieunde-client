@@ -7,10 +7,11 @@ import {
   Button,
   makeStyles,
   IconButton,
-  Container,
+  Badge,
 } from '@material-ui/core';
 
 import MenuIcon from '@material-ui/icons/Menu';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     color: 'white',
     textDecoration: 'none',
+  },
+  shoppingIcon: {
+    color: 'white',
   },
 }));
 
@@ -55,6 +59,11 @@ function Header() {
           <Button component={Link} to="/connexion" color="inherit">
             Connexion
           </Button>
+          <IconButton>
+            <Badge badgeContent={3} color="secondary">
+              <ShoppingCartIcon className={classes.shoppingIcon} />
+            </Badge>
+          </IconButton>
         </Toolbar>
       </AppBar>
     </>
