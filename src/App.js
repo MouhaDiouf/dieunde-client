@@ -10,6 +10,7 @@ import NouveauProduit from './pages/NouveauProduit/NouveauProduit';
 import Footer from './components/Footer/Footer';
 import ProductPage from './pages/ProductPage/ProductPage';
 import Dashboard from './pages/Dashboard/Dashboard';
+import Cart from './pages/Cart/Cart';
 
 function App() {
   const [minprix, setminprix] = useState(0);
@@ -65,6 +66,9 @@ function App() {
         </Route>
         <Route exact path="/produits/:id">
           <ProductPage />
+        </Route>
+        <Route exact path="/cart">
+          <Cart />
         </Route>
       </Switch>
       <Footer />

@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Produit from './Produit/Produit';
 import Search from '../Search/Search';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
   control: {
     padding: theme.spacing(2),
+  },
+
+  title: {
+    textAlign: 'center',
   },
 }));
 
@@ -42,6 +47,9 @@ function Produits({
         setsearchnom={setsearchnom}
         setsearchcat={setsearchcat}
       />
+      <Typography variant="h2" className={classes.title}>
+        Produits
+      </Typography>
 
       <Grid
         alignContent="center"

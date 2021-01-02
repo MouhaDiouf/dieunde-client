@@ -15,7 +15,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Button } from '@material-ui/core';
+import { Button, ButtonGroup } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -75,14 +75,17 @@ function Produit({ nom, description, image, id }) {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
-        <Button
-          component={Link}
-          to={`/produits/${id}`}
-          variant="contained"
-          color="secondary"
-        >
-          Voir Plus
-        </Button>
+
+        <ButtonGroup>
+          <Button
+            component={Link}
+            to={`/produits/${id}`}
+            variant="contained"
+            color="secondary"
+          >
+            Voir Plus
+          </Button>
+        </ButtonGroup>
       </CardActions>
     </Card>
   );

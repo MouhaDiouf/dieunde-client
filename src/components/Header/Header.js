@@ -59,7 +59,7 @@ function Header() {
           <Button component={Link} to="/connexion" color="inherit">
             Connexion
           </Button>
-          <IconButton>
+          <IconButton component={Link} to="/cart">
             <Badge badgeContent={3} color="secondary">
               <ShoppingCartIcon className={classes.shoppingIcon} />
             </Badge>
