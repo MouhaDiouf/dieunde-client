@@ -11,6 +11,7 @@ import Footer from './components/Footer/Footer';
 import ProductPage from './pages/ProductPage/ProductPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Cart from './pages/Cart/Cart';
+import SignUp from './pages/Signup/Signup';
 
 function App() {
   const [minprix, setminprix] = useState(0);
@@ -69,6 +70,9 @@ function App() {
         </Route>
         <Route exact path="/cart">
           <Cart />
+        </Route>
+        <Route exact path="/signup">
+          <SignUp />
         </Route>
       </Switch>
       <Footer />

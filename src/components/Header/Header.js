@@ -121,6 +121,14 @@ function Header() {
                   Vendre
                 </MenuItem>
                 <MenuItem onClick={handleClose}>Déconnexion</MenuItem>
+                <MenuItem
+                  component={Link}
+                  to="/connexion"
+                  onClick={handleClose}
+                >
+                  {' '}
+                  Connexion
+                </MenuItem>
               </Menu>
             </div>
           )}
