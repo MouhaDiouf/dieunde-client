@@ -1,5 +1,26 @@
-import React from 'react';
+import {
+  Container,
+  FormControl,
+  makeStyles,
+  MenuItem,
+  Select,
+  Slider,
+  TextField,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
+import React, { useState } from 'react';
 
+const useStyles = makeStyles({
+  range: {
+    width: 300,
+  },
+  formContainer: {
+    width: '300px',
+    display: 'flex',
+    margin: '0 auto',
+  },
+});
 function Search({
   produits,
   setsearchnom,
@@ -7,35 +28,63 @@ function Search({
   setmaxprix,
   setsearchcat,
 }) {
+  const classes = useStyles();
+
+  const handleRangeChange = (event, newValue) => {
+    setrange(newValue);
+  };
+  function valuetext(value) {
+    return `${value} CFA`;
+  }
   let catégories = [];
-  if (produits['produits']) {
-    produits = produits.produits[0];
+
+  if (produits) {
     catégories = produits.map((produit) => {
       return produit.catégorie;
     });
-    catégories = [...new Set(catégories)];
+    catégories = [...new Set(catégories), 'All'];
   }
+
+  const [selectCatégorie, setselectCatégorie] = useState('All');
+  const [range, setrange] = useState([0, 900000]);
+  const handleChangeCat = (e) => {
+    setselectCatégorie(e.target.value);
+  };
   return (
-    <div>
-      <label htmlFor="search">Rechercher</label>
-      <input
+    <FormControl className={classes.formContainer}>
+      <TextField
         type="search"
         name="search"
         id="search"
         onChange={(e) => setsearchnom(e.target.value)}
+        label="Search"
       />{' '}
       <br />
-      <label htmlFor="filter">Categories</label>
-      <select name="catégories" id="catégories">
+      <Select
+        name="catégories"
+        id="catégories"
+        value={selectCatégorie}
+        onChange={handleChangeCat}
+      >
         {catégories.map((catégorie, idx) => (
-          <option name={catégorie} key={idx}>
+          <MenuItem name={catégorie} key={idx} value={catégorie}>
             {catégorie}
-          </option>
+          </MenuItem>
         ))}
-      </select>
-      <label htmlFor="prix">Prix</label>
-      <input type="range" name="prix" id="prix" min="0" max="90000" />
-    </div>
+      </Select>
+      <div className={classes.root}>
+        <Typography id="range-slider" gutterBottom>
+          Prix
+        </Typography>
+        <Slider
+          value={range}
+          onChange={handleRangeChange}
+          valueLabelDisplay="auto"
+          aria-labelledby="range-slider"
+          getAriaValueText={valuetext}
+        />
+      </div>
+    </FormControl>
   );
 }
 

@@ -1,205 +1,133 @@
-import React, { Component, useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { register } from './styles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import { FormControl, Input, InputLabel, Button } from '@material-ui/core';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import IconButton from '@material-ui/core/IconButton';
-import ErrorIcon from '@material-ui/icons/Error';
-import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone';
-import VisibilityOffTwoToneIcon from '@material-ui/icons/VisibilityOffTwoTone';
-import CloseIcon from '@material-ui/icons/Close';
-import { useDispatch } from 'react-redux';
-import { signUpUser } from '../../actions/actions';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
-const Connexion = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [hidePassword, setHidePassword] = useState(true);
-  const [error, setError] = useState(null);
-  const [errorOpen, setErrorOpen] = useState(false);
-  const dispatch = useDispatch();
-
-  const errorClose = () => {
-    setErrorOpen(false);
-  };
-
-  const passwordMatch = () => password === passwordConfirm;
-
-  const showPassword = () => {
-    setHidePassword(!hidePassword);
-  };
-
-  const isValid = () => {
-    if (email === '') {
-      return false;
-    }
-    return true;
-  };
-  const submitRegistration = (e) => {
-    e.preventDefault();
-    if (!passwordMatch()) {
-      setErrorOpen(true);
-      setError('Les mots de passe ne correspondent pas');
-    }
-    const newUserCredentials = {
-      email,
-      password,
-      passwordConfirm,
-    };
-    dispatch(signUpUser(newUserCredentials));
-    console.log('newUserCredentials', newUserCredentials);
-    //dispath to userActions
-  };
-
-  const classes = register();
+function Copyright() {
   return (
-    <div className={classes.main}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <PeopleAltIcon className={classes.icon} />
-        </Avatar>
-        <form className={classes.form} onSubmit={submitRegistration}>
-          <FormControl required fullWidth margin="normal">
-            <InputLabel htmlFor="email" className={classes.labels}>
-              e-mail
-            </InputLabel>
-            <Input
-              name="email"
-              type="email"
-              autoComplete="email"
-              className={classes.inputs}
-              disableUnderline={true}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-          </FormControl>
-
-          <FormControl required fullWidth margin="normal">
-            <InputLabel htmlFor="password" className={classes.labels}>
-              Mot de passe
-            </InputLabel>
-            <Input
-              name="password"
-              autoComplete="password"
-              className={classes.inputs}
-              disableUnderline={true}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              type={hidePassword ? 'password' : 'input'}
-              endAdornment={
-                hidePassword ? (
-                  <InputAdornment position="end">
-                    <VisibilityOffTwoToneIcon
-                      fontSize="default"
-                      className={classes.passwordEye}
-                      onClick={showPassword}
-                    />
-                  </InputAdornment>
-                ) : (
-                  <InputAdornment position="end">
-                    <VisibilityTwoToneIcon
-                      fontSize="default"
-                      className={classes.passwordEye}
-                      onClick={showPassword}
-                    />
-                  </InputAdornment>
-                )
-              }
-            />
-          </FormControl>
-
-          <FormControl required fullWidth margin="normal">
-            <InputLabel htmlFor="passwordConfrim" className={classes.labels}>
-              Confrimer Mot de passe
-            </InputLabel>
-            <Input
-              name="passwordConfrim"
-              autoComplete="passwordConfrim"
-              className={classes.inputs}
-              disableUnderline={true}
-              onClick={showPassword}
-              onChange={(e) => {
-                setPasswordConfirm(e.target.value);
-              }}
-              type={hidePassword ? 'password' : 'input'}
-              endAdornment={
-                hidePassword ? (
-                  <InputAdornment position="end">
-                    <VisibilityOffTwoToneIcon
-                      fontSize="default"
-                      className={classes.passwordEye}
-                      onClick={showPassword}
-                    />
-                  </InputAdornment>
-                ) : (
-                  <InputAdornment position="end">
-                    <VisibilityTwoToneIcon
-                      fontSize="default"
-                      className={classes.passwordEye}
-                      onClick={showPassword}
-                    />
-                  </InputAdornment>
-                )
-              }
-            />
-          </FormControl>
-          <Button
-            disabled={!isValid()}
-            disableRipple
-            fullWidth
-            variant="outlined"
-            className={classes.button}
-            type="submit"
-            onClick={submitRegistration}
-          >
-            Créer Compte
-          </Button>
-        </form>
-
-        {error ? (
-          <Snackbar
-            variant="error"
-            key={error}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            open={errorOpen}
-            onClose={errorClose}
-            autoHideDuration={3000}
-          >
-            <SnackbarContent
-              className={classes.error}
-              message={
-                <div>
-                  <span style={{ marginRight: '8px' }}>
-                    <ErrorIcon fontSize="large" color="error" />
-                  </span>
-                  <span> {error} </span>
-                </div>
-              }
-              action={[
-                <IconButton key="close" aria-label="close" onClick={errorClose}>
-                  <CloseIcon color="error" />
-                </IconButton>,
-              ]}
-            />
-          </Snackbar>
-        ) : null}
-      </Paper>
-    </div>
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Dieunde
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
   );
-};
+}
 
-export default Connexion;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+  },
+  image: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light'
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
+export default function SignInSide() {
+  const classes = useStyles();
+
+  return (
+    <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="#" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+            <Box mt={5}>
+              <Copyright />
+            </Box>
+          </form>
+        </div>
+      </Grid>
+    </Grid>
+  );
+}

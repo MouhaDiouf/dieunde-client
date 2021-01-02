@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   AppBar,
@@ -8,10 +8,13 @@ import {
   makeStyles,
   IconButton,
   Badge,
+  MenuItem,
+  Menu,
 } from '@material-ui/core';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { AccountCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +35,16 @@ const useStyles = makeStyles((theme) => ({
 
 function Header() {
   const classes = useStyles();
+  const [auth, setauth] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <>
@@ -53,17 +66,64 @@ function Header() {
           >
             Dieunde
           </Typography>
-          <Button color="inherit" component={Link} to="/vendre-produit">
-            Vendre
-          </Button>
-          <Button component={Link} to="/connexion" color="inherit">
-            Connexion
-          </Button>
+
           <IconButton component={Link} to="/cart">
             <Badge badgeContent={3} color="secondary">
               <ShoppingCartIcon className={classes.shoppingIcon} />
             </Badge>
           </IconButton>
+
+          {auth && (
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem
+                  onClick={handleClose}
+                  component={Link}
+                  to="/mon-profil"
+                >
+                  Profile
+                </MenuItem>
+                <MenuItem
+                  onClick={handleClose}
+                  component={Link}
+                  to="/dashboard"
+                >
+                  My account
+                </MenuItem>
+                <MenuItem
+                  onClick={handleClose}
+                  component={Link}
+                  to="/vendre-produit"
+                >
+                  Vendre
+                </MenuItem>
+                <MenuItem onClick={handleClose}>Déconnexion</MenuItem>
+              </Menu>
+            </div>
+          )}
         </Toolbar>
       </AppBar>
     </>

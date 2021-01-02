@@ -4,6 +4,8 @@ import {
   Chip,
   Container,
   Grid,
+  List,
+  ListItem,
   makeStyles,
   Modal,
   Paper,
@@ -12,6 +14,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProduitsSimilaires from '../../components/ProduitsSimilaires/ProduitsSimilaires';
+import { Email } from '@material-ui/icons';
 const useStyles = makeStyles({
   root: {
     textAlign: 'center',
@@ -124,7 +127,13 @@ function ProductPage() {
         className={classes.modal}
       >
         <Container className={classes.modalContainer}>
-          Hello from modal
+          <Typography variant="h5">Informations Vendeur</Typography>
+          <List>
+            <ListItem>
+              <Email />
+              {product.user.email}
+            </ListItem>
+          </List>
         </Container>
       </Modal>
       <ProduitsSimilaires similaires={product.similaires} />

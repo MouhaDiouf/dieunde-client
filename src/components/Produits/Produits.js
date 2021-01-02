@@ -63,7 +63,7 @@ function Produits({
 
           return (
             <Grid item>
-              <Produit key={produit.id} {...produit} />;
+              <Produit key={produit.id} {...produit} />
             </Grid>
           );
         })}
