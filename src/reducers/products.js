@@ -12,7 +12,12 @@ const products = (state = { allProductsFetched: false }, action) => {
     case CREATING_PRODUCT:
       return { ...state, creatingProduct: true };
     case PRODUCT_CREATION_SUCCESS:
-      return { ...state, product: action.payload };
+      return {
+        ...state,
+        product: action.payload,
+        creatingProduct: false,
+        productCreated: true,
+      };
     case PRODUCT_CREATION_FAILURE:
       return { ...state, productCreationErro: action.payload };
     case ONE_PRODUCT_FETCH_SUCCESS:

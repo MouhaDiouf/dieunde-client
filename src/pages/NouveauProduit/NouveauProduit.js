@@ -12,9 +12,9 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { newProduct } from '../../actions/actions';
-
+import AlertMessage from '../../components/AlertMessage/AlertMessage';
 const useStyles = makeStyles({
   root: {
     display: 'flex',
@@ -33,6 +33,9 @@ function NouveauProduit() {
   const onImageChange = (e) => {
     setimage(e.target.files[0]);
   };
+  const { creatingProduct, productCreated } = useSelector(
+    (state) => state.products
+  );
 
   const classes = useStyles();
   const handleCreateProduct = (e) => {
@@ -50,6 +53,10 @@ function NouveauProduit() {
 
   return (
     <Container className={classes.root}>
+      {productCreated && (
+        <AlertMessage message="Product created successfully. We will review and approve it if it's valid" />
+      )}
+
       <Typography variant="h2">Créer Produit</Typography>
       <form onSubmit={handleCreateProduct}>
         <FormControl>
@@ -101,8 +108,14 @@ function NouveauProduit() {
             <MenuItem value="jouets">jouets</MenuItem>
           </Select>{' '}
           <br />
-          <Button color="primary" variant="contained" type="submit" fullWidth>
-            Créer Produit
+          <Button
+            color="primary"
+            variant="contained"
+            type="submit"
+            fullWidth
+            disabled={creatingProduct}
+          >
+            {creatingProduct ? 'Creation Produit' : 'Créer Produit'}
           </Button>
         </FormControl>
       </form>
