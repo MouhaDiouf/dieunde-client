@@ -15,6 +15,7 @@ export const ONE_PRODUCT_FETCH_ERROR = 'ONE_PRODUCT_FETCH_ERROR';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
+  console.log('data is ', data);
   dispatch({
     type: FETCH_ALL_PRODUCTS,
     payload: data,

@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles({
   range: {
@@ -29,6 +30,7 @@ function Search({
   setsearchcat,
 }) {
   const classes = useStyles();
+  let Allproduits = useSelector((state) => state.products);
 
   const handleRangeChange = (event, newValue) => {
     setrange(newValue);
@@ -38,8 +40,10 @@ function Search({
   }
   let catégories = [];
 
-  if (produits) {
-    catégories = produits.map((produit) => {
+  if (Allproduits) {
+    Allproduits = Allproduits.produits[0];
+
+    catégories = Allproduits.map((produit) => {
       return produit.catégorie;
     });
     catégories = [...new Set(catégories), 'All'];
@@ -49,6 +53,7 @@ function Search({
   const [range, setrange] = useState([0, 900000]);
   const handleChangeCat = (e) => {
     setselectCatégorie(e.target.value);
+    setsearchcat(e.target.value);
   };
   return (
     <FormControl className={classes.formContainer}>

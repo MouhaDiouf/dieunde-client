@@ -15,7 +15,7 @@ import SignUp from './pages/Signup/Signup';
 
 function App() {
   const [minprix, setminprix] = useState(0);
-  const [maxprix, setmaxprix] = useState(20000);
+  const [maxprix, setmaxprix] = useState(2000000);
   const [searchNom, setsearchnom] = useState('');
   const [searchcat, setsearchcat] = useState('');
 
@@ -28,17 +28,22 @@ function App() {
   }, [dispatch]);
 
   if (produits['produits']) {
-    console.log(produits);
     produits = produits.produits[0];
-
-    produitsFilter = produits.filter((produit) =>
-      produit.nom.includes(searchNom)
-    );
-    produitsFilter = produits.filter((produit) =>
-      produit.catégorie.includes(searchcat)
-    );
-
+    if (searchcat === 'All') {
+      produitsFilter = produits;
+    }
     produitsFilter = produits.filter(
+      (produit) =>
+        produit.nom.includes(searchNom) ||
+        produit.description.includes(searchNom)
+    );
+    if (searchcat !== 'All') {
+      produitsFilter = produitsFilter.filter((produit) =>
+        produit.catégorie.includes(searchcat)
+      );
+    }
+
+    produitsFilter = produitsFilter.filter(
       (produit) => produit.prix >= minprix && produit.prix <= maxprix
     );
   }

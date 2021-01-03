@@ -1,7 +1,28 @@
+import {
+  Button,
+  Container,
+  FormControl,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  Paper,
+  Select,
+  TextareaAutosize,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { newProduct } from '../../actions/actions';
 
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+});
 function NouveauProduit() {
   const dispatch = useDispatch();
   const [nom, setNom] = useState('');
@@ -13,7 +34,9 @@ function NouveauProduit() {
     setimage(e.target.files[0]);
   };
 
+  const classes = useStyles();
   const handleCreateProduct = (e) => {
+    console.log('submitted');
     e.preventDefault();
     const formData = new FormData();
     formData.append('nom', nom);
@@ -24,59 +47,66 @@ function NouveauProduit() {
     formData.append('user_id', 1);
     dispatch(newProduct(formData));
   };
+
   return (
-    <div>
-      <h2>Créer Produit</h2>
+    <Container className={classes.root}>
+      <Typography variant="h2">Créer Produit</Typography>
       <form onSubmit={handleCreateProduct}>
-        <label htmlFor="titre">Nom du produit</label> <br />
-        <input
-          id="titre"
-          type="text"
-          onChange={(e) => {
-            setNom(e.target.value);
-          }}
-        />{' '}
-        <br />
-        <label htmlFor="description">Description</label> <br />
-        <textarea
-          name="description"
-          id="description"
-          cols="30"
-          rows="10"
-          onChange={(e) => setDescription(e.target.value)}
-        ></textarea>{' '}
-        <br />
-        <label htmlFor="prix">Prix</label> <br />
-        <input
-          type="number"
-          name="prix"
-          id="prix"
-          onChange={(e) => setPrix(e.target.value)}
-        />{' '}
-        <br />
-        <input
-          type="file"
-          accept="image/*"
-          multiple={false}
-          onChange={onImageChange}
-        />
-        <label htmlFor="catégorie">Catégorie</label> <br />
-        <select
-          name="categorie"
-          id="catégorie"
-          onChange={(e) => setcatégorie(e.target.value)}
-        >
-          <option value="smartphones">smartphones</option>
-          <option value="ordinateurs">ordinateurs</option>
-          <option value="habillement">habillement</option>
-          <option value="électroménager">électroménager</option>
-          <option value="livres">livres</option>
-          <option value="jouets">jouets</option>
-        </select>{' '}
-        <br />
-        <button type="submit">Créer Produit</button>
+        <FormControl>
+          <TextField
+            id="titre"
+            type="text"
+            onChange={(e) => {
+              setNom(e.target.value);
+            }}
+            label="Product name"
+            variant="outlined"
+          />{' '}
+          <br />
+          <TextareaAutosize
+            rowsMax={7}
+            name="description"
+            id="description"
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Product description"
+            cols="7"
+          />
+          <br />
+          <TextField
+            type="number"
+            name="prix"
+            id="prix"
+            onChange={(e) => setPrix(e.target.value)}
+            label="Price (CFA)"
+            variant="outlined"
+          />{' '}
+          <br />
+          <TextField
+            type="file"
+            accept="image/*"
+            multiple={false}
+            onChange={onImageChange}
+          />
+          <InputLabel id="catégorie">Category</InputLabel>
+          <Select
+            name="categorie"
+            id="catégorie"
+            onChange={(e) => setcatégorie(e.target.value)}
+          >
+            <MenuItem value="smartphones">smartphones</MenuItem>
+            <MenuItem value="ordinateurs">ordinateurs</MenuItem>
+            <MenuItem value="habillement">habillement</MenuItem>
+            <MenuItem value="électroménager">électroménager</MenuItem>
+            <MenuItem value="livres">livres</MenuItem>
+            <MenuItem value="jouets">jouets</MenuItem>
+          </Select>{' '}
+          <br />
+          <Button color="primary" variant="contained" type="submit" fullWidth>
+            Créer Produit
+          </Button>
+        </FormControl>
       </form>
-    </div>
+    </Container>
   );
 }
 

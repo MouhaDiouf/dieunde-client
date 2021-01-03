@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Produit from './Produit/Produit';
 import Search from '../Search/Search';
 import { Typography } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,8 +34,13 @@ function Produits({
   setsearchcat,
   setsearchnom,
 }) {
+  const allProductsFetched = useSelector(
+    (state) => state.products.allProductsFetched
+  );
+
   const classes = useStyles();
-  if (!produits.length) {
+
+  if (!produits.length && !allProductsFetched) {
     return 'Chargement produits...';
   }
 
@@ -47,27 +53,33 @@ function Produits({
         setsearchnom={setsearchnom}
         setsearchcat={setsearchcat}
       />
-      <Typography variant="h2" className={classes.title}>
-        Produits
-      </Typography>
+      {produits.length ? (
+        <>
+          <Typography variant="h2" className={classes.title}>
+            Produits
+          </Typography>
 
-      <Grid
-        alignContent="center"
-        alignItems="center"
-        container
-        className={classes.root}
-        spacing={4}
-      >
-        {produits.map((produit) => {
-          console.log('proudit is ', produit);
+          <Grid
+            alignContent="center"
+            alignItems="center"
+            container
+            className={classes.root}
+            spacing={4}
+          >
+            {produits.map((produit) => {
+              console.log('proudit is ', produit);
 
-          return (
-            <Grid item>
-              <Produit key={produit.id} {...produit} />
-            </Grid>
-          );
-        })}
-      </Grid>
+              return (
+                <Grid item>
+                  <Produit key={produit.id} {...produit} />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </>
+      ) : (
+        <h1>No results for your search</h1>
+      )}
     </>
   );
 }
