@@ -22,6 +22,12 @@ const useStyles = makeStyles({
     alignItems: 'center',
     flexDirection: 'column',
   },
+  form: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
 });
 function NouveauProduit() {
   const dispatch = useDispatch();
@@ -52,73 +58,77 @@ function NouveauProduit() {
   };
 
   return (
-    <Container className={classes.root}>
-      {productCreated && (
-        <AlertMessage message="Product created successfully. We will review and approve it if it's valid" />
-      )}
+    <Container className={classes.root} maxWidth="lg">
+      <Paper fullWidth>
+        {productCreated && (
+          <AlertMessage message="Product created successfully. We will review and approve it if it's valid" />
+        )}
+        <Typography variant="h3">New Product</Typography>
+        <form onSubmit={handleCreateProduct} className={classes.form}>
+          <FormControl>
+            <TextField
+              id="titre"
+              type="text"
+              onChange={(e) => {
+                setNom(e.target.value);
+              }}
+              label="Product name"
+              variant="outlined"
+            />{' '}
+            <br />
+            <TextareaAutosize
+              rowsMax={7}
+              name="description"
+              id="description"
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Product description"
+              cols="7"
+            />
+            <br />
+            <TextField
+              type="number"
+              name="prix"
+              id="prix"
+              onChange={(e) => setPrix(e.target.value)}
+              label="Price (CFA)"
+              variant="outlined"
+            />{' '}
+            <br />
+            <TextField
+              type="file"
+              accept="image/*"
+              multiple={false}
+              onChange={onImageChange}
+            />
+          </FormControl>
 
-      <Typography variant="h2">Créer Produit</Typography>
-      <form onSubmit={handleCreateProduct}>
-        <FormControl>
-          <TextField
-            id="titre"
-            type="text"
-            onChange={(e) => {
-              setNom(e.target.value);
-            }}
-            label="Product name"
-            variant="outlined"
-          />{' '}
-          <br />
-          <TextareaAutosize
-            rowsMax={7}
-            name="description"
-            id="description"
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Product description"
-            cols="7"
-          />
-          <br />
-          <TextField
-            type="number"
-            name="prix"
-            id="prix"
-            onChange={(e) => setPrix(e.target.value)}
-            label="Price (CFA)"
-            variant="outlined"
-          />{' '}
-          <br />
-          <TextField
-            type="file"
-            accept="image/*"
-            multiple={false}
-            onChange={onImageChange}
-          />
-          <InputLabel id="catégorie">Category</InputLabel>
-          <Select
-            name="categorie"
-            id="catégorie"
-            onChange={(e) => setcatégorie(e.target.value)}
-          >
-            <MenuItem value="smartphones">smartphones</MenuItem>
-            <MenuItem value="ordinateurs">ordinateurs</MenuItem>
-            <MenuItem value="habillement">habillement</MenuItem>
-            <MenuItem value="électroménager">électroménager</MenuItem>
-            <MenuItem value="livres">livres</MenuItem>
-            <MenuItem value="jouets">jouets</MenuItem>
-          </Select>{' '}
-          <br />
-          <Button
-            color="primary"
-            variant="contained"
-            type="submit"
-            fullWidth
-            disabled={creatingProduct}
-          >
-            {creatingProduct ? 'Creation Produit' : 'Créer Produit'}
-          </Button>
-        </FormControl>
-      </form>
+          <FormControl fullWidth>
+            <InputLabel id="catégorie">Category</InputLabel>
+            <Select
+              name="categorie"
+              id="catégorie"
+              onChange={(e) => setcatégorie(e.target.value)}
+            >
+              <MenuItem value="smartphones">smartphones</MenuItem>
+              <MenuItem value="ordinateurs">ordinateurs</MenuItem>
+              <MenuItem value="habillement">habillement</MenuItem>
+              <MenuItem value="électroménager">électroménager</MenuItem>
+              <MenuItem value="livres">livres</MenuItem>
+              <MenuItem value="jouets">jouets</MenuItem>
+            </Select>{' '}
+            <br />
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              fullWidth
+              disabled={creatingProduct}
+            >
+              {creatingProduct ? 'Creation Produit' : 'Créer Produit'}
+            </Button>
+          </FormControl>
+        </form>
+      </Paper>
     </Container>
   );
 }
