@@ -1,10 +1,40 @@
-import { Container, Typography } from '@material-ui/core';
+import {
+  Button,
+  Container,
+  makeStyles,
+  Paper,
+  Typography,
+} from '@material-ui/core';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-function ProduitSimilaire({ nom, description, catégorie, prix }) {
+const useStyles = makeStyles({
+  root: {
+    width: '300px',
+  },
+  image: {
+    width: '100%',
+    height: '200px',
+  },
+});
+function ProduitSimilaire({ nom, description, catégorie, prix, image, id }) {
+  const classes = useStyles();
   return (
-    <Container>
-      <Typography>{nom}</Typography>
+    <Container className={classes.root}>
+      <Paper>
+        <img className={classes.image} src={image.url} alt={nom} />
+
+        <Typography>{nom}</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          to={`/produits/${id}`}
+        >
+          Voir
+        </Button>
+      </Paper>
     </Container>
   );
 }

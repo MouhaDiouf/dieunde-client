@@ -23,3 +23,11 @@ export const createProduct = (formData) => {
 export const getOneProduct = (id) => {
   return axios.get(`${baseUrl}/produits/${id}`);
 };
+
+export const signInUserHelper = (email, password) => {
+  console.log('sigingUserHelper called!');
+  return axios.post(`http://localhost:3001/auth/sign_in/`, {
+    email,
+    password,
+  });
+};

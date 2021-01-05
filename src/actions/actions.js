@@ -3,6 +3,7 @@ import {
   fetchProducts,
   getOneProduct,
   registerUser,
+  signInUserHelper,
 } from '../api/api';
 export const CREATE_USER_SUCCESS = 'CREATE_USER';
 export const CREATE_USER_ERROR = 'CREATE_USER_ERROR';
@@ -12,6 +13,9 @@ export const FETCH_ALL_PRODUCTS = 'FETCH_ALL_PRODUCTS';
 export const CREATING_PRODUCT = 'CREATING_PRODUCT';
 export const ONE_PRODUCT_FETCH_SUCCESS = 'ONE_PRODUCT_FETCH_SUCCESS';
 export const ONE_PRODUCT_FETCH_ERROR = 'ONE_PRODUCT_FETCH_ERROR';
+export const SIGNING_ATTEMPT = 'SIGNING_ATTEMPT';
+export const SIGNIN_SUCCESS = 'SIGNING_SUCCESS';
+export const SIGNIN_ERROR = 'SIGING_ERROR';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
@@ -74,6 +78,25 @@ export const fetchOneProduct = (id) => async (dispatch) => {
     dispatch({
       type: ONE_PRODUCT_FETCH_ERROR,
       payload: error,
+    });
+  }
+};
+
+export const signInUser = (email, password) => async (dispatch) => {
+  console.log(email, password);
+  console.log('Singin Called');
+  dispatch({
+    type: SIGNING_ATTEMPT,
+  });
+  try {
+    const { data } = await signInUserHelper(email, password);
+    dispatch({
+      type: SIGNIN_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SIGNIN_ERROR,
     });
   }
 };

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TransitionAlerts({ message }) {
+export default function TransitionAlerts({ message, type }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
 
@@ -23,7 +23,7 @@ export default function TransitionAlerts({ message }) {
     <div className={classes.root}>
       <Collapse in={open}>
         <Alert
-          severity="info"
+          severity={type || 'info'}
           action={
             <IconButton
               aria-label="close"

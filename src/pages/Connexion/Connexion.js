@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +12,10 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { signInUser } from '../../actions/actions';
+import AlertMessage from '../../components/AlertMessage/AlertMessage';
+import { Link as DestinationLink, useHistory } from 'react-router-dom';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -61,7 +64,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [email, setemail] = useState('');
+  const [password, setpassword] = useState('');
+  const history = useHistory();
+  const { user, signinAttempt, singinErrorMessage } = useSelector(
+    (state) => state.userReducer
+  );
 
+  if (user) {
+    history.push('/');
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(signInUser(email, password));
+  };
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -74,7 +92,10 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={handleSubmit}>
+            {singinErrorMessage && (
+              <AlertMessage message={singinErrorMessage} type="warning" />
+            )}
             <TextField
               variant="outlined"
               margin="normal"
@@ -84,7 +105,9 @@ export default function SignInSide() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              type="email"
               autoFocus
+              onChange={(e) => setemail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -96,6 +119,7 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setpassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -107,8 +131,9 @@ export default function SignInSide() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={signinAttempt}
             >
-              Sign In
+              {signinAttempt ? 'Singin In' : 'Sign In'}
             </Button>
             <Grid container>
               <Grid item xs>
@@ -117,7 +142,7 @@ export default function SignInSide() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/signup" variant="body2">
+                <Link component={DestinationLink} to="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

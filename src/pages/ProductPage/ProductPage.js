@@ -20,7 +20,6 @@ const useStyles = makeStyles({
     textAlign: 'center',
     display: 'flex',
     flexDirection: 'column',
-    height: '100vh',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -29,6 +28,17 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  contentAndBtn: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  btnGroup: {
+    margin: '25px 0',
   },
 
   modalContainer: {
@@ -93,7 +103,7 @@ function ProductPage() {
     <Container maxWidth="lg" className={classes.root}>
       <Typography variant="h3">Details pour {product.nom}</Typography>
       <Paper className={classes.innerContainer} elevation={3}>
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
             <img
               src={product.image.url}
@@ -102,13 +112,13 @@ function ProductPage() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={5} className={classes.contentAndBtn}>
             <Container>
               <Typography variant="body1">{product.description}</Typography>
               <Chip label={product.catégorie} />
             </Container>
 
-            <ButtonGroup>
+            <ButtonGroup className={classes.btnGroup}>
               <Button variant="contained" color="primary">
                 Ajouter Aux Favoris
               </Button>

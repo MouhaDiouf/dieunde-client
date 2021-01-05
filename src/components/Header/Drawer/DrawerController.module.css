@@ -1,0 +1,9 @@
+.root {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .root {
+    display: block;
+  }
+}

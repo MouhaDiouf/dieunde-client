@@ -12,9 +12,10 @@ import {
   Menu,
 } from '@material-ui/core';
 
-import MenuIcon from '@material-ui/icons/Menu';
+import DrawerController from './Drawer/DrawerController';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { AccountCircle } from '@material-ui/icons';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Header() {
   const classes = useStyles();
-  const [auth, setauth] = useState(true);
+  const { user } = useSelector((state) => state.userReducer);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -50,14 +51,8 @@ function Header() {
     <>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
+          <DrawerController />
+
           <Typography
             variant="h6"
             className={classes.title}
@@ -72,8 +67,18 @@ function Header() {
               <ShoppingCartIcon className={classes.shoppingIcon} />
             </Badge>
           </IconButton>
-
-          {auth && (
+          {!user && (
+            <MenuItem
+              component={Link}
+              to="/connexion"
+              variant="contained"
+              color="primary"
+            >
+              {' '}
+              Sign In
+            </MenuItem>
+          )}
+          {user && (
             <div>
               <IconButton
                 aria-label="account of current user"

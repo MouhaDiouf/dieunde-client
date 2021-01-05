@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
+    margin: '30px 0',
   },
 }));
 
@@ -24,8 +25,7 @@ function PaginationController({ productsPerPage, totalProducts, paginate }) {
   const numberOfPages = Math.ceil(totalProducts / productsPerPage);
 
   return (
-    <Container className={classes.root}>
-      <Typography>Page: {page}</Typography>
+    <Container className={classes.root} maxWidth="xl">
       <Pagination count={numberOfPages} page={page} onChange={handleChange} />
     </Container>
   );

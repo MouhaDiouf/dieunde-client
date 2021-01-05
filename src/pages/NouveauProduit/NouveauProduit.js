@@ -1,7 +1,9 @@
 import {
+  Avatar,
   Button,
   Container,
   FormControl,
+  Grid,
   InputLabel,
   makeStyles,
   MenuItem,
@@ -15,18 +17,39 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { newProduct } from '../../actions/actions';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 const useStyles = makeStyles({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
+    height: '100vh',
+    textAlign: 'center',
   },
   form: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    width: '80%',
+  },
+
+  title: {
+    marginBottom: '20px',
+  },
+  left: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  right: {
+    height: '100vh',
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  avatar: {
+    marginBottom: '10px',
+    backgroundColor: 'red',
   },
 });
 function NouveauProduit() {
@@ -45,7 +68,6 @@ function NouveauProduit() {
 
   const classes = useStyles();
   const handleCreateProduct = (e) => {
-    console.log('submitted');
     e.preventDefault();
     const formData = new FormData();
     formData.append('nom', nom);
@@ -58,14 +80,28 @@ function NouveauProduit() {
   };
 
   return (
-    <Container className={classes.root} maxWidth="lg">
-      <Paper fullWidth>
+    <Grid container className={classes.root}>
+      <Grid item md={7} xs={false} sm={5} className={classes.right}></Grid>
+      <Grid
+        item
+        md={5}
+        xs={12}
+        sm={7}
+        component={Paper}
+        elevation={6}
+        className={classes.left}
+      >
         {productCreated && (
           <AlertMessage message="Product created successfully. We will review and approve it if it's valid" />
         )}
-        <Typography variant="h3">New Product</Typography>
+        <Typography variant="h4" className={classes.title}>
+          New Product
+        </Typography>
+        <Avatar className={classes.avatar}>
+          <LocalOfferIcon />
+        </Avatar>
         <form onSubmit={handleCreateProduct} className={classes.form}>
-          <FormControl>
+          <FormControl className={classes.formControl} fullWidth>
             <TextField
               id="titre"
               type="text"
@@ -76,8 +112,8 @@ function NouveauProduit() {
               variant="outlined"
             />{' '}
             <br />
-            <TextareaAutosize
-              rowsMax={7}
+            <textarea
+              rows="7"
               name="description"
               id="description"
               onChange={(e) => setDescription(e.target.value)}
@@ -124,12 +160,12 @@ function NouveauProduit() {
               fullWidth
               disabled={creatingProduct}
             >
-              {creatingProduct ? 'Creation Produit' : 'Créer Produit'}
+              {creatingProduct ? 'Creating Product' : 'Sell Product'}
             </Button>
           </FormControl>
         </form>
-      </Paper>
-    </Container>
+      </Grid>
+    </Grid>
   );
 }
 
