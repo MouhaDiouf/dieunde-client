@@ -70,21 +70,35 @@ function Header() {
             Dieunde
           </Typography>
 
-          <IconButton component={Link} to="/cart">
-            <Badge badgeContent={3} color="secondary">
-              <ShoppingCartIcon className={classes.shoppingIcon} />
-            </Badge>
-          </IconButton>
+          {user && (
+            <IconButton component={Link} to="/cart">
+              <Badge badgeContent={3} color="secondary">
+                <ShoppingCartIcon className={classes.shoppingIcon} />
+              </Badge>
+            </IconButton>
+          )}
+
           {!user && (
-            <MenuItem
-              component={Link}
-              to="/connexion"
-              variant="contained"
-              color="primary"
-            >
-              {' '}
-              Sign In
-            </MenuItem>
+            <>
+              <MenuItem
+                component={Link}
+                to="/connexion"
+                variant="contained"
+                color="primary"
+              >
+                {' '}
+                Sign In
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/signup"
+                variant="contained"
+                color="primary"
+              >
+                {' '}
+                Create Account
+              </MenuItem>
+            </>
           )}
           {user && (
             <div>
@@ -134,14 +148,6 @@ function Header() {
                   Vendre
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
-                <MenuItem
-                  component={Link}
-                  to="/connexion"
-                  onClick={handleClose}
-                >
-                  {' '}
-                  Connexion
-                </MenuItem>
               </Menu>
             </div>
           )}

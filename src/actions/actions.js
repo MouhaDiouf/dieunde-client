@@ -1,7 +1,9 @@
 import axios from 'axios';
 import {
+  addToFavoritesHelper,
   connectUserOnLoadHelper,
   createProduct,
+  createUserHelper,
   fetchProducts,
   getOneProduct,
   logoutUserHelper,
@@ -20,6 +22,11 @@ export const SIGNING_ATTEMPT = 'SIGNING_ATTEMPT';
 export const SIGNIN_SUCCESS = 'SIGNING_SUCCESS';
 export const SIGNIN_ERROR = 'SIGING_ERROR';
 export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS';
+export const SIGNUP_ERROR = 'SIGNUP_ERROR';
+export const SIGNUP_ATTEMPT = 'SIGNUP_ATTEMPT';
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
+export const FAVORITE_CREATED = 'FAVORITE_CREATED';
+export const CREATING_FAVORITE = 'CREATING_FAVORITE';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
@@ -114,10 +121,49 @@ export const signInUser = (email, password) => async (dispatch) => {
   }
 };
 
+export const createUser = (user) => (dispatch) => {
+  dispatch({
+    type: SIGNUP_ATTEMPT,
+  });
+  axios
+    .post(`http://localhost:3001/auth`, {
+      ...user,
+    })
+    .then((res) => {
+      dispatch({
+        type: SIGNUP_SUCCESS,
+        payload: res.data,
+      });
+      const { data, headers } = res;
+      sessionStorage.setItem(
+        'user',
+        JSON.stringify({
+          'access-token': headers['access-token'],
+          client: headers['client'],
+          uid: data.data.uid,
+        })
+      );
+    })
+
+    .catch((error) => {
+      if (error.response) {
+        dispatch({
+          type: SIGNUP_ERROR,
+          payload: error.response.data.errors.full_messages,
+        });
+      }
+    });
+};
+
 export const logoutUser = () => async (dispatch) => {
   try {
     const { data } = await logoutUserHelper();
     if (data.success) {
+      dispatch({
+        type: LOGOUT_USER_SUCCESS,
+      });
+      sessionStorage.removeItem('user');
+    } else {
       dispatch({
         type: LOGOUT_USER_SUCCESS,
       });
@@ -130,4 +176,17 @@ export const logoutUser = () => async (dispatch) => {
 export const connectUser = () => async (dispatch) => {
   const { data } = await connectUserOnLoadHelper();
   console.log(data);
+};
+
+export const addToFavorites = (params) => async (dispatch) => {
+  try {
+    const { data } = await addToFavoritesHelper(params);
+    console.log(data);
+    dispatch({
+      type: FAVORITE_CREATED,
+      payload: params.produit_id,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };

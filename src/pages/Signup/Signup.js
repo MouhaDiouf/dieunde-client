@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -12,6 +10,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../../actions/actions';
+import { useSelector } from 'react-redux';
+import AlertMessage from '../../components/AlertMessage/AlertMessage';
+import loadingImg from '../../images/loading.gif';
+import { useHistory } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -42,10 +46,43 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  loadingImg: {
+    width: '30px',
+    height: '30px',
+    marginRight: '10px',
+  },
+  signupIndicator: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 export default function SignUp() {
+  const { signupAttempt, signupErrorMessages, user } = useSelector(
+    (state) => state.userReducer
+  );
+  const history = useHistory();
   const classes = useStyles();
+  const [pseudo, setpseudo] = useState('');
+  const [email, setemail] = useState('');
+  const [password, setpassword] = useState('');
+  const [passwordConfirmation, setpasswordConfirmation] = useState('');
+  const dispatch = useDispatch();
+
+  const handleAccountCreation = (e) => {
+    e.preventDefault();
+    const user = {
+      name: pseudo,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+    };
+    dispatch(createUser(user));
+  };
+
+  user && history.push('/');
 
   return (
     <Container component="main" maxWidth="xs">
@@ -57,31 +94,30 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        {signupErrorMessages &&
+          signupErrorMessages.map((error) => (
+            <AlertMessage message={error} type="warning" />
+          ))}
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={handleAccountCreation}
+        >
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                autoComplete="pseudo"
+                name="pseudo"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="pseudo"
+                label="Pseudo"
+                onChange={(e) => setpseudo(e.target.value)}
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -91,19 +127,36 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={(e) => setemail(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
+            <Grid container spacing={2}>
+              <Grid item sm={6} xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={(e) => setpassword(e.target.value)}
+                />
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password Confirmation"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={(e) => setpasswordConfirmation(e.target.value)}
+                />
+              </Grid>
             </Grid>
           </Grid>
           <Button
@@ -111,9 +164,21 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             color="primary"
+            disabled={signupAttempt}
             className={classes.submit}
           >
-            Sign Up
+            {signupAttempt ? (
+              <div className={classes.signupIndicator}>
+                <img
+                  className={classes.loadingImg}
+                  src={loadingImg}
+                  alt="loading"
+                />
+                <Typography variant="body2">Hold Tight...</Typography>
+              </div>
+            ) : (
+              'Sign Up'
+            )}
           </Button>
           <Grid container justify="flex-end">
             <Grid item>

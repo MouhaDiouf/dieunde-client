@@ -17,6 +17,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Button, ButtonGroup } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { addToFavorites } from '../../../actions/actions';
+import AlertMessage from '../../AlertMessage/AlertMessage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +49,19 @@ const useStyles = makeStyles((theme) => ({
 function Produit({ nom, description, image, id }) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-
+  const { user } = useSelector((state) => state.userReducer);
+  const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(
+    (state) => state.products
+  );
+  const dispatch = useDispatch();
+  const userId = user?.id;
+  const handleAddToFavorites = () => {
+    const params = {
+      user_id: userId,
+      produit_id: id,
+    };
+    user && !creatingFavorite && dispatch(addToFavorites(params));
+  };
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -62,16 +78,27 @@ function Produit({ nom, description, image, id }) {
         title={`${nom}`}
         // subheader="September 14, 2016"
       />
+
       <CardMedia className={classes.media} image={image?.url} title={nom} />
       <CardContent>
+        {productAddedId === id && favoriteCreated && (
+          <AlertMessage message="Added to favorites" />
+        )}
+
         <Typography variant="body2" color="textSecondary" component="p">
           {description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
+        {user && (
+          <IconButton
+            aria-label="add to favorites"
+            onClick={handleAddToFavorites}
+            disabled={creatingFavorite}
+          >
+            <FavoriteIcon />
+          </IconButton>
+        )}
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>

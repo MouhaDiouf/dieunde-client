@@ -67,8 +67,6 @@ function Produits({
             spacing={4}
           >
             {produits.map((produit) => {
-              console.log('proudit is ', produit);
-
               return (
                 <Grid item>
                   <Produit key={produit.id} {...produit} />

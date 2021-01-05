@@ -12,15 +12,19 @@ import ProductPage from './pages/ProductPage/ProductPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Cart from './pages/Cart/Cart';
 import SignUp from './pages/Signup/Signup';
+import AlertMessage from './components/AlertMessage/AlertMessage';
 
 function App() {
   const [minprix, setminprix] = useState(0);
-  const [maxprix, setmaxprix] = useState(2000000);
+  const [maxprix, setmaxprix] = useState(10000000000);
   const [searchNom, setsearchnom] = useState('');
-  const [searchcat, setsearchcat] = useState('');
+  const [searchcat, setsearchcat] = useState('All');
 
-  let produits = useSelector((state) => state.products);
-  let produitsFilter = produits['produits'] ? [...produits['produits']] : [];
+  let { produits, allProductsFetched } = useSelector((state) => state.products);
+  const { logoutSuccess, signinSuccess, signupSuccess } = useSelector(
+    (state) => state.userReducer
+  );
+  let produitsFilter = produits ? [...produits] : [];
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -30,8 +34,8 @@ function App() {
     }
   }, [dispatch]);
 
-  if (produits['produits']) {
-    produits = produits.produits[0];
+  if (allProductsFetched) {
+    produits = produits[0];
     if (searchcat === 'All') {
       produitsFilter = produits;
     }
@@ -40,6 +44,7 @@ function App() {
         produit.nom.includes(searchNom) ||
         produit.description.includes(searchNom)
     );
+
     if (searchcat !== 'All') {
       produitsFilter = produitsFilter.filter((produit) =>
         produit.catégorie.includes(searchcat)
@@ -53,6 +58,14 @@ function App() {
 
   return (
     <Router>
+      {logoutSuccess && (
+        <AlertMessage message="Logged Out Successfully" type="success" />
+      )}
+      {signinSuccess && <AlertMessage message="Welcome back!" />}
+      {signupSuccess && (
+        <AlertMessage message="Account Successfully Created." type="success" />
+      )}
+
       <Header />
       <Switch>
         <Route exact path="/">

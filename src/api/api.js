@@ -55,3 +55,13 @@ export const connectUserOnLoadHelper = () => {
     },
   });
 };
+
+export const createUserHelper = (user) => {
+  return axios.post(`${baseUrl}/auth`, {
+    ...user,
+  });
+};
+
+export const addToFavoritesHelper = (params) => {
+  return axios.post(`${baseUrl}/create_liker`, { ...params });
+};

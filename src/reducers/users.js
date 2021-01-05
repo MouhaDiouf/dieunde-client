@@ -5,6 +5,9 @@ import {
   SIGNING_ATTEMPT,
   SIGNIN_ERROR,
   SIGNIN_SUCCESS,
+  SIGNUP_ATTEMPT,
+  SIGNUP_ERROR,
+  SIGNUP_SUCCESS,
 } from '../actions/actions';
 
 const usersReducer = (state = { user: null }, action) => {
@@ -23,6 +26,7 @@ const usersReducer = (state = { user: null }, action) => {
         ...state,
         user: action.payload,
         signinAttempt: false,
+        signinSuccess: true,
       };
     }
     case SIGNIN_ERROR: {
@@ -32,11 +36,33 @@ const usersReducer = (state = { user: null }, action) => {
         singinErrorMessage: 'Invalid credentials',
       };
     }
+    case SIGNUP_ATTEMPT: {
+      return {
+        ...state,
+        signupAttempt: true,
+      };
+    }
+    case SIGNUP_SUCCESS: {
+      return {
+        ...state,
+        signupAttempt: false,
+        user: action.payload,
+        signupSuccess: true,
+      };
+    }
+    case SIGNUP_ERROR: {
+      return {
+        signupAttempt: false,
+        signupErrorMessages: action.payload,
+      };
+    }
     case LOGOUT_USER_SUCCESS: {
       return {
         user: null,
+        logoutSuccess: true,
       };
     }
+
     default:
       return state;
   }
