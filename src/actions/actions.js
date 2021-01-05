@@ -1,4 +1,6 @@
+import axios from 'axios';
 import {
+  connectUserOnLoadHelper,
   createProduct,
   fetchProducts,
   getOneProduct,
@@ -17,10 +19,10 @@ export const ONE_PRODUCT_FETCH_ERROR = 'ONE_PRODUCT_FETCH_ERROR';
 export const SIGNING_ATTEMPT = 'SIGNING_ATTEMPT';
 export const SIGNIN_SUCCESS = 'SIGNING_SUCCESS';
 export const SIGNIN_ERROR = 'SIGING_ERROR';
+export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
-  console.log('data is ', data);
   dispatch({
     type: FETCH_ALL_PRODUCTS,
     payload: data,
@@ -115,8 +117,17 @@ export const signInUser = (email, password) => async (dispatch) => {
 export const logoutUser = () => async (dispatch) => {
   try {
     const { data } = await logoutUserHelper();
-    console.log(data);
+    if (data.success) {
+      dispatch({
+        type: LOGOUT_USER_SUCCESS,
+      });
+    }
   } catch (error) {
     console.log(error);
   }
+};
+
+export const connectUser = () => async (dispatch) => {
+  const { data } = await connectUserOnLoadHelper();
+  console.log(data);
 };

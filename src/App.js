@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Connexion from './pages/Connexion/Connexion';
 import { useEffect, useState } from 'react';
-import { getAllProducts } from './actions/actions';
+import { connectUser, getAllProducts } from './actions/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import NouveauProduit from './pages/NouveauProduit/NouveauProduit';
 import Footer from './components/Footer/Footer';
@@ -25,6 +25,9 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllProducts());
+    if (sessionStorage.user) {
+      dispatch(connectUser());
+    }
   }, [dispatch]);
 
   if (produits['produits']) {

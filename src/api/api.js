@@ -33,5 +33,25 @@ export const signInUserHelper = (email, password) => {
 };
 
 export const logoutUserHelper = () => {
-  return axios.delete(`${baseUrl}api/v1/auth/sign_out`);
+  const data = JSON.parse(sessionStorage.user);
+
+  return axios.delete(`${baseUrl}/auth/sign_out`, {
+    params: {
+      'access-token': data['access-token'],
+      client: data.client,
+      uid: data.uid,
+    },
+  });
+};
+
+export const connectUserOnLoadHelper = () => {
+  const data = JSON.parse(sessionStorage.user);
+
+  return axios.get(`${baseUrl}/auth/validate_token`, {
+    params: {
+      'access-token': data['access-token'],
+      client: data.client,
+      uid: data.uid,
+    },
+  });
 };

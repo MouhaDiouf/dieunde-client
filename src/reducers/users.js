@@ -1,6 +1,7 @@
 import {
   CREATE_USER_ERROR,
   CREATE_USER_SUCCESS,
+  LOGOUT_USER_SUCCESS,
   SIGNING_ATTEMPT,
   SIGNIN_ERROR,
   SIGNIN_SUCCESS,
@@ -29,6 +30,11 @@ const usersReducer = (state = { user: null }, action) => {
         ...state,
         signinAttempt: false,
         singinErrorMessage: 'Invalid credentials',
+      };
+    }
+    case LOGOUT_USER_SUCCESS: {
+      return {
+        user: null,
       };
     }
     default:
