@@ -15,7 +15,8 @@ import {
 import DrawerController from './Drawer/DrawerController';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { AccountCircle } from '@material-ui/icons';
-import { useSelector } from 'react-redux';
+import { logoutUser } from '../../actions/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
 function Header() {
   const classes = useStyles();
   const { user } = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -45,6 +48,11 @@ function Header() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleClose();
+    dispatch(logoutUser());
   };
 
   return (
@@ -125,7 +133,7 @@ function Header() {
                 >
                   Vendre
                 </MenuItem>
-                <MenuItem onClick={handleClose}>Déconnexion</MenuItem>
+                <MenuItem onClick={handleLogout}>Déconnexion</MenuItem>
                 <MenuItem
                   component={Link}
                   to="/connexion"

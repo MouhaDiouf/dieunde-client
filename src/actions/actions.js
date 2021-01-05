@@ -2,6 +2,7 @@ import {
   createProduct,
   fetchProducts,
   getOneProduct,
+  logoutUserHelper,
   registerUser,
   signInUserHelper,
 } from '../api/api';
@@ -89,7 +90,17 @@ export const signInUser = (email, password) => async (dispatch) => {
     type: SIGNING_ATTEMPT,
   });
   try {
-    const { data } = await signInUserHelper(email, password);
+    const res = await signInUserHelper(email, password);
+    console.log(res);
+    const { data, headers } = res;
+    sessionStorage.setItem(
+      'user',
+      JSON.stringify({
+        'access-token': headers['access-token'],
+        client: headers['client'],
+        uid: data.data.uid,
+      })
+    );
     dispatch({
       type: SIGNIN_SUCCESS,
       payload: data.data,
@@ -98,5 +109,14 @@ export const signInUser = (email, password) => async (dispatch) => {
     dispatch({
       type: SIGNIN_ERROR,
     });
+  }
+};
+
+export const logoutUser = () => async (dispatch) => {
+  try {
+    const { data } = await logoutUserHelper();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
   }
 };

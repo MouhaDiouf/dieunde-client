@@ -31,3 +31,7 @@ export const signInUserHelper = (email, password) => {
     password,
   });
 };
+
+export const logoutUserHelper = () => {
+  return axios.delete(`${baseUrl}api/v1/auth/sign_out`);
+};
