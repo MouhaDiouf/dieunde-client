@@ -8,6 +8,7 @@ import {
   fetchProducts,
   getFavoritesHelper,
   getOneProduct,
+  getUserProductsHelper,
   logoutUserHelper,
   registerUser,
   removeFavoriteHelper,
@@ -37,6 +38,8 @@ export const UPDATE_PASSWORD_ERROR = 'UPDATE_PASSWORD_ERROR';
 export const UPDATE_PASSWORD_SUCCESS = 'UPDATE_PASSWORD_SUCCESS';
 export const UPDATING_PASSWORD = 'UPDATING_PASSWORD';
 export const ACCOUNT_REMOVAL_SUCCESS = 'ACCOUNT_REMOVAL_SUCCESS';
+export const GETTING_USER_PRODUCTS = 'GETTING_USER_PRODUCTS';
+export const FETCH_USER_PRODUCTS_SUCCESS = 'FETCH_USER_PRODUCTS_SUCCESS';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
@@ -267,4 +270,19 @@ export const deleteAccount = () => async (dispatch) => {
       type: ACCOUNT_REMOVAL_SUCCESS,
     });
   } catch (error) {}
+};
+
+export const getUserProducts = (id) => async (dispatch) => {
+  dispatch({
+    type: GETTING_USER_PRODUCTS,
+  });
+  try {
+    const { data } = await getUserProductsHelper(id);
+    console.log(data);
+    dispatch({
+      type: FETCH_USER_PRODUCTS_SUCCESS,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };

@@ -99,3 +99,7 @@ export const deleteAccountHelper = () => {
     },
   });
 };
+
+export const getUserProductsHelper = (id) => {
+  return axios.get(`${baseUrl}/user/${id}/products`);
+};
