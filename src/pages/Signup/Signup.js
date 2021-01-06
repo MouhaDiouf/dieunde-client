@@ -15,7 +15,7 @@ import { createUser } from '../../actions/actions';
 import { useSelector } from 'react-redux';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import loadingImg from '../../images/loading.gif';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -64,11 +64,13 @@ export default function SignUp() {
     (state) => state.userReducer
   );
   const history = useHistory();
+
   const classes = useStyles();
   const [pseudo, setpseudo] = useState('');
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
   const [passwordConfirmation, setpasswordConfirmation] = useState('');
+
   const dispatch = useDispatch();
 
   const handleAccountCreation = (e) => {
@@ -82,8 +84,9 @@ export default function SignUp() {
     dispatch(createUser(user));
   };
 
-  user && history.push('/');
-
+  if (user) {
+    history.push('/');
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

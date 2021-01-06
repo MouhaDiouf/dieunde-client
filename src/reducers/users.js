@@ -1,4 +1,5 @@
 import {
+  ACCOUNT_REMOVAL_SUCCESS,
   CREATE_USER_ERROR,
   CREATE_USER_SUCCESS,
   LOGOUT_USER_SUCCESS,
@@ -96,6 +97,12 @@ const usersReducer = (state = { user: null }, action) => {
       return {
         user: null,
         logoutSuccess: true,
+      };
+    }
+    case ACCOUNT_REMOVAL_SUCCESS: {
+      return {
+        user: null,
+        accountRemovalSuccess: true,
       };
     }
 

@@ -30,9 +30,13 @@ function App(props) {
   const [searchcat, setsearchcat] = useState('All');
 
   let { produits, allProductsFetched } = useSelector((state) => state.products);
-  const { logoutSuccess, signinSuccess, signupSuccess, user } = useSelector(
-    (state) => state.userReducer
-  );
+  const {
+    logoutSuccess,
+    signinSuccess,
+    signupSuccess,
+    user,
+    accountRemovalSuccess,
+  } = useSelector((state) => state.userReducer);
 
   let produitsFilter = produits ? [...produits] : [];
 
@@ -67,6 +71,9 @@ function App(props) {
   }
   return (
     <Router>
+      {accountRemovalSuccess && (
+        <AlertMessage message="Account Removed Successfully" type="success" />
+      )}
       {logoutSuccess && (
         <AlertMessage message="Logged Out Successfully" type="success" />
       )}
@@ -75,6 +82,8 @@ function App(props) {
         <AlertMessage message="Account Successfully Created." type="success" />
       )}
       {logoutSuccess && <Redirect to="/" />}
+
+      {accountRemovalSuccess && <Redirect to="/" />}
 
       <Header />
       <Switch>
@@ -93,6 +102,9 @@ function App(props) {
         <Route exact path="/produits/:id">
           <ProductPage />
         </Route>
+        <Route exact path="/signup">
+          <SignUp />
+        </Route>
         {user && (
           <>
             <Route exact path="/vendre-produit">
@@ -110,9 +122,6 @@ function App(props) {
           </>
         )}
 
-        <Route exact path="/signup">
-          <SignUp />
-        </Route>
         <Route>
           <NotFound />
         </Route>

@@ -88,3 +88,14 @@ export const updatePasswordHeloper = (params) => {
     ...params,
   });
 };
+
+export const deleteAccountHelper = () => {
+  const data = JSON.parse(sessionStorage.user);
+  return axios.delete(`${baseUrl}/auth`, {
+    params: {
+      'access-token': data['access-token'],
+      client: data.client,
+      uid: data.uid,
+    },
+  });
+};

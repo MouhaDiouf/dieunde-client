@@ -4,6 +4,7 @@ import {
   connectUserOnLoadHelper,
   createProduct,
   createUserHelper,
+  deleteAccountHelper,
   fetchProducts,
   getFavoritesHelper,
   getOneProduct,
@@ -35,6 +36,7 @@ export const SIGNIN_ON_LOAD_SUCCESS = 'SIGNIN_ON_LOAD_SUCCESS';
 export const UPDATE_PASSWORD_ERROR = 'UPDATE_PASSWORD_ERROR';
 export const UPDATE_PASSWORD_SUCCESS = 'UPDATE_PASSWORD_SUCCESS';
 export const UPDATING_PASSWORD = 'UPDATING_PASSWORD';
+export const ACCOUNT_REMOVAL_SUCCESS = 'ACCOUNT_REMOVAL_SUCCESS';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
@@ -256,4 +258,13 @@ export const updatePassword = (params) => async (dispatch) => {
       });
     }
   }
+};
+
+export const deleteAccount = () => async (dispatch) => {
+  try {
+    const { data } = await deleteAccountHelper();
+    dispatch({
+      type: ACCOUNT_REMOVAL_SUCCESS,
+    });
+  } catch (error) {}
 };
