@@ -11,6 +11,7 @@ import {
   registerUser,
   removeFavoriteHelper,
   signInUserHelper,
+  updatePasswordHeloper,
 } from '../api/api';
 export const CREATE_USER_SUCCESS = 'CREATE_USER';
 export const CREATE_USER_ERROR = 'CREATE_USER_ERROR';
@@ -31,6 +32,9 @@ export const FAVORITE_CREATED = 'FAVORITE_CREATED';
 export const CREATING_FAVORITE = 'CREATING_FAVORITE';
 export const FAVORITES_FETCH_SUCCESS = 'FAVORITES_FETCH_SUCCESS';
 export const SIGNIN_ON_LOAD_SUCCESS = 'SIGNIN_ON_LOAD_SUCCESS';
+export const UPDATE_PASSWORD_ERROR = 'UPDATE_PASSWORD_ERROR';
+export const UPDATE_PASSWORD_SUCCESS = 'UPDATE_PASSWORD_SUCCESS';
+export const UPDATING_PASSWORD = 'UPDATING_PASSWORD';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
@@ -228,5 +232,28 @@ export const removeFavorite = (params) => async (dispatch) => {
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const updatePassword = (params) => async (dispatch) => {
+  dispatch({
+    type: UPDATING_PASSWORD,
+  });
+  try {
+    const { data } = await updatePasswordHeloper(params);
+
+    dispatch({
+      type: UPDATE_PASSWORD_SUCCESS,
+    });
+  } catch (error) {
+    if (error.response) {
+      const { data } = error.response;
+      const { full_messages } = data.errors;
+      console.log(full_messages);
+      dispatch({
+        type: UPDATE_PASSWORD_ERROR,
+        payload: full_messages,
+      });
+    }
   }
 };

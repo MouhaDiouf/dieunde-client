@@ -1,6 +1,13 @@
 import './App.css';
 import Header from './components/Header/Header';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+  Redirect,
+} from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Connexion from './pages/Connexion/Connexion';
 import { useEffect, useState } from 'react';
@@ -14,8 +21,9 @@ import Cart from './pages/Cart/Cart';
 import SignUp from './pages/Signup/Signup';
 import AlertMessage from './components/AlertMessage/AlertMessage';
 import NotFound from './pages/NotFound/NotFound';
+import Profile from './pages/Profile/Profile';
 
-function App() {
+function App(props) {
   const [minprix, setminprix] = useState(0);
   const [maxprix, setmaxprix] = useState(10000000000);
   const [searchNom, setsearchnom] = useState('');
@@ -25,6 +33,7 @@ function App() {
   const { logoutSuccess, signinSuccess, signupSuccess, user } = useSelector(
     (state) => state.userReducer
   );
+
   let produitsFilter = produits ? [...produits] : [];
 
   const dispatch = useDispatch();
@@ -56,7 +65,6 @@ function App() {
       (produit) => produit.prix >= minprix && produit.prix <= maxprix
     );
   }
-
   return (
     <Router>
       {logoutSuccess && (
@@ -66,6 +74,7 @@ function App() {
       {signupSuccess && (
         <AlertMessage message="Account Successfully Created." type="success" />
       )}
+      {logoutSuccess && <Redirect to="/" />}
 
       <Header />
       <Switch>
@@ -94,6 +103,9 @@ function App() {
             </Route>
             <Route exact path="/cart">
               <Cart />
+            </Route>
+            <Route exact path="/profile">
+              <Profile />
             </Route>
           </>
         )}

@@ -9,6 +9,9 @@ import {
   SIGNUP_ATTEMPT,
   SIGNUP_ERROR,
   SIGNUP_SUCCESS,
+  UPDATE_PASSWORD_ERROR,
+  UPDATE_PASSWORD_SUCCESS,
+  UPDATING_PASSWORD,
 } from '../actions/actions';
 
 const usersReducer = (state = { user: null }, action) => {
@@ -58,6 +61,35 @@ const usersReducer = (state = { user: null }, action) => {
       return {
         signupAttempt: false,
         signupErrorMessages: action.payload,
+      };
+    }
+
+    case UPDATING_PASSWORD: {
+      return {
+        ...state,
+        hasPasswordUpdateErrors: false,
+        passwordErrors: null,
+        updatingPassword: true,
+        passwordUpdateSuccess: false,
+      };
+    }
+
+    case UPDATE_PASSWORD_SUCCESS: {
+      return {
+        ...state,
+        passwordErrors: null,
+        hasPasswordUpdateErrors: false,
+        passwordUpdateSuccess: true,
+        updatingPassword: false,
+      };
+    }
+    case UPDATE_PASSWORD_ERROR: {
+      return {
+        ...state,
+        passwordErrors: action.payload,
+        hasPasswordUpdateErrors: true,
+        updatingPassword: false,
+        passwordUpdateSuccess: false,
       };
     }
     case LOGOUT_USER_SUCCESS: {

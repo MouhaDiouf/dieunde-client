@@ -28,6 +28,10 @@ const useStyles = makeStyles({
     alignItems: 'center',
     flexDirection: 'column',
   },
+  paper: {
+    width: '100%',
+    margin: '10px 0',
+  },
 
   favoriteTitle: {
     marginBottom: '20px',
@@ -47,12 +51,12 @@ function FavoriteProduct({ nom, image, description, id }) {
     dispatch(removeFavorite(params));
   };
   return (
-    <Paper>
+    <Paper className={classes.paper}>
       <Grid container className={classes.root} spacing={3}>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} md={3} sm={3}>
           <img className={classes.img} src={image.url} alt="nom" />
         </Grid>
-        <Grid item xs={12} sm={5} className={classes.textContent}>
+        <Grid item xs={12} sm={8} md={5} className={classes.textContent}>
           <Typography variant="h5" gutterBottom>
             {nom}
           </Typography>

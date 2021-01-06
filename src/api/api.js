@@ -79,3 +79,12 @@ export const removeFavoriteHelper = (params) => {
     },
   });
 };
+
+export const updatePasswordHeloper = (params) => {
+  const data = JSON.parse(sessionStorage.user);
+
+  return axios.put(`${baseUrl}/auth/password`, {
+    ...data,
+    ...params,
+  });
+};

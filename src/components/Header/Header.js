@@ -128,11 +128,7 @@ function Header() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem
-                  onClick={handleClose}
-                  component={Link}
-                  to="/mon-profil"
-                >
+                <MenuItem onClick={handleClose} component={Link} to="/profile">
                   Profile
                 </MenuItem>
                 <MenuItem

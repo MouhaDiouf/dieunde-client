@@ -10,6 +10,7 @@ import { FavoriteSharp } from '@material-ui/icons';
 const useStyes = makeStyles({
   root: {
     width: '100%',
+    textAlign: 'center',
   },
   favoritesContainer: {
     display: 'flex',

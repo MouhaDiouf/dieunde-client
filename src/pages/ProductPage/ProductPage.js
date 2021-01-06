@@ -68,6 +68,7 @@ function ProductPage() {
   const [product, setProduct] = useState(null);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
+  const [alert, setalert] = useState(false);
   const { user } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
   const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(
@@ -81,11 +82,15 @@ function ProductPage() {
     setOpen(false);
   };
   const handleAddToFavorites = () => {
-    const params = {
-      user_id: user.id,
-      produit_id: id,
-    };
-    user && !creatingFavorite && dispatch(addToFavorites(params));
+    if (user && !creatingFavorite) {
+      const params = {
+        user_id: user.id,
+        produit_id: id,
+      };
+      dispatch(addToFavorites(params));
+    } else {
+      setalert(true);
+    }
   };
   useEffect(() => {
     const fetchOneProduct = async () => {
@@ -117,6 +122,12 @@ function ProductPage() {
     <Container maxWidth="lg" className={classes.root}>
       {productAddedId === id && favoriteCreated && (
         <AlertMessage message="favorite created" />
+      )}
+      {alert && (
+        <AlertMessage
+          message="You cannot add to favorites. Please login or create an account"
+          type="warning"
+        />
       )}
       <Typography variant="h3">Details pour {product.nom}</Typography>
       <Paper className={classes.innerContainer} elevation={3}>
