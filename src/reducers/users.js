@@ -4,6 +4,7 @@ import {
   LOGOUT_USER_SUCCESS,
   SIGNING_ATTEMPT,
   SIGNIN_ERROR,
+  SIGNIN_ON_LOAD_SUCCESS,
   SIGNIN_SUCCESS,
   SIGNUP_ATTEMPT,
   SIGNUP_ERROR,
@@ -28,6 +29,9 @@ const usersReducer = (state = { user: null }, action) => {
         signinAttempt: false,
         signinSuccess: true,
       };
+    }
+    case SIGNIN_ON_LOAD_SUCCESS: {
+      return { ...state, user: action.payload };
     }
     case SIGNIN_ERROR: {
       return {

@@ -17,6 +17,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { AccountCircle } from '@material-ui/icons';
 import { logoutUser } from '../../actions/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     textDecoration: 'none',
   },
-  shoppingIcon: {
+  favoriteIcon: {
     color: 'white',
   },
 }));
@@ -54,6 +55,7 @@ function Header() {
     handleClose();
     dispatch(logoutUser());
   };
+  const { favorites } = useSelector((state) => state.products);
 
   return (
     <>
@@ -72,8 +74,8 @@ function Header() {
 
           {user && (
             <IconButton component={Link} to="/cart">
-              <Badge badgeContent={3} color="secondary">
-                <ShoppingCartIcon className={classes.shoppingIcon} />
+              <Badge badgeContent={favorites?.length} color="secondary">
+                <FavoriteIcon className={classes.favoriteIcon} />
               </Badge>
             </IconButton>
           )}

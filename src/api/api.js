@@ -65,3 +65,17 @@ export const createUserHelper = (user) => {
 export const addToFavoritesHelper = (params) => {
   return axios.post(`${baseUrl}/create_liker`, { ...params });
 };
+
+export const getFavoritesHelper = (id) => {
+  return axios.get(`${baseUrl}/favorites`, {
+    params: { id },
+  });
+};
+
+export const removeFavoriteHelper = (params) => {
+  return axios.delete(`${baseUrl}/favorites`, {
+    params: {
+      ...params,
+    },
+  });
+};

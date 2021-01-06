@@ -15,6 +15,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProduitsSimilaires from '../../components/ProduitsSimilaires/ProduitsSimilaires';
 import { Email } from '@material-ui/icons';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { addToFavorites } from '../../actions/actions';
+import AlertMessage from '../../components/AlertMessage/AlertMessage';
 const useStyles = makeStyles({
   root: {
     textAlign: 'center',
@@ -64,7 +68,11 @@ function ProductPage() {
   const [product, setProduct] = useState(null);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
-
+  const { user } = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
+  const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(
+    (state) => state.products
+  );
   const handleOpen = () => {
     setOpen(true);
   };
@@ -72,7 +80,13 @@ function ProductPage() {
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleAddToFavorites = () => {
+    const params = {
+      user_id: user.id,
+      produit_id: id,
+    };
+    user && !creatingFavorite && dispatch(addToFavorites(params));
+  };
   useEffect(() => {
     const fetchOneProduct = async () => {
       try {
@@ -101,6 +115,9 @@ function ProductPage() {
   }
   return (
     <Container maxWidth="lg" className={classes.root}>
+      {productAddedId === id && favoriteCreated && (
+        <AlertMessage message="favorite created" />
+      )}
       <Typography variant="h3">Details pour {product.nom}</Typography>
       <Paper className={classes.innerContainer} elevation={3}>
         <Grid container spacing={1}>
@@ -119,7 +136,11 @@ function ProductPage() {
             </Container>
 
             <ButtonGroup className={classes.btnGroup}>
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddToFavorites}
+              >
                 Ajouter Aux Favoris
               </Button>
               <Button className={classes.faorisBtn} onClick={handleOpen}>

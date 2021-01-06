@@ -1,6 +1,7 @@
 import {
   CREATING_FAVORITE,
   CREATING_PRODUCT,
+  FAVORITES_FETCH_SUCCESS,
   FAVORITE_CREATED,
   FETCH_ALL_PRODUCTS,
   ONE_PRODUCT_FETCH_SUCCESS,
@@ -33,6 +34,13 @@ const products = (state = { allProductsFetched: false }, action) => {
         favoriteCreated: true,
         creatingFavorite: false,
         productAddedId: action.payload,
+      };
+    }
+    case FAVORITES_FETCH_SUCCESS: {
+      return {
+        ...state,
+        favorites: action.payload,
+        favoritesFetched: true,
       };
     }
     default:

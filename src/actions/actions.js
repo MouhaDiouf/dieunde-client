@@ -5,9 +5,11 @@ import {
   createProduct,
   createUserHelper,
   fetchProducts,
+  getFavoritesHelper,
   getOneProduct,
   logoutUserHelper,
   registerUser,
+  removeFavoriteHelper,
   signInUserHelper,
 } from '../api/api';
 export const CREATE_USER_SUCCESS = 'CREATE_USER';
@@ -27,6 +29,8 @@ export const SIGNUP_ATTEMPT = 'SIGNUP_ATTEMPT';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const FAVORITE_CREATED = 'FAVORITE_CREATED';
 export const CREATING_FAVORITE = 'CREATING_FAVORITE';
+export const FAVORITES_FETCH_SUCCESS = 'FAVORITES_FETCH_SUCCESS';
+export const SIGNIN_ON_LOAD_SUCCESS = 'SIGNIN_ON_LOAD_SUCCESS';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
@@ -174,8 +178,14 @@ export const logoutUser = () => async (dispatch) => {
 };
 
 export const connectUser = () => async (dispatch) => {
-  const { data } = await connectUserOnLoadHelper();
-  console.log(data);
+  try {
+    const { data } = await connectUserOnLoadHelper();
+    console.log(data);
+    dispatch({
+      type: SIGNIN_ON_LOAD_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {}
 };
 
 export const addToFavorites = (params) => async (dispatch) => {
@@ -185,6 +195,36 @@ export const addToFavorites = (params) => async (dispatch) => {
     dispatch({
       type: FAVORITE_CREATED,
       payload: params.produit_id,
+    });
+    dispatch({
+      type: FAVORITES_FETCH_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFavorites = (id) => async (dispatch) => {
+  try {
+    const { data } = await getFavoritesHelper(id);
+    console.log('favorites are ', data);
+    dispatch({
+      type: FAVORITES_FETCH_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const removeFavorite = (params) => async (dispatch) => {
+  try {
+    const { data } = await removeFavoriteHelper(params);
+    console.log(data);
+    dispatch({
+      type: FAVORITES_FETCH_SUCCESS,
+      payload: data,
     });
   } catch (error) {
     console.log(error);

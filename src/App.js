@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Cart from './pages/Cart/Cart';
 import SignUp from './pages/Signup/Signup';
 import AlertMessage from './components/AlertMessage/AlertMessage';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   const [minprix, setminprix] = useState(0);
@@ -21,7 +22,7 @@ function App() {
   const [searchcat, setsearchcat] = useState('All');
 
   let { produits, allProductsFetched } = useSelector((state) => state.products);
-  const { logoutSuccess, signinSuccess, signupSuccess } = useSelector(
+  const { logoutSuccess, signinSuccess, signupSuccess, user } = useSelector(
     (state) => state.userReducer
   );
   let produitsFilter = produits ? [...produits] : [];
@@ -80,20 +81,28 @@ function App() {
         <Route exact path="/connexion">
           <Connexion />
         </Route>
-        <Route exact path="/vendre-produit">
-          <NouveauProduit />
-        </Route>
-        <Route exact path="/dashboard">
-          <Dashboard />
-        </Route>
         <Route exact path="/produits/:id">
           <ProductPage />
         </Route>
-        <Route exact path="/cart">
-          <Cart />
-        </Route>
+        {user && (
+          <>
+            <Route exact path="/vendre-produit">
+              <NouveauProduit />
+            </Route>
+            <Route exact path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route exact path="/cart">
+              <Cart />
+            </Route>
+          </>
+        )}
+
         <Route exact path="/signup">
           <SignUp />
+        </Route>
+        <Route>
+          <NotFound />
         </Route>
       </Switch>
       <Footer />

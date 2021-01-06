@@ -47,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Produit({ nom, description, image, id }) {
+  console.log('inside produit ', nom, description);
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(false);
   const { user } = useSelector((state) => state.userReducer);
   const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(
     (state) => state.products
