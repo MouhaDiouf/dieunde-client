@@ -11,8 +11,10 @@ import {
   getOneProduct,
   getUserProductsHelper,
   logoutUserHelper,
+  recoverPasswordHelper,
   registerUser,
   removeFavoriteHelper,
+  resetPasswordEmailHelper,
   signInUserHelper,
   updatePasswordHeloper,
 } from '../api/api';
@@ -49,6 +51,12 @@ export const STOP_REDIRECT = 'STOP_REDIRECT';
 export const DELETING_USER_PRODUCT = 'DELETING_USER_PRODUCT';
 export const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS';
 export const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE';
+export const RESETING_PASSWORD = 'RESETING_PASSWORD';
+export const RESET_PASSWORD_EMAIL_SENT = 'RESET_PASSWORD_EMAIL_SENT';
+export const RESET_PASSWORD_EMAIL_UNSENT = 'RESET_PASSWORD_EMAIL_UNSENT';
+export const PASSWORD_RESET_FROM_EMAIL_SUCCESS = 'PASSWORD_RESET_SUCCESS';
+export const PASSWORD_RESET_FROM_EMAIL_FAILURE = 'PASSWORD_RESET_FAILURE';
+
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
   dispatch({
@@ -115,7 +123,6 @@ export const fetchOneProduct = (id) => async (dispatch) => {
 
 export const signInUser = (email, password) => async (dispatch) => {
   console.log(email, password);
-  console.log('Singin Called');
   dispatch({
     type: SIGNING_ATTEMPT,
   });
@@ -136,44 +143,47 @@ export const signInUser = (email, password) => async (dispatch) => {
       payload: data.data,
     });
   } catch (error) {
-    dispatch({
-      type: SIGNIN_ERROR,
-    });
+    if (error.response) {
+      console.log(error.response);
+      dispatch({
+        type: SIGNIN_ERROR,
+        payload: error.response.data.errors,
+      });
+    }
   }
 };
 
-export const createUser = (user) => (dispatch) => {
+export const createUser = (user) => async (dispatch) => {
   dispatch({
     type: SIGNUP_ATTEMPT,
   });
-  axios
-    .post(`http://localhost:3001/auth`, {
-      ...user,
-    })
-    .then((res) => {
-      dispatch({
-        type: SIGNUP_SUCCESS,
-        payload: res.data,
-      });
-      const { data, headers } = res;
-      sessionStorage.setItem(
-        'user',
-        JSON.stringify({
-          'access-token': headers['access-token'],
-          client: headers['client'],
-          uid: data.data.uid,
-        })
-      );
-    })
 
-    .catch((error) => {
-      if (error.response) {
-        dispatch({
-          type: SIGNUP_ERROR,
-          payload: error.response.data.errors.full_messages,
-        });
-      }
+  try {
+    const res = await createUserHelper(user);
+    console.log(res);
+
+    dispatch({
+      type: SIGNUP_SUCCESS,
+      payload: res.data,
     });
+    const { data, headers } = res;
+    sessionStorage.setItem(
+      'user',
+      JSON.stringify({
+        'access-token': headers['access-token'],
+        client: headers['client'],
+        uid: data.data.uid,
+      })
+    );
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response);
+      dispatch({
+        type: SIGNUP_ERROR,
+        payload: error.response.data.errors.full_messages,
+      });
+    }
+  }
 };
 
 export const logoutUser = () => async (dispatch) => {
@@ -335,8 +345,44 @@ export const updateProduct = (formData, id) => async (dispatch) => {
   }
 };
 
+export const recoverPassword = (email) => async (dispatch) => {
+  dispatch({
+    type: RESETING_PASSWORD,
+  });
+  try {
+    const { data } = await recoverPasswordHelper(email);
+    dispatch({
+      type: RESET_PASSWORD_EMAIL_SENT,
+      payload: data.message,
+    });
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response);
+    }
+    dispatch({
+      type: RESET_PASSWORD_EMAIL_UNSENT,
+      payload: error.response.data.errors,
+    });
+  }
+};
+
+export const resetPasswordEmail = (params) => async (dispatch) => {
+  try {
+    const { data } = await resetPasswordEmailHelper(params);
+    dispatch({
+      type: PASSWORD_RESET_FROM_EMAIL_SUCCESS,
+      payload: data.message,
+    });
+  } catch (error) {
+    if (error.response) {
+      dispatch({
+        type: PASSWORD_RESET_FROM_EMAIL_FAILURE,
+        payload: error.response.data.errors.full_messages,
+      });
+    }
+  }
+};
 const redirect = (dispatch) => {
-  console.log('redirect called');
   setTimeout(() => {
     dispatch({
       type: REDIRECT,

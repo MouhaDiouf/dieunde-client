@@ -63,11 +63,9 @@ function DeleteProduct({ productName, productImg, id }) {
   const [confirmText, setconfirmText] = useState('');
   const dispatch = useDispatch();
   const classes = useStyles();
-  const {
-    deletingProduct,
-    productDeleteSuccess,
-    productDeleteFailure,
-  } = useSelector((state) => state.products);
+  const { deletingProduct, productDeleteFailure } = useSelector(
+    (state) => state.products
+  );
   const handleCloseDelete = () => {
     setdeteleAccountModal(false);
   };
@@ -79,10 +77,15 @@ function DeleteProduct({ productName, productImg, id }) {
   const testToEnter = productName.split(' ')[0];
   const handleProductDeletion = (e) => {
     e.preventDefault();
-    if (confirmText.toLocaleLowerCase() === testToEnter.toLocaleLowerCase()) {
+
+    if (passConfirmation(testToEnter, confirmText)) {
+      handleCloseDelete();
       dispatch(deleteProduct(id));
     }
   };
+  function passConfirmation(userInput, reference) {
+    return userInput.toLocaleLowerCase() === reference.toLocaleLowerCase();
+  }
   return (
     <>
       <Button
@@ -106,12 +109,6 @@ function DeleteProduct({ productName, productImg, id }) {
       >
         <Fade in={deteleAccountModal}>
           <div className={classes.paper}>
-            {productDeleteSuccess && (
-              <AlertMessage
-                message="product deleted successfully"
-                type="success"
-              />
-            )}
             {productDeleteFailure && (
               <AlertMessage
                 message="Can't delete this product. Try again later"
@@ -147,9 +144,9 @@ function DeleteProduct({ productName, productImg, id }) {
                   color="secondary"
                   variant="contained"
                   className={classes.submitBtn}
-                  disabled={!deletingProduct}
+                  disabled={deletingProduct}
                 >
-                  {!deletingProduct ? (
+                  {deletingProduct ? (
                     <div className={classes.loaderDiv}>
                       <img
                         src={Loader}

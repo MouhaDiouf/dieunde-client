@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
-  const { signupAttempt, signupErrorMessages, user } = useSelector(
+  const { signupAttempt, signupErrorMessages, signupSuccess } = useSelector(
     (state) => state.userReducer
   );
   const history = useHistory();
@@ -81,10 +81,11 @@ export default function SignUp() {
       password,
       password_confirmation: passwordConfirmation,
     };
+
     dispatch(createUser(user));
   };
 
-  if (user) {
+  if (signupSuccess) {
     history.push('/');
   }
   return (

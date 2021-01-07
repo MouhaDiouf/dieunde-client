@@ -68,7 +68,7 @@ export default function SignInSide() {
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
   const history = useHistory();
-  const { user, signinAttempt, singinErrorMessage } = useSelector(
+  const { user, signinAttempt, singinErrorMessages } = useSelector(
     (state) => state.userReducer
   );
 
@@ -93,9 +93,10 @@ export default function SignInSide() {
             Sign in
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
-            {singinErrorMessage && (
-              <AlertMessage message={singinErrorMessage} type="warning" />
-            )}
+            {singinErrorMessages &&
+              singinErrorMessages.map((error, idx) => (
+                <AlertMessage message={error} type="warning" key={idx} />
+              ))}
             <TextField
               variant="outlined"
               margin="normal"
@@ -137,7 +138,11 @@ export default function SignInSide() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link
+                  component={DestinationLink}
+                  to="/forgot-password"
+                  variant="body2"
+                >
                   Forgot password?
                 </Link>
               </Grid>

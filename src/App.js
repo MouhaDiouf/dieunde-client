@@ -24,6 +24,9 @@ import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Profile/Profile';
 import UserProducts from './pages/UserProducts/UserProducts';
 import EditProduct from './pages/EditProduct/EditProduct';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import NewPassword from './pages/NewPassword/NewPassword';
+import AccountActivation from './pages/AccountActivation/AccountActivation';
 
 function App(props) {
   const [minprix, setminprix] = useState(0);
@@ -81,7 +84,10 @@ function App(props) {
       )}
       {signinSuccess && <AlertMessage message="Welcome back!" />}
       {signupSuccess && (
-        <AlertMessage message="Account Successfully Created." type="success" />
+        <AlertMessage
+          message="Account Successfully Created. Confirm it by email to login"
+          type="success"
+        />
       )}
       {logoutSuccess && <Redirect to="/" />}
 
@@ -106,6 +112,15 @@ function App(props) {
         </Route>
         <Route exact path="/signup">
           <SignUp />
+        </Route>
+        <Route exact path="/forgot-password">
+          <ForgotPassword />
+        </Route>
+        <Route exact path="/new-password">
+          <NewPassword />
+        </Route>
+        <Route exact path="/account-confirmation">
+          <AccountActivation />
         </Route>
         {user && (
           <>

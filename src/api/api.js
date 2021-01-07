@@ -7,7 +7,14 @@ export const fetchProducts = () => {
 };
 
 export const registerUser = (newUserCredentials) => {
-  return axios.post('http://localhost:3001/api/v1/auth', newUserCredentials);
+  return axios.post('http://localhost:3001/auth', newUserCredentials);
+};
+
+export const createUserHelper = (user) => {
+  return axios.post(`http://localhost:3001/auth`, {
+    ...user,
+    confirm_success_url: `http://localhost:3000/account-confirmation`,
+  });
 };
 
 export const createProduct = (formData) => {
@@ -25,7 +32,6 @@ export const getOneProduct = (id) => {
 };
 
 export const signInUserHelper = (email, password) => {
-  console.log('sigingUserHelper called!');
   return axios.post(`http://localhost:3001/auth/sign_in/`, {
     email,
     password,
@@ -53,12 +59,6 @@ export const connectUserOnLoadHelper = () => {
       client: data.client,
       uid: data.uid,
     },
-  });
-};
-
-export const createUserHelper = (user) => {
-  return axios.post(`${baseUrl}/auth`, {
-    ...user,
   });
 };
 
@@ -106,4 +106,17 @@ export const getUserProductsHelper = (id) => {
 
 export const deleteProductHelper = (id) => {
   return axios.delete(`${baseUrl}/produits/${id}`);
+};
+
+export const recoverPasswordHelper = (email) => {
+  return axios.post(`${baseUrl}/auth/password`, {
+    email,
+    redirect_url: `http://localhost:3000/new-password`,
+  });
+};
+
+export const resetPasswordEmailHelper = (params) => {
+  return axios.put(`${baseUrl}/auth/password`, {
+    ...params,
+  });
 };

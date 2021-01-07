@@ -3,6 +3,11 @@ import {
   CREATE_USER_ERROR,
   CREATE_USER_SUCCESS,
   LOGOUT_USER_SUCCESS,
+  PASSWORD_RESET_FROM_EMAIL_FAILURE,
+  PASSWORD_RESET_FROM_EMAIL_SUCCESS,
+  RESETING_PASSWORD,
+  RESET_PASSWORD_EMAIL_SENT,
+  RESET_PASSWORD_EMAIL_UNSENT,
   SIGNING_ATTEMPT,
   SIGNIN_ERROR,
   SIGNIN_ON_LOAD_SUCCESS,
@@ -41,7 +46,7 @@ const usersReducer = (state = { user: null }, action) => {
       return {
         ...state,
         signinAttempt: false,
-        singinErrorMessage: 'Invalid credentials',
+        singinErrorMessages: action.payload,
       };
     }
     case SIGNUP_ATTEMPT: {
@@ -54,7 +59,6 @@ const usersReducer = (state = { user: null }, action) => {
       return {
         ...state,
         signupAttempt: false,
-        user: action.payload,
         signupSuccess: true,
       };
     }
@@ -91,6 +95,47 @@ const usersReducer = (state = { user: null }, action) => {
         hasPasswordUpdateErrors: true,
         updatingPassword: false,
         passwordUpdateSuccess: false,
+      };
+    }
+    case RESETING_PASSWORD: {
+      return {
+        ...state,
+        resetingPassword: true,
+        resetPasswordEmailSent: false,
+      };
+    }
+    case RESET_PASSWORD_EMAIL_SENT: {
+      return {
+        ...state,
+        resetPasswordEmailSent: true,
+        resetingPassword: false,
+        resetPasswordEmailUnsent: false,
+        emailSentMessage: action.payload,
+      };
+    }
+    case RESET_PASSWORD_EMAIL_UNSENT: {
+      return {
+        ...state,
+        resetPasswordEmailSent: false,
+        resetingPassword: false,
+        resetPasswordEmailUnsent: true,
+        emailUnsentMessage: action.payload,
+      };
+    }
+    case PASSWORD_RESET_FROM_EMAIL_SUCCESS: {
+      return {
+        ...state,
+        passwordRecovered: true,
+        passwordRecoveryFailed: true,
+        passwordRecoverMessage: action.payload,
+      };
+    }
+    case PASSWORD_RESET_FROM_EMAIL_FAILURE: {
+      return {
+        ...state,
+        passwordRecovered: false,
+        passwordRecoveryFailed: true,
+        passwordRecoverFailMessage: action.payload,
       };
     }
     case LOGOUT_USER_SUCCESS: {
