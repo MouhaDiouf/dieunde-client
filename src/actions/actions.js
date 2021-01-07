@@ -5,6 +5,7 @@ import {
   createProduct,
   createUserHelper,
   deleteAccountHelper,
+  deleteProductHelper,
   fetchProducts,
   getFavoritesHelper,
   getOneProduct,
@@ -41,7 +42,13 @@ export const ACCOUNT_REMOVAL_SUCCESS = 'ACCOUNT_REMOVAL_SUCCESS';
 export const GETTING_USER_PRODUCTS = 'GETTING_USER_PRODUCTS';
 export const FETCH_USER_PRODUCTS_SUCCESS = 'FETCH_USER_PRODUCTS_SUCCESS';
 export const PRODUCT_EDIT_SUCCESS = ' PRODUCT_EDIT_SUCCESS';
-
+export const PRODUCT_EDIT_FAILURE = 'PRODUCT_EDIT_FAILURE';
+export const UPDATING_PRODUCT = 'UPDATING_PRODUCT';
+export const REDIRECT = 'REDIRECT';
+export const STOP_REDIRECT = 'STOP_REDIRECT';
+export const DELETING_USER_PRODUCT = 'DELETING_USER_PRODUCT';
+export const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS';
+export const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE';
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
   dispatch({
@@ -195,7 +202,9 @@ export const connectUser = () => async (dispatch) => {
       type: SIGNIN_ON_LOAD_SUCCESS,
       payload: data.data,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const addToFavorites = (params) => async (dispatch) => {
@@ -231,7 +240,6 @@ export const getFavorites = (id) => async (dispatch) => {
 export const removeFavorite = (params) => async (dispatch) => {
   try {
     const { data } = await removeFavoriteHelper(params);
-    console.log(data);
     dispatch({
       type: FAVORITES_FETCH_SUCCESS,
       payload: data,
@@ -288,20 +296,53 @@ export const getUserProducts = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+export const deleteProduct = (id) => async (dispatch) => {
+  dispatch({
+    type: DELETING_USER_PRODUCT,
+  });
+  try {
+    const { data } = await deleteProductHelper(id);
+    dispatch({
+      type: DELETE_PRODUCT_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_PRODUCT_FAILURE,
+    });
+  }
+};
 
 export const updateProduct = (formData, id) => async (dispatch) => {
+  dispatch({
+    type: UPDATING_PRODUCT,
+  });
   try {
     const response = await fetch(`http://localhost:3001/produits/${id}`, {
       method: 'PUT',
       body: formData,
     });
     const resp = await response.json();
-    console.log(resp);
-    dispatch({
-      type: PRODUCT_EDIT_SUCCESS,
-      payload: response.data,
-    });
+    if (resp.status === 'updated') {
+      dispatch({
+        type: PRODUCT_EDIT_SUCCESS,
+      });
+      redirect(dispatch);
+    }
   } catch (error) {
-    console.log(error);
+    dispatch({
+      type: PRODUCT_EDIT_FAILURE,
+    });
   }
+};
+
+const redirect = (dispatch) => {
+  console.log('redirect called');
+  setTimeout(() => {
+    dispatch({
+      type: REDIRECT,
+    });
+    dispatch({
+      type: STOP_REDIRECT,
+    });
+  }, 2000);
 };

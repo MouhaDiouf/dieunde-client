@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import DeleteProduct from './DeleteProduct';
 const useStyles = makeStyles({
   root: {
     maxWidth: 350,
@@ -47,9 +48,7 @@ function UserProduct({ nom, image, id }) {
         >
           Edit
         </Button>
-        <Button size="small" color="secondary" variant="outlined">
-          Delete
-        </Button>
+        <DeleteProduct productName={nom} productImg={image} id={id} />
       </CardActions>
     </Card>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   Avatar,
@@ -44,10 +44,12 @@ const useStyles = makeStyles({
   },
   right: {
     height: '100vh',
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  img: {
+    width: '100%',
   },
   avatar: {
     marginBottom: '10px',
@@ -83,16 +85,19 @@ function EditProduct() {
   const [productprix, setproductPrix] = useState(0);
   const [productcatégorie, setproductcatégorie] = useState('');
   const [productimage, seproductimage] = useState(null);
+  const history = useHistory();
 
   const onImageChange = (e) => {
     seproductimage(e.target.files[0]);
   };
-  const { creatingProduct, productCreated } = useSelector(
-    (state) => state.products
-  );
+  const {
+    productEditSuccess,
+    productEditFailure,
+    updatingProduct,
+    redirect,
+  } = useSelector((state) => state.products);
 
   const classes = useStyles();
-  const prodNanme = useRef();
   const handleCreateProduct = (e) => {
     e.preventDefault();
     if (!productnom) {
@@ -123,22 +128,32 @@ function EditProduct() {
     return 'Loading...';
   }
   let { nom, image, description, catégorie, prix } = productToEdit;
-
+  redirect && history.goBack();
   return (
     <Grid container className={classes.root}>
-      <Grid item md={7} xs={false} sm={5} className={classes.right}></Grid>
+      <Grid item md={6} xs={false} sm={5} className={classes.right}>
+        <img src={image.url} className={classes.img} alt={nom} />
+      </Grid>
       <Grid
         item
-        md={5}
+        md={6}
         xs={12}
         sm={7}
         component={Paper}
         elevation={6}
         className={classes.left}
       >
-        {productCreated && (
-          <AlertMessage message="Product created successfully. We will review and approve it if it's valid" />
+        {productEditSuccess && (
+          <AlertMessage message="Product edited successfully" type="success" />
         )}
+
+        {productEditFailure && (
+          <AlertMessage
+            message="Failed Updating Your Product. Please try again"
+            type="error"
+          />
+        )}
+
         <Typography variant="h4" className={classes.title}>
           Update {nom}
         </Typography>
@@ -202,8 +217,14 @@ function EditProduct() {
               <MenuItem value="jouets">jouets</MenuItem>
             </Select>{' '}
             <br />
-            <Button color="primary" variant="contained" type="submit" fullWidth>
-              Update
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              fullWidth
+              disabled={updatingProduct}
+            >
+              {updatingProduct ? 'Updating Product' : 'Update'}
             </Button>
           </FormControl>
         </form>
