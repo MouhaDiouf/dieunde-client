@@ -4,6 +4,7 @@ import {
   FAVORITES_FETCH_SUCCESS,
   FAVORITE_CREATED,
   FETCH_ALL_PRODUCTS,
+  FETCH_USER_PRODUCTS_SUCCESS,
   ONE_PRODUCT_FETCH_SUCCESS,
   PRODUCT_CREATION_FAILURE,
   PRODUCT_CREATION_SUCCESS,
@@ -41,6 +42,13 @@ const products = (state = { allProductsFetched: false }, action) => {
         ...state,
         favorites: action.payload,
         favoritesFetched: true,
+      };
+    }
+    case FETCH_USER_PRODUCTS_SUCCESS: {
+      return {
+        ...state,
+        userProducts: action.payload,
+        userProductsFetched: true,
       };
     }
     default:

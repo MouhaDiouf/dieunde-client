@@ -22,6 +22,8 @@ import SignUp from './pages/Signup/Signup';
 import AlertMessage from './components/AlertMessage/AlertMessage';
 import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Profile/Profile';
+import UserProducts from './pages/UserProducts/UserProducts';
+import EditProduct from './pages/EditProduct/EditProduct';
 
 function App(props) {
   const [minprix, setminprix] = useState(0);
@@ -116,8 +118,14 @@ function App(props) {
             <Route exact path="/cart">
               <Cart />
             </Route>
+            <Route path="/:product/:id/edit">
+              <EditProduct />
+            </Route>
             <Route exact path="/profile">
               <Profile />
+            </Route>
+            <Route exact path="/:email/products">
+              <UserProducts />
             </Route>
           </>
         )}

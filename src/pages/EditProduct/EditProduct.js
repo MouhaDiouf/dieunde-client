@@ -1,7 +1,9 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import {
   Avatar,
   Button,
-  Container,
   FormControl,
   Grid,
   InputLabel,
@@ -9,15 +11,15 @@ import {
   MenuItem,
   Paper,
   Select,
-  TextareaAutosize,
   TextField,
   Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { newProduct } from '../../actions/actions';
-import AlertMessage from '../../components/AlertMessage/AlertMessage';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import AlertMessage from '../../components/AlertMessage/AlertMessage';
+import { updateProduct } from '../../actions/actions';
+
 const useStyles = makeStyles({
   root: {
     height: '100vh',
@@ -52,33 +54,75 @@ const useStyles = makeStyles({
     backgroundColor: 'red',
   },
 });
-function NouveauProduit() {
+
+function EditProduct() {
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/produits/${id}`)
+      .then((res) => {
+        const { data } = res;
+        setproductToEdit(data);
+        setLoading(false);
+        setproductNom(data.nom);
+        setproductDescription(data.description);
+        setproductPrix(data.prix);
+        setproductcatégorie(data.catégorie);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const { user } = useSelector((state) => state.userReducer);
+  const { id } = useParams();
+
+  const [productToEdit, setproductToEdit] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
-  const [nom, setNom] = useState('');
-  const [description, setDescription] = useState('');
-  const [prix, setPrix] = useState(0);
-  const [catégorie, setcatégorie] = useState('smartphones');
-  const [image, setimage] = useState(null);
+  const [productnom, setproductNom] = useState('');
+  const [productdescription, setproductDescription] = useState('');
+  const [productprix, setproductPrix] = useState(0);
+  const [productcatégorie, setproductcatégorie] = useState('');
+  const [productimage, seproductimage] = useState(null);
+
   const onImageChange = (e) => {
-    setimage(e.target.files[0]);
+    seproductimage(e.target.files[0]);
   };
   const { creatingProduct, productCreated } = useSelector(
     (state) => state.products
   );
-  const { user } = useSelector((state) => state.userReducer);
 
   const classes = useStyles();
+  const prodNanme = useRef();
   const handleCreateProduct = (e) => {
     e.preventDefault();
+    if (!productnom) {
+      setproductNom(nom);
+    }
+    if (!productdescription) {
+      setproductDescription(description);
+    }
+    if (!productprix) {
+      setproductPrix(prix);
+    }
+    if (!productcatégorie) {
+      setproductcatégorie(catégorie);
+    }
+    console.log(productnom, productdescription, productcatégorie, productprix);
     const formData = new FormData();
-    formData.append('nom', nom);
-    formData.append('description', description);
-    formData.append('catégorie', catégorie);
-    formData.append('image', image);
-    formData.append('prix', prix);
+    formData.append('nom', productnom);
+    formData.append('description', productdescription);
+    formData.append('catégorie', productcatégorie);
+    if (productimage) formData.append('image', productimage);
+    formData.append('prix', productprix);
     formData.append('user_id', user.id);
-    dispatch(newProduct(formData));
+
+    dispatch(updateProduct(formData, id));
   };
+
+  if (loading) {
+    return 'Loading...';
+  }
+  let { nom, image, description, catégorie, prix } = productToEdit;
 
   return (
     <Grid container className={classes.root}>
@@ -96,7 +140,7 @@ function NouveauProduit() {
           <AlertMessage message="Product created successfully. We will review and approve it if it's valid" />
         )}
         <Typography variant="h4" className={classes.title}>
-          New Product
+          Update {nom}
         </Typography>
         <Avatar className={classes.avatar}>
           <LocalOfferIcon />
@@ -107,28 +151,31 @@ function NouveauProduit() {
               id="titre"
               type="text"
               onChange={(e) => {
-                setNom(e.target.value);
+                setproductNom(e.target.value);
               }}
               label="Product name"
               variant="outlined"
+              value={productnom}
             />{' '}
             <br />
             <textarea
               rows="7"
               name="description"
               id="description"
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => setproductDescription(e.target.value)}
               placeholder="Product description"
               cols="7"
+              value={productdescription}
             />
             <br />
             <TextField
               type="number"
               name="prix"
               id="prix"
-              onChange={(e) => setPrix(e.target.value)}
+              onChange={(e) => setproductPrix(e.target.value)}
               label="Price (CFA)"
               variant="outlined"
+              value={productprix}
             />{' '}
             <br />
             <TextField
@@ -144,7 +191,8 @@ function NouveauProduit() {
             <Select
               name="categorie"
               id="catégorie"
-              onChange={(e) => setcatégorie(e.target.value)}
+              onChange={(e) => setproductcatégorie(e.target.value)}
+              value={productcatégorie}
             >
               <MenuItem value="smartphones">smartphones</MenuItem>
               <MenuItem value="ordinateurs">ordinateurs</MenuItem>
@@ -154,14 +202,8 @@ function NouveauProduit() {
               <MenuItem value="jouets">jouets</MenuItem>
             </Select>{' '}
             <br />
-            <Button
-              color="primary"
-              variant="contained"
-              type="submit"
-              fullWidth
-              disabled={creatingProduct}
-            >
-              {creatingProduct ? 'Creating Product' : 'Sell Product'}
+            <Button color="primary" variant="contained" type="submit" fullWidth>
+              Update
             </Button>
           </FormControl>
         </form>
@@ -170,4 +212,4 @@ function NouveauProduit() {
   );
 }
 
-export default NouveauProduit;
+export default EditProduct;

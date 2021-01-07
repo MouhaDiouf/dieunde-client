@@ -40,6 +40,7 @@ export const UPDATING_PASSWORD = 'UPDATING_PASSWORD';
 export const ACCOUNT_REMOVAL_SUCCESS = 'ACCOUNT_REMOVAL_SUCCESS';
 export const GETTING_USER_PRODUCTS = 'GETTING_USER_PRODUCTS';
 export const FETCH_USER_PRODUCTS_SUCCESS = 'FETCH_USER_PRODUCTS_SUCCESS';
+export const PRODUCT_EDIT_SUCCESS = ' PRODUCT_EDIT_SUCCESS';
 
 export const getAllProducts = () => async (dispatch) => {
   const { data } = await fetchProducts();
@@ -281,6 +282,24 @@ export const getUserProducts = (id) => async (dispatch) => {
     console.log(data);
     dispatch({
       type: FETCH_USER_PRODUCTS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateProduct = (formData, id) => async (dispatch) => {
+  try {
+    const response = await fetch(`http://localhost:3001/produits/${id}`, {
+      method: 'PUT',
+      body: formData,
+    });
+    const resp = await response.json();
+    console.log(resp);
+    dispatch({
+      type: PRODUCT_EDIT_SUCCESS,
+      payload: response.data,
     });
   } catch (error) {
     console.log(error);
