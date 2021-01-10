@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Produit from './Produit/Produit';
 import Search from '../Search/Search';
-import { Typography } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +45,7 @@ function Produits({
   }
 
   return (
-    <>
+    <Container maxWidth="xl" className={classes.container}>
       <Search
         produits={produits}
         setminprix={setminprix}
@@ -78,7 +78,7 @@ function Produits({
       ) : (
         <h1>No results for your search</h1>
       )}
-    </>
+    </Container>
   );
 }
 

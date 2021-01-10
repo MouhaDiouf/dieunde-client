@@ -13,7 +13,7 @@ function Home({
   setsearchnom,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5);
+  const [productsPerPage] = useState(20);
 
   // get current post
   const indexOfLastProduct = currentPage * productsPerPage;

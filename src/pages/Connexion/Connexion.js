@@ -122,6 +122,7 @@ export default function SignInSide() {
               autoComplete="current-password"
               onChange={(e) => setpassword(e.target.value)}
             />
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

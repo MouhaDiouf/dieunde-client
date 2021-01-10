@@ -18,7 +18,7 @@ import { AccountCircle } from '@material-ui/icons';
 import { logoutUser } from '../../actions/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
+import NotificationsIcon from '@material-ui/icons/Notifications';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -33,6 +33,12 @@ const useStyles = makeStyles((theme) => ({
   },
   favoriteIcon: {
     color: 'white',
+  },
+  notifications: {
+    color: 'white',
+  },
+  appBarAdmin: {
+    background: 'black',
   },
 }));
 
@@ -55,11 +61,19 @@ function Header() {
     handleClose();
     dispatch(logoutUser());
   };
-  const { favorites } = useSelector((state) => state.products);
-
+  const { favorites, produits } = useSelector((state) => state.products);
+  let unconfirmedProducts = 0;
+  if (produits) {
+    for (let i = 0; i < produits[0].length; i++) {
+      if (!produits[0][i]['confirmed?']) unconfirmedProducts += 1;
+    }
+  }
   return (
     <>
-      <AppBar position="static">
+      <AppBar
+        className={`${user?.admin && classes.appBarAdmin}`}
+        position="static"
+      >
         <Toolbar>
           <DrawerController />
 
@@ -102,6 +116,20 @@ function Header() {
               </MenuItem>
             </>
           )}
+          {user?.admin && (
+            <>
+              <IconButton component={Link} to="/admin/allproducts">
+                <Badge badgeContent={unconfirmedProducts} color="secondary">
+                  <NotificationsIcon className={classes.notifications} />
+                </Badge>
+              </IconButton>
+
+              <MenuItem component={Link} to="/admin-panel" variant="text">
+                Admin Panel
+              </MenuItem>
+            </>
+          )}
+
           {user && (
             <div>
               <IconButton
@@ -131,13 +159,7 @@ function Header() {
                 <MenuItem onClick={handleClose} component={Link} to="/profile">
                   Profile
                 </MenuItem>
-                <MenuItem
-                  onClick={handleClose}
-                  component={Link}
-                  to="/dashboard"
-                >
-                  My account
-                </MenuItem>
+
                 <MenuItem
                   onClick={handleClose}
                   component={Link}

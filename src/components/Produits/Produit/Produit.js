@@ -24,8 +24,8 @@ import AlertMessage from '../../AlertMessage/AlertMessage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 500,
-    minWidth: 400,
+    width: 290,
+    height: 380,
   },
   media: {
     height: 0,
@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Produit({ nom, description, image, id }) {
-  console.log('inside produit ', nom, description);
   const classes = useStyles();
   const { user } = useSelector((state) => state.userReducer);
   const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(
@@ -85,12 +84,12 @@ function Produit({ nom, description, image, id }) {
           <AlertMessage message="Added to favorites" />
         )}
 
-        <Typography variant="body2" color="textSecondary" component="p">
+        {/* <Typography variant="body2" color="textSecondary" component="p">
           {description}
-        </Typography>
+        </Typography> */}
       </CardContent>
       <CardActions disableSpacing>
-        {user && (
+        {/* {user && (
           <IconButton
             aria-label="add to favorites"
             onClick={handleAddToFavorites}
@@ -98,10 +97,10 @@ function Produit({ nom, description, image, id }) {
           >
             <FavoriteIcon />
           </IconButton>
-        )}
-        <IconButton aria-label="share">
+        )} */}
+        {/* <IconButton aria-label="share">
           <ShareIcon />
-        </IconButton>
+        </IconButton> */}
 
         <ButtonGroup>
           <Button

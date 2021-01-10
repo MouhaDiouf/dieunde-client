@@ -17,6 +17,10 @@ import {
   STOP_REDIRECT,
   UPDATING_PRODUCT,
 } from '../actions/actions';
+import {
+  PRODUCT_VALIDATE_SUCCESS,
+  VALIDATING_PRODUCT,
+} from '../actions/adminactions';
 const products = (state = { allProductsFetched: false }, action) => {
   switch (action.type) {
     case FETCH_ALL_PRODUCTS:
@@ -120,6 +124,18 @@ const products = (state = { allProductsFetched: false }, action) => {
         productDeleteFailure: true,
       };
     }
+    case VALIDATING_PRODUCT: {
+      return {
+        ...state,
+        validateSuccess: false,
+      };
+    }
+    case PRODUCT_VALIDATE_SUCCESS:
+      return {
+        ...state,
+        validateSuccess: true,
+      };
+
     default:
       return state;
   }

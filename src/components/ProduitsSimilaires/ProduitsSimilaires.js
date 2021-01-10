@@ -6,7 +6,10 @@ import ProduitSimilaire from './ProduitSimilaire/ProduitSimilaire';
 const useStyles = makeStyles({
   root: {
     margin: '20px 0',
-    padding: '100px 0',
+    padding: '50px 0',
+  },
+  carouselContainer: {
+    padding: '20px',
   },
 });
 function ProduitsSimilaires({ similaires }) {
@@ -17,12 +20,23 @@ function ProduitsSimilaires({ similaires }) {
   } else {
     return 'fetching similaires';
   }
+  const breakpoints = [
+    { width: 1, itemsToShow: 1 },
+    { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
+    { width: 850, itemsToShow: 3 },
+    { width: 1150, itemsToShow: 4, itemsToScroll: 2 },
+    { width: 1450, itemsToShow: 5 },
+    { width: 1750, itemsToShow: 6 },
+  ];
   return (
     <>
-      <Typography variant="h3">Produits Similaires</Typography>
-
       <Container maxWidth="lg" className={classes.root}>
-        <Carousel itemsToShow={3}>
+        <Typography variant="h4">Produits Similaires</Typography>
+
+        <Carousel
+          className={classes.carouselContainer}
+          breakPoints={breakpoints}
+        >
           {produits &&
             similaires.map((produitSimilaire) => {
               const similaire = produits[0].find(

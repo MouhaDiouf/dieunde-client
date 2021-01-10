@@ -13,12 +13,12 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ProduitsSimilaires from '../../components/ProduitsSimilaires/ProduitsSimilaires';
 import { Email } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { addToFavorites } from '../../actions/actions';
-import AlertMessage from '../../components/AlertMessage/AlertMessage';
+import { validateProduct } from '../../../../actions/adminactions';
+import { deleteProduct } from '../../../../actions/actions';
+import AlertMessage from '../../../../components/AlertMessage/AlertMessage';
 const useStyles = makeStyles({
   root: {
     textAlign: 'center',
@@ -61,23 +61,29 @@ const useStyles = makeStyles({
   innerContainer: {
     width: '100%',
     padding: '20px',
+    height: '600px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   faorisBtn: {
     backgroundColor: 'orange',
   },
 });
-function ProductPage() {
+function SingleProductAdmin() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
-  const [alert, setalert] = useState(false);
   const { user } = useSelector((state) => state.userReducer);
+  const [errorFetch, setErrorFetch] = useState(false);
   const dispatch = useDispatch();
-  const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(
-    (state) => state.products
-  );
+  const {
+    validateSuccess,
+    productDeleteSuccess,
+    productDeleteFailure,
+  } = useSelector((state) => state.products);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -85,16 +91,12 @@ function ProductPage() {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleAddToFavorites = () => {
-    if (user && !creatingFavorite) {
-      const params = {
-        user_id: user.id,
-        produit_id: id,
-      };
-      dispatch(addToFavorites(params));
-    } else {
-      setalert(true);
-    }
+  const handleDeleteProduct = (id) => {
+    dispatch(deleteProduct(id));
+  };
+
+  const handleValidateProduct = () => {
+    dispatch(validateProduct(id));
   };
   useEffect(() => {
     const fetchOneProduct = async () => {
@@ -107,39 +109,44 @@ function ProductPage() {
         } else {
           setProduct(null);
           setLoading(false);
+          setErrorFetch(true);
         }
       } catch (error) {
         setProduct(null);
+        setErrorFetch(true);
         setLoading(false);
       }
     };
     fetchOneProduct();
-  }, [id]);
+  }, [id, validateSuccess]);
 
+  if (errorFetch) {
+    return <Typography>Could not find the product</Typography>;
+  }
   if (loading) {
     return 'Chargement...';
   }
+
   if (!product) {
     return <h2>Aucun produit à afficher</h2>;
   }
   return (
     <Container maxWidth="lg" className={classes.root}>
-      {productAddedId === id && favoriteCreated && (
-        <AlertMessage message="favorite created" />
+      {productDeleteSuccess && (
+        <AlertMessage message="product deleted successfully" />
       )}
-      {alert && (
+      {productDeleteFailure && (
         <AlertMessage
-          message="You cannot add to favorites. Please login or create an account"
-          type="warning"
+          message="Could not delete the product. It's either deleted or not in our database"
+          type="error"
         />
       )}
+      <Typography variant="h4">Details pour {product.nom}</Typography>
       <Paper className={classes.innerContainer} elevation={3}>
-        <Typography variant="h4">Details pour {product.nom}</Typography>
-
         <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
             <img
-              src={product.image.url}
+              src={product.image?.url}
               alt=""
               className={classes.productImg}
             />
@@ -152,15 +159,19 @@ function ProductPage() {
             </Container>
 
             <ButtonGroup className={classes.btnGroup}>
+              <Button className={classes.faorisBtn} onClick={handleOpen}>
+                Voir Vendeur
+              </Button>
+
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleAddToFavorites}
+                onClick={handleValidateProduct}
               >
-                Ajouter Aux Favoris
+                {product['confirmed?'] ? 'Invalider' : 'Valider'}
               </Button>
-              <Button className={classes.faorisBtn} onClick={handleOpen}>
-                Contacter Vendeur
+              <Button onClick={() => handleDeleteProduct(product.id)}>
+                Supprimer
               </Button>
             </ButtonGroup>
           </Grid>
@@ -182,9 +193,8 @@ function ProductPage() {
           </List>
         </Container>
       </Modal>
-      <ProduitsSimilaires similaires={product.similaires} />
     </Container>
   );
 }
 
-export default ProductPage;
+export default SingleProductAdmin;

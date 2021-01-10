@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import NouveauProduit from './pages/NouveauProduit/NouveauProduit';
 import Footer from './components/Footer/Footer';
 import ProductPage from './pages/ProductPage/ProductPage';
-import Dashboard from './pages/Dashboard/Dashboard';
 import Cart from './pages/Cart/Cart';
 import SignUp from './pages/Signup/Signup';
 import AlertMessage from './components/AlertMessage/AlertMessage';
@@ -27,14 +26,20 @@ import EditProduct from './pages/EditProduct/EditProduct';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import NewPassword from './pages/NewPassword/NewPassword';
 import AccountActivation from './pages/AccountActivation/AccountActivation';
+import AdminPanel from './pages/AdminPanel/AdminPanel';
+import AllUsers from './pages/AdminPanel/AllUsers/AllUsers';
+import AllProductsAdmin from './pages/AdminPanel/AllProductsAdmin/AllProductsAdmin';
+import SingleProductAdmin from './pages/AdminPanel/AllProductsAdmin/SingleProductAdmin/SingleProductAdmin';
 
-function App(props) {
+function App() {
   const [minprix, setminprix] = useState(0);
   const [maxprix, setmaxprix] = useState(10000000000);
   const [searchNom, setsearchnom] = useState('');
   const [searchcat, setsearchcat] = useState('All');
 
-  let { produits, allProductsFetched } = useSelector((state) => state.products);
+  let { produits, allProductsFetched, validateSuccess } = useSelector(
+    (state) => state.products
+  );
   const {
     logoutSuccess,
     signinSuccess,
@@ -47,11 +52,16 @@ function App(props) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllProducts());
+    if (user?.admin) {
+      dispatch(getAllProducts(true));
+    } else {
+      dispatch(getAllProducts());
+    }
+
     if (sessionStorage.user) {
       dispatch(connectUser());
     }
-  }, [dispatch]);
+  }, [dispatch, user?.admin, validateSuccess]);
 
   if (allProductsFetched) {
     produits = produits[0];
@@ -95,6 +105,27 @@ function App(props) {
 
       <Header />
       <Switch>
+        {user?.admin && (
+          <Route exact path="/admin-panel">
+            <AdminPanel />
+          </Route>
+        )}
+        {user?.admin && (
+          <Route exact path="/admin/allusers">
+            <AllUsers />
+          </Route>
+        )}
+        {user?.admin && (
+          <Route exact path="/admin/allproducts">
+            <AllProductsAdmin />
+          </Route>
+        )}
+        {user?.admin && (
+          <Route exact path="/admin/product/:id">
+            <SingleProductAdmin />
+          </Route>
+        )}
+
         <Route exact path="/">
           <Home
             produits={produitsFilter}
@@ -127,9 +158,7 @@ function App(props) {
             <Route exact path="/vendre-produit">
               <NouveauProduit />
             </Route>
-            <Route exact path="/dashboard">
-              <Dashboard />
-            </Route>
+
             <Route exact path="/cart">
               <Cart />
             </Route>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   addToFavoritesHelper,
+  changeProfileInfoHelper,
   connectUserOnLoadHelper,
   createProduct,
   createUserHelper,
@@ -57,8 +58,8 @@ export const RESET_PASSWORD_EMAIL_UNSENT = 'RESET_PASSWORD_EMAIL_UNSENT';
 export const PASSWORD_RESET_FROM_EMAIL_SUCCESS = 'PASSWORD_RESET_SUCCESS';
 export const PASSWORD_RESET_FROM_EMAIL_FAILURE = 'PASSWORD_RESET_FAILURE';
 
-export const getAllProducts = () => async (dispatch) => {
-  const { data } = await fetchProducts();
+export const getAllProducts = (admin = false) => async (dispatch) => {
+  const { data } = await fetchProducts(admin);
   dispatch({
     type: FETCH_ALL_PRODUCTS,
     payload: data,
@@ -232,6 +233,12 @@ export const addToFavorites = (params) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const changeProfileInfo = (user) => async (dispatch) => {
+  try {
+    const { data } = await changeProfileInfoHelper(user);
+  } catch (error) {}
 };
 
 export const getFavorites = (id) => async (dispatch) => {

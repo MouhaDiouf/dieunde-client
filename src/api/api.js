@@ -2,7 +2,10 @@ import axios from 'axios';
 
 const baseUrl = 'http://localhost:3001';
 
-export const fetchProducts = () => {
+export const fetchProducts = (admin) => {
+  if (admin) {
+    return axios.get(`${baseUrl}/admin/products`);
+  }
   return axios.get(`${baseUrl}/produits`);
 };
 
@@ -118,5 +121,14 @@ export const recoverPasswordHelper = (email) => {
 export const resetPasswordEmailHelper = (params) => {
   return axios.put(`${baseUrl}/auth/password`, {
     ...params,
+  });
+};
+
+export const changeProfileInfoHelper = (user) => {
+  const data = JSON.parse(sessionStorage.user);
+
+  return axios.patch(`${baseUrl}/auth`, {
+    ...user,
+    ...data,
   });
 };

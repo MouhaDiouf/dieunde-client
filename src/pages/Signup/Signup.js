@@ -66,20 +66,24 @@ export default function SignUp() {
   const history = useHistory();
 
   const classes = useStyles();
-  const [pseudo, setpseudo] = useState('');
+  // const [pseudo, setpseudo] = useState('');
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
   const [passwordConfirmation, setpasswordConfirmation] = useState('');
+  const [telephone, settelephone] = useState('');
+  const [nom, setnom] = useState('');
 
   const dispatch = useDispatch();
 
   const handleAccountCreation = (e) => {
     e.preventDefault();
     const user = {
-      name: pseudo,
+      // nickname: pseudo,
+      name: nom,
       email,
       password,
       password_confirmation: passwordConfirmation,
+      telephone,
     };
 
     dispatch(createUser(user));
@@ -110,16 +114,30 @@ export default function SignUp() {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
               <TextField
+                autoComplete="nom"
+                name="nom"
+                variant="outlined"
+                required
+                fullWidth
+                id="nom"
+                label="Full name"
+                onChange={(e) => setnom(e.target.value)}
+                autoFocus
+                value={nom}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              {/* <TextField
                 autoComplete="pseudo"
                 name="pseudo"
                 variant="outlined"
-                required
+  
                 fullWidth
                 id="pseudo"
                 label="Pseudo"
                 onChange={(e) => setpseudo(e.target.value)}
                 autoFocus
-              />
+              /> */}
             </Grid>
 
             <Grid item xs={12}>
@@ -132,6 +150,20 @@ export default function SignUp() {
                 name="email"
                 autoComplete="email"
                 onChange={(e) => setemail(e.target.value)}
+              />
+            </Grid>
+            <Grid item sm={12} xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="telephone"
+                label="Telephone"
+                type="text"
+                id="telephone"
+                autoComplete="telephone"
+                onChange={(e) => settelephone(e.target.value)}
+                value={telephone}
               />
             </Grid>
             <Grid container spacing={2}>

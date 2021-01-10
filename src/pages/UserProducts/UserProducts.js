@@ -8,7 +8,12 @@ import { Link } from 'react-router-dom';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 
 const useStyles = makeStyles({
-  root: {
+  rootContainer: {
+    textAlign: 'center',
+  },
+
+  validation: {
+    display: 'flex',
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
@@ -35,9 +40,9 @@ function UserProducts() {
   }
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className={classes.rootContainer}>
       {productDeleteSuccess && (
-        <AlertMessage message="Product deleted successfully" />
+        <AlertMessage message="Product deleted successfully" type="info" />
       )}
       <Typography variant="h5">Your Products</Typography>
       {!userProducts.length ? (
@@ -47,10 +52,25 @@ function UserProducts() {
         </Typography>
       ) : (
         <Typography>
-          <div className={classes.root}>
-            {userProducts.map((product) => (
-              <UserProduct {...product} />
-            ))}
+          <div>
+            <div className={classes.validation}>
+              {userProducts.map((product) => {
+                if (product['confirmed?']) {
+                  return <UserProduct {...product} />;
+                }
+              })}
+            </div>
+
+            <div>
+              <Typography variant="h5">En attente de validation</Typography>
+              <div className={classes.validation}>
+                {userProducts.map((product) => {
+                  if (!product['confirmed?']) {
+                    return <UserProduct {...product} />;
+                  }
+                })}
+              </div>
+            </div>
           </div>
         </Typography>
       )}
