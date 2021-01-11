@@ -21,7 +21,12 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { addToFavorites } from '../../../actions/actions';
 import AlertMessage from '../../AlertMessage/AlertMessage';
-
+import {
+  WhatsappShareButton,
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterIcon,
+} from 'react-share';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 290,
@@ -69,6 +74,7 @@ function Produit({ nom, description, image, id }) {
         //     P
         //   </Avatar>
         // }
+
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
@@ -88,6 +94,7 @@ function Produit({ nom, description, image, id }) {
           {description}
         </Typography> */}
       </CardContent>
+
       <CardActions disableSpacing>
         {/* {user && (
           <IconButton
