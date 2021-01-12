@@ -11,14 +11,25 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
+import {
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from 'react-share';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProduitsSimilaires from '../../components/ProduitsSimilaires/ProduitsSimilaires';
-import { Email } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { addToFavorites } from '../../actions/actions';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
+import CurrencyFormat from 'react-currency-format';
+
 const useStyles = makeStyles({
   root: {
     textAlign: 'center',
@@ -35,7 +46,10 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  productPrice: {
+    margin: '10px 0',
+    color: 'red',
+  },
   contentAndBtn: {
     display: 'flex',
     flexDirection: 'column',
@@ -133,9 +147,9 @@ function ProductPage() {
           type="warning"
         />
       )}
+
       <Paper className={classes.innerContainer} elevation={3}>
         <Typography variant="h4">Details pour {product.nom}</Typography>
-
         <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
             <img
@@ -148,6 +162,15 @@ function ProductPage() {
           <Grid item xs={12} md={5} className={classes.contentAndBtn}>
             <Container>
               <Typography variant="body1">{product.description}</Typography>
+              <CurrencyFormat
+                value={product.prix}
+                displayType={'text'}
+                suffix={' CFA'}
+                renderText={(value) => (
+                  <div className={classes.productPrice}>{`Prix: ${value}`}</div>
+                )}
+                thousandSeparator={' '}
+              />
               <Chip label={product.catégorie} />
             </Container>
 
@@ -163,6 +186,34 @@ function ProductPage() {
                 Contacter Vendeur
               </Button>
             </ButtonGroup>
+            <div className={classes.shareIcons}>
+              <Typography className="h6">Share this: </Typography>
+              <EmailShareButton
+                subject={`Info about ${product.nom}`}
+                body={`Hello ${
+                  product.user.nom ? product.use.nom : ''
+                }. I would like to have more details about ${product.nom}.`}
+              >
+                <EmailIcon size={32} round />
+              </EmailShareButton>
+              <FacebookShareButton
+                url="www.github.com"
+                quote="I found this from dieunde.com"
+                hashtag={`#${product.catégorie}`}
+              >
+                <FacebookIcon round={true} size={32} />
+              </FacebookShareButton>
+              <WhatsappShareButton
+                url="www.github.com"
+                title="I found this"
+                separator=":: "
+              >
+                <WhatsappIcon size={32} round />
+              </WhatsappShareButton>
+              <TwitterShareButton url="www.github.com" title="I found this">
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+            </div>
           </Grid>
         </Grid>
       </Paper>

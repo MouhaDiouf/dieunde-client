@@ -69,7 +69,7 @@ function DeleteAccount() {
   return (
     <>
       <Button variant="text" color="secondary" onClick={handleOpenDelete}>
-        Change Profile Info
+        Change Phone Number
       </Button>
       <Modal
         className={classes.modal}
@@ -84,18 +84,18 @@ function DeleteAccount() {
         <Fade in={deteleAccountModal}>
           <div className={classes.paper}>
             <Typography id="transition-modal-title" variant="h5">
-              Update Your Profile Info
+              Update Your Phone Number
             </Typography>
             <form className={classes.form} onSubmit={handleProfileUpdate}>
               <FormControl className={classes.formControl}>
-                <TextField
+                {/* <TextField
                   variant="outlined"
                   label="New Email"
                   type="email"
                   placeholder="Leave blank to not change it"
                   onChange={(e) => setemail(e.target.value)}
                   className={classes.textField}
-                ></TextField>
+                ></TextField> */}
 
                 <TextField
                   variant="outlined"
@@ -103,6 +103,7 @@ function DeleteAccount() {
                   placeholder="Leave blank to not change it"
                   onChange={(e) => settelephone(e.target.value)}
                   className={classes.textField}
+                  required
                 ></TextField>
                 <Button
                   type="submit"
