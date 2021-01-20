@@ -40,11 +40,20 @@ const useStyles = makeStyles({
     alignItems: 'center',
     height: '100vh',
   },
-
+  title: {
+    margin: '10px 0',
+  },
   modal: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  infosVendeur: {
+    fontSize: '20px',
+    justifyContent: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
   productPrice: {
     margin: '10px 0',
@@ -59,6 +68,9 @@ const useStyles = makeStyles({
 
   btnGroup: {
     margin: '25px 0',
+  },
+  gridContainer: {
+    margin: '20px 0',
   },
 
   modalContainer: {
@@ -130,6 +142,11 @@ function ProductPage() {
     fetchOneProduct();
   }, [id]);
 
+  const handleCallVendor = (e, vendor) => {
+    console.log("Let's call the user", vendor);
+    window.open(`tel:+221${vendor}`, '_self');
+  };
+
   if (loading) {
     return 'Chargement...';
   }
@@ -139,18 +156,20 @@ function ProductPage() {
   return (
     <Container maxWidth="lg" className={classes.root}>
       {productAddedId === id && favoriteCreated && (
-        <AlertMessage message="favorite created" />
+        <AlertMessage message="Ajouté à vos favoris" />
       )}
       {alert && (
         <AlertMessage
-          message="You cannot add to favorites. Please login or create an account"
+          message="Vous ne pouvez pas ajouter aux favoris. Veuillez vous connecter pour cela."
           type="warning"
         />
       )}
 
       <Paper className={classes.innerContainer} elevation={3}>
-        <Typography variant="h4">Details pour {product.nom}</Typography>
-        <Grid container spacing={1}>
+        <Typography variant="h4" className={classes.title}>
+          Details pour {product.nom}
+        </Typography>
+        <Grid className={classes.gridContainer} container spacing={1}>
           <Grid item xs={12} md={6}>
             <img
               src={product.image.url}
@@ -187,30 +206,33 @@ function ProductPage() {
               </Button>
             </ButtonGroup>
             <div className={classes.shareIcons}>
-              <Typography className="h6">Share this: </Typography>
+              <Typography className="h6">Partager ce produit: </Typography>
               <EmailShareButton
-                subject={`Info about ${product.nom}`}
-                body={`Hello ${
+                subject={`Informations sur ${product.nom}`}
+                body={`Bonjour ${
                   product.user.nom ? product.use.nom : ''
-                }. I would like to have more details about ${product.nom}.`}
+                }. J'aimerais avoir plus de détails sur ${product.nom}.`}
               >
                 <EmailIcon size={32} round />
               </EmailShareButton>
               <FacebookShareButton
                 url="www.github.com"
-                quote="I found this from dieunde.com"
+                quote="J'ai trouvé ceci sur dieunde.com"
                 hashtag={`#${product.catégorie}`}
               >
                 <FacebookIcon round={true} size={32} />
               </FacebookShareButton>
               <WhatsappShareButton
                 url="www.github.com"
-                title="I found this"
+                title="J'ai trouvé ceci sur dieunde.com"
                 separator=":: "
               >
                 <WhatsappIcon size={32} round />
               </WhatsappShareButton>
-              <TwitterShareButton url="www.github.com" title="I found this">
+              <TwitterShareButton
+                url="www.github.com"
+                title="J'ai trouvé ceci sur dieunde.com"
+              >
                 <TwitterIcon size={32} round />
               </TwitterShareButton>
             </div>
@@ -226,10 +248,15 @@ function ProductPage() {
       >
         <Container className={classes.modalContainer}>
           <Typography variant="h5">Informations Vendeur</Typography>
-          <List>
-            <ListItem>{product.user.name}</ListItem>
-            <ListItem>{product.user.email}</ListItem>
-            <ListItem>{product.user.telephone}</ListItem>
+          <List className={classes.infosVendeur}>
+            <p>{product.user.name}</p>
+            <p>{product.user.email}</p>
+            <p>
+              <Chip
+                label={product.user.telephone}
+                onClick={(e) => handleCallVendor(e, product.user.telephone)}
+              />
+            </p>
           </List>
         </Container>
       </Modal>

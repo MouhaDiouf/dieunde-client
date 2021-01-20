@@ -35,7 +35,7 @@ function App() {
   const [minprix, setminprix] = useState(0);
   const [maxprix, setmaxprix] = useState(10000000000);
   const [searchNom, setsearchnom] = useState('');
-  const [searchcat, setsearchcat] = useState('All');
+  const [searchcat, setsearchcat] = useState('Tout');
 
   let { produits, allProductsFetched, validateSuccess } = useSelector(
     (state) => state.products
@@ -58,44 +58,47 @@ function App() {
       dispatch(getAllProducts());
     }
 
-    if (sessionStorage.user) {
+    if (localStorage.user) {
       dispatch(connectUser());
     }
   }, [dispatch, user?.admin, validateSuccess]);
 
   if (allProductsFetched) {
     produits = produits[0];
-    if (searchcat === 'All') {
+    if (searchcat === 'Tout') {
       produitsFilter = produits;
     }
     produitsFilter = produits.filter(
       (produit) =>
         produit.nom.includes(searchNom) ||
-        produit.description.includes(searchNom)
+        produit.description.toLowerCase().includes(searchNom.toLowerCase())
     );
 
-    if (searchcat !== 'All') {
+    if (searchcat !== 'Tout') {
       produitsFilter = produitsFilter.filter((produit) =>
-        produit.catégorie.includes(searchcat)
+        produit.catégorie.toLowerCase().includes(searchcat.toLowerCase())
       );
     }
 
-    produitsFilter = produitsFilter.filter(
-      (produit) => produit.prix >= minprix && produit.prix <= maxprix
-    );
+    // produitsFilter = produitsFilter.filter(
+    //   (produit) => produit.prix >= minprix && produit.prix <= maxprix
+    // );
   }
   return (
     <Router>
       {accountRemovalSuccess && (
-        <AlertMessage message="Account Removed Successfully" type="success" />
+        <AlertMessage message="Compte supprimé avec succès" type="success" />
       )}
       {logoutSuccess && (
-        <AlertMessage message="Logged Out Successfully" type="success" />
+        <AlertMessage
+          message="Vous êtes déconnecté avec succès"
+          type="success"
+        />
       )}
-      {signinSuccess && <AlertMessage message="Welcome back!" />}
+      {signinSuccess && <AlertMessage message="Bon retour!" />}
       {signupSuccess && (
         <AlertMessage
-          message="Account Successfully Created. Confirm it by email to login"
+          message="Compte créé avec succès. Vous devez l'activer maintenant par email"
           type="success"
         />
       )}
@@ -153,12 +156,12 @@ function App() {
         <Route exact path="/account-confirmation">
           <AccountActivation />
         </Route>
+
         {user && (
           <>
             <Route exact path="/vendre-produit">
               <NouveauProduit />
             </Route>
-
             <Route exact path="/cart">
               <Cart />
             </Route>

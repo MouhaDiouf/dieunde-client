@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 
 function UpdatePassword() {
   const { user } = useSelector((state) => state.userReducer);
-  console.log(user);
   const classes = useStyles();
   const [openPassword, setOpenPassword] = useState(false);
   const [password, setPassword] = useState('');
@@ -80,7 +79,7 @@ function UpdatePassword() {
         size="large"
         color="primary"
       >
-        Update My Password
+        Changer mot de passe
       </Button>
 
       <Modal
@@ -103,30 +102,30 @@ function UpdatePassword() {
               ))}
             {passwordUpdateSuccess && (
               <AlertMessage
-                message="Password updated successfully"
+                message="Mot de passe modifié avec succès"
                 type="success"
               />
             )}
             <Typography id="transition-modal-title" variant="h3">
-              Update Your Password
+              Changer votre mot de passe
             </Typography>
             <form className={classes.form} onSubmit={handleUpdatePassword}>
               <FormControl className={classes.formControl}>
                 <TextField
                   id="transition-modal-description"
-                  label="New Password"
+                  label="Nouveau mot de passe"
                   variant="outlined"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                 ></TextField>
                 <TextField
-                  label="Password Confrimation"
+                  label="Confirmation mot de passe"
                   variant="filled"
                   onChange={(e) => setPasswordConf(e.target.value)}
                   value={passwordConf}
                 ></TextField>
                 <TextField
-                  label="Your current password"
+                  label="Ancien mot de passe"
                   variant="filled"
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   value={currentPassword}
@@ -138,7 +137,7 @@ function UpdatePassword() {
                   className={classes.submitBtn}
                   disabled={updatingPassword}
                 >
-                  {updatingPassword ? 'Updating Password' : 'Update Password'}
+                  {updatingPassword ? 'Changement..' : 'Changer'}
                 </Button>
               </FormControl>
             </form>

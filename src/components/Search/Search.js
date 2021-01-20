@@ -32,12 +32,6 @@ function Search({
   const classes = useStyles();
   let Allproduits = useSelector((state) => state.products);
 
-  const handleRangeChange = (event, newValue) => {
-    setrange(newValue);
-  };
-  function valuetext(value) {
-    return `${value} CFA`;
-  }
   let catégories = [];
 
   if (Allproduits) {
@@ -46,10 +40,10 @@ function Search({
     catégories = Allproduits.map((produit) => {
       return produit.catégorie;
     });
-    catégories = [...new Set(catégories), 'All'];
+    catégories = [...new Set(catégories), 'Tout'];
   }
 
-  const [selectCatégorie, setselectCatégorie] = useState('All');
+  const [selectCatégorie, setselectCatégorie] = useState('Tout');
   const [range, setrange] = useState([0, 900000]);
   const handleChangeCat = (e) => {
     setselectCatégorie(e.target.value);
@@ -62,7 +56,7 @@ function Search({
         name="search"
         id="search"
         onChange={(e) => setsearchnom(e.target.value)}
-        label="Search"
+        label="Rechercher"
       />{' '}
       <br />
       <Select
@@ -78,7 +72,7 @@ function Search({
         ))}
       </Select>
       <div className={classes.root}>
-        <Typography id="range-slider" gutterBottom>
+        {/* <Typography id="range-slider" gutterBottom>
           Prix
         </Typography>
         <Slider
@@ -87,7 +81,7 @@ function Search({
           valueLabelDisplay="auto"
           aria-labelledby="range-slider"
           getAriaValueText={valuetext}
-        />
+        /> */}
       </div>
     </FormControl>
   );

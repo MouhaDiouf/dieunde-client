@@ -51,7 +51,7 @@ function DeleteAccount() {
 
   const handleAccountDeletion = (e) => {
     e.preventDefault();
-    if (confirmText.toLocaleLowerCase() === 'yes') {
+    if (confirmText.toLocaleLowerCase() === 'oui') {
       dispatch(deleteAccount());
     }
   };
@@ -63,7 +63,7 @@ function DeleteAccount() {
         color="secondary"
         onClick={handleOpenDelete}
       >
-        Delete Account
+        Supprimer compte
       </Button>
       <Modal
         className={classes.modal}
@@ -78,12 +78,12 @@ function DeleteAccount() {
         <Fade in={deteleAccountModal}>
           <div className={classes.paper}>
             <Typography id="transition-modal-title" variant="h3">
-              Delete your account
+              Supprimer votre compte
             </Typography>
             <form className={classes.form} onSubmit={handleAccountDeletion}>
               <Typography>
-                Are your sure you want to delete your account? Type "Yes" to
-                confirm
+                Êtes-vous sûr de supprimer votre mot de passe? Tapez "Oui" pour
+                confirmer
               </Typography>
               <FormControl className={classes.formControl}>
                 <TextField

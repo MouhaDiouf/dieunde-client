@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -49,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  cardHeader: {
+    width: 300,
+    height: 50,
+  },
 }));
 
 function Produit({ nom, description, image, id }) {
@@ -69,17 +72,13 @@ function Produit({ nom, description, image, id }) {
   return (
     <Card className={classes.root}>
       <CardHeader
+        className={classes.cardHeader}
         // avatar={
         //   <Avatar aria-label="recipe" className={classes.avatar}>
         //     P
         //   </Avatar>
         // }
 
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
         title={`${nom}`}
         // subheader="September 14, 2016"
       />
@@ -87,7 +86,7 @@ function Produit({ nom, description, image, id }) {
       <CardMedia className={classes.media} image={image?.url} title={nom} />
       <CardContent>
         {productAddedId === id && favoriteCreated && (
-          <AlertMessage message="Added to favorites" />
+          <AlertMessage message="Ajouté aux favoris" />
         )}
 
         {/* <Typography variant="body2" color="textSecondary" component="p">
@@ -116,7 +115,7 @@ function Produit({ nom, description, image, id }) {
             variant="contained"
             color="secondary"
           >
-            Voir Plus
+            Consulter
           </Button>
         </ButtonGroup>
       </CardActions>

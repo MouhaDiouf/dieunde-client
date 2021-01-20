@@ -18,6 +18,9 @@ const useStyes = makeStyles({
     alignItems: 'center',
     flexWrap: 'wrap',
   },
+  noFavorites: {
+    textAlign: 'center',
+  },
 });
 function Cart() {
   const { user } = useSelector((state) => state.userReducer);
@@ -41,9 +44,11 @@ function Cart() {
   if (favorites.length === 0) {
     return (
       <Container className={classes.noFavorites}>
-        <Typography variant="h2">You don't have favorites yet</Typography>
+        <Typography variant="h3">
+          Vous n'avez pas de favoris pour le moment
+        </Typography>
         <Button component={Link} to="/" color="primary" variant="contained">
-          Go Back
+          Retour
         </Button>
       </Container>
     );

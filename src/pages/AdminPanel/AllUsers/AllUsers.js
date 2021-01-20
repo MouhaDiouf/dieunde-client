@@ -85,7 +85,7 @@ function AllUsers() {
     <>
       <Container className={classes.outerContainer}>
         <div className={classes.usersDivContainer}>
-          <Typography>All Users</Typography>
+          <Typography>Utilisateurs</Typography>
           {users.map((user) => {
             return (
               <Paper className={classes.userContainer}>

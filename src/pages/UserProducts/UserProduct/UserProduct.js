@@ -22,7 +22,6 @@ const useStyles = makeStyles({
 });
 function UserProduct({ nom, image, id }) {
   const classes = useStyles();
-  console.log(image.url);
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -46,7 +45,7 @@ function UserProduct({ nom, image, id }) {
           color="primary"
           variant="outlined"
         >
-          Edit
+          Modifier
         </Button>
         <DeleteProduct productName={nom} productImg={image} id={id} />
       </CardActions>

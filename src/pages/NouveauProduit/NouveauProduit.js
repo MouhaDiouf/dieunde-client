@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { newProduct } from '../../actions/actions';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import CurrencyFormat from 'react-currency-format';
+import { marques } from '../../data';
 const useStyles = makeStyles({
   root: {
     height: '100vh',
@@ -57,7 +59,7 @@ function NouveauProduit() {
   const [nom, setNom] = useState('');
   const [description, setDescription] = useState('');
   const [prix, setPrix] = useState(0);
-  const [catégorie, setcatégorie] = useState('smartphones');
+  const [marque, setmarque] = useState('smartphones');
   const [image, setimage] = useState(null);
   const onImageChange = (e) => {
     setimage(e.target.files[0]);
@@ -73,7 +75,7 @@ function NouveauProduit() {
     const formData = new FormData();
     formData.append('nom', nom);
     formData.append('description', description);
-    formData.append('catégorie', catégorie);
+    formData.append('marque', marque);
     formData.append('image', image);
     formData.append('prix', prix);
     formData.append('user_id', user.id);
@@ -93,10 +95,10 @@ function NouveauProduit() {
         className={classes.left}
       >
         {productCreated && (
-          <AlertMessage message="Product created successfully. We will review and approve it if it's valid" />
+          <AlertMessage message="Votre produit a été créé. Nous le mettrons en ligne après révision." />
         )}
         <Typography variant="h4" className={classes.title}>
-          New Product
+          Vendez votre voiture
         </Typography>
         <Avatar className={classes.avatar}>
           <LocalOfferIcon />
@@ -109,7 +111,7 @@ function NouveauProduit() {
               onChange={(e) => {
                 setNom(e.target.value);
               }}
-              label="Product name"
+              label="Nom"
               variant="outlined"
             />{' '}
             <br />
@@ -118,7 +120,7 @@ function NouveauProduit() {
               name="description"
               id="description"
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Product description"
+              placeholder="Description du produit"
               cols="7"
             />
             <br />
@@ -127,9 +129,9 @@ function NouveauProduit() {
               name="prix"
               id="prix"
               onChange={(e) => setPrix(e.target.value)}
-              label="Price (CFA)"
+              label="Prix (CFA)"
               variant="outlined"
-            />{' '}
+            />
             <br />
             <TextField
               type="file"
@@ -140,18 +142,15 @@ function NouveauProduit() {
           </FormControl>
 
           <FormControl fullWidth>
-            <InputLabel id="catégorie">Category</InputLabel>
+            <InputLabel id="marque">Marque</InputLabel>
             <Select
-              name="categorie"
-              id="catégorie"
-              onChange={(e) => setcatégorie(e.target.value)}
+              name="marque"
+              id="marque"
+              onChange={(e) => setmarque(e.target.value)}
             >
-              <MenuItem value="smartphones">smartphones</MenuItem>
-              <MenuItem value="ordinateurs">ordinateurs</MenuItem>
-              <MenuItem value="habillement">habillement</MenuItem>
-              <MenuItem value="électroménager">électroménager</MenuItem>
-              <MenuItem value="livres">livres</MenuItem>
-              <MenuItem value="jouets">jouets</MenuItem>
+              {marques.map((marque) => (
+                <MenuItem value={marque}>{marque}</MenuItem>
+              ))}
             </Select>{' '}
             <br />
             <Button
@@ -161,7 +160,7 @@ function NouveauProduit() {
               fullWidth
               disabled={creatingProduct}
             >
-              {creatingProduct ? 'Creating Product' : 'Sell Product'}
+              {creatingProduct ? 'Patientez...' : 'Vendre'}
             </Button>
           </FormControl>
         </form>

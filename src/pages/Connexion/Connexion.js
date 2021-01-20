@@ -67,6 +67,7 @@ export default function SignInSide() {
   const dispatch = useDispatch();
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
+  const [checked, setchecked] = useState(true);
   const history = useHistory();
   const { user, signinAttempt, singinErrorMessages } = useSelector(
     (state) => state.userReducer
@@ -76,9 +77,12 @@ export default function SignInSide() {
     history.push('/');
   }
 
+  const handleRemember = () => {
+    setchecked(!checked);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signInUser(email, password));
+    dispatch(signInUser(email, password, checked));
   };
   return (
     <Grid container component="main" className={classes.root}>
@@ -90,7 +94,7 @@ export default function SignInSide() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Connexion
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
             {singinErrorMessages &&
@@ -103,7 +107,7 @@ export default function SignInSide() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email"
               name="email"
               autoComplete="email"
               type="email"
@@ -116,7 +120,7 @@ export default function SignInSide() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Mot de passe"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -124,8 +128,11 @@ export default function SignInSide() {
             />
 
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              control={
+                <Checkbox value="remember" color="primary" checked={checked} />
+              }
+              label="Se souvenir de moi"
+              onChange={handleRemember}
             />
             <Button
               type="submit"
@@ -135,7 +142,7 @@ export default function SignInSide() {
               className={classes.submit}
               disabled={signinAttempt}
             >
-              {signinAttempt ? 'Singin In' : 'Sign In'}
+              {signinAttempt ? 'Connexion en cours...' : 'Connexion'}
             </Button>
             <Grid container>
               <Grid item xs>
@@ -144,12 +151,12 @@ export default function SignInSide() {
                   to="/forgot-password"
                   variant="body2"
                 >
-                  Forgot password?
+                  Mot de passe oublié?
                 </Link>
               </Grid>
               <Grid item>
                 <Link component={DestinationLink} to="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Vous n'avez pas de compte? S'inscrire"}
                 </Link>
               </Grid>
             </Grid>

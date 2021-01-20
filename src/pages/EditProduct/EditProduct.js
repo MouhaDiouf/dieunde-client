@@ -112,7 +112,6 @@ function EditProduct() {
     if (!productcatégorie) {
       setproductcatégorie(catégorie);
     }
-    console.log(productnom, productdescription, productcatégorie, productprix);
     const formData = new FormData();
     formData.append('nom', productnom);
     formData.append('description', productdescription);

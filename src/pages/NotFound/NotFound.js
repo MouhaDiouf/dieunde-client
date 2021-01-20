@@ -1,12 +1,20 @@
+import { makeStyles } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
+const useStyles = makeStyles({
+  root: {
+    textAlign: 'center',
+  },
+});
 function NotFound() {
+  const classes = useStyles();
   return (
-    <div>
-      <h1>Page not found</h1>
+    <div className={classes.root}>
+      <h1>Page non trouvée</h1>
       <p>
-        The page you are trying to access doesn't exist or is restricted. Login
-        to your account and try again.
+        La page à laquelle vous essayez d'accéder n'existe pas ou est
+        restreinte. <Link to="/connexion">Connectez-vous</Link> à votre compte
+        et réessayez.
       </p>
       <p>
         <Link to="/">Go Back</Link>

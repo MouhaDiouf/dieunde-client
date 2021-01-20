@@ -93,7 +93,6 @@ export const newProduct = (formData) => async (dispatch) => {
     });
 
     const resp = await response.json();
-    console.log(resp);
     dispatch({
       type: PRODUCT_CREATION_SUCCESS,
       payload: response.data,
@@ -122,30 +121,28 @@ export const fetchOneProduct = (id) => async (dispatch) => {
   }
 };
 
-export const signInUser = (email, password) => async (dispatch) => {
-  console.log(email, password);
+export const signInUser = (email, password, remember) => async (dispatch) => {
   dispatch({
     type: SIGNING_ATTEMPT,
   });
   try {
     const res = await signInUserHelper(email, password);
-    console.log(res);
     const { data, headers } = res;
-    sessionStorage.setItem(
-      'user',
-      JSON.stringify({
-        'access-token': headers['access-token'],
-        client: headers['client'],
-        uid: data.data.uid,
-      })
-    );
+    remember &&
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          'access-token': headers['access-token'],
+          client: headers['client'],
+          uid: data.data.uid,
+        })
+      );
     dispatch({
       type: SIGNIN_SUCCESS,
       payload: data.data,
     });
   } catch (error) {
     if (error.response) {
-      console.log(error.response);
       dispatch({
         type: SIGNIN_ERROR,
         payload: error.response.data.errors,
@@ -161,14 +158,13 @@ export const createUser = (user) => async (dispatch) => {
 
   try {
     const res = await createUserHelper(user);
-    console.log(res);
 
     dispatch({
       type: SIGNUP_SUCCESS,
       payload: res.data,
     });
     const { data, headers } = res;
-    sessionStorage.setItem(
+    localStorage.setItem(
       'user',
       JSON.stringify({
         'access-token': headers['access-token'],
@@ -178,7 +174,6 @@ export const createUser = (user) => async (dispatch) => {
     );
   } catch (error) {
     if (error.response) {
-      console.log(error.response);
       dispatch({
         type: SIGNUP_ERROR,
         payload: error.response.data.errors.full_messages,
@@ -194,7 +189,7 @@ export const logoutUser = () => async (dispatch) => {
       dispatch({
         type: LOGOUT_USER_SUCCESS,
       });
-      sessionStorage.removeItem('user');
+      localStorage.removeItem('user');
     } else {
       dispatch({
         type: LOGOUT_USER_SUCCESS,
@@ -208,7 +203,6 @@ export const logoutUser = () => async (dispatch) => {
 export const connectUser = () => async (dispatch) => {
   try {
     const { data } = await connectUserOnLoadHelper();
-    console.log(data);
     dispatch({
       type: SIGNIN_ON_LOAD_SUCCESS,
       payload: data.data,
@@ -221,7 +215,6 @@ export const connectUser = () => async (dispatch) => {
 export const addToFavorites = (params) => async (dispatch) => {
   try {
     const { data } = await addToFavoritesHelper(params);
-    console.log(data);
     dispatch({
       type: FAVORITE_CREATED,
       payload: params.produit_id,
@@ -244,7 +237,6 @@ export const changeProfileInfo = (user) => async (dispatch) => {
 export const getFavorites = (id) => async (dispatch) => {
   try {
     const { data } = await getFavoritesHelper(id);
-    console.log('favorites are ', data);
     dispatch({
       type: FAVORITES_FETCH_SUCCESS,
       payload: data,
@@ -280,7 +272,6 @@ export const updatePassword = (params) => async (dispatch) => {
     if (error.response) {
       const { data } = error.response;
       const { full_messages } = data.errors;
-      console.log(full_messages);
       dispatch({
         type: UPDATE_PASSWORD_ERROR,
         payload: full_messages,

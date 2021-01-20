@@ -99,11 +99,11 @@ export default function ForgotPassword() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Forgot Password
+          Mot de passe oublié
         </Typography>
         <Typography variant="body2">
-          Lost your password? Please enter your username or email address. You
-          will receive a link to create a new password via email.
+          Mot de passe perdu? Veuillez saisir votre identifiant ou adresse mail.
+          Vous recevrez un lien pour créer un nouveau mot de passe par e-mail.
         </Typography>
         <form
           className={classes.form}
@@ -117,7 +117,7 @@ export default function ForgotPassword() {
               fullWidth
               type="email"
               id="email"
-              label="Email Address"
+              label="Email"
               name="email"
               autoComplete="email"
               onChange={(e) => setemail(e.target.value)}
@@ -132,7 +132,7 @@ export default function ForgotPassword() {
             disabled={resetingPassword}
             className={classes.submit}
           >
-            Reset Password
+            Réinitialiser mot de passe
           </Button>
         </form>
       </div>

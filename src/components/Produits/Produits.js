@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Produit from './Produit/Produit';
 import Search from '../Search/Search';
-import { Container, Typography } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     marginTop: '30px',
+  },
+  noResultsContainer: {
+    textAlign: 'center',
   },
   paper: {
     height: 140,
@@ -55,9 +58,9 @@ function Produits({
       />
       {produits.length ? (
         <>
-          <Typography variant="h2" className={classes.title}>
+          {/* <Typography variant="h2" className={classes.title}>
             Produits
-          </Typography>
+          </Typography> */}
 
           <Grid
             alignContent="center"
@@ -76,7 +79,9 @@ function Produits({
           </Grid>
         </>
       ) : (
-        <h1>No results for your search</h1>
+        <div className={classes.noResultsContainer}>
+          <h1>Aucun résultat pour vos recherches</h1>
+        </div>
       )}
     </Container>
   );

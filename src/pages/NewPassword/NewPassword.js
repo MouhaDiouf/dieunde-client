@@ -68,9 +68,7 @@ export default function NewPassword() {
   const token = params.get('access-token');
   const uid = params.get('uid');
   const client = params.get('client');
-  console.log(token, uid, client);
   const redirectUrl = params.get('redirect_url');
-  console.log('redirect url ', redirectUrl);
   const {
     passwordRecovered,
     passwordRecoveryFailed,
@@ -117,7 +115,7 @@ export default function NewPassword() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Recover Your Password
+          Récupérez votre mot de passe
         </Typography>
 
         <form
@@ -155,7 +153,7 @@ export default function NewPassword() {
             // disabled={resetingPassword}
             className={classes.submit}
           >
-            Change Password
+            Changer mot de passe
           </Button>
         </form>
       </div>

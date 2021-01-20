@@ -50,7 +50,7 @@ function Profile() {
   return (
     <Container component={Paper} elevation={3}>
       <div className={classes.root}>
-        <Typography variant="h4">Your Profile</Typography>
+        <Typography variant="h4">Votre profil</Typography>
         <div className={classes.userInfo}>
           <Avatar className={classes.avatar}>{user.name.split('')[0]}</Avatar>
           <List>
@@ -64,8 +64,9 @@ function Profile() {
           <Button component={Link} to={`${user.email}/products`}>
             Vos Produits
           </Button>
+
           <UpdatePassword />
-          <DeleteAccount />
+          {!user.admin && <DeleteAccount />}
         </div>
       </div>
     </Container>

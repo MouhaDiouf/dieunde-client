@@ -44,11 +44,11 @@ function UserProducts() {
       {productDeleteSuccess && (
         <AlertMessage message="Product deleted successfully" type="info" />
       )}
-      <Typography variant="h5">Your Products</Typography>
+      <Typography variant="h5">Vos produits</Typography>
       {!userProducts.length ? (
         <Typography variant="h6">
-          You don't have products.{' '}
-          <Link to="/vendre-produit"> Create new ones</Link>
+          Vous n'avez pas de produits.{' '}
+          <Link to="/vendre-produit"> Créer un nouveau produit</Link>
         </Typography>
       ) : (
         <Typography>

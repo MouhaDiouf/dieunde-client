@@ -6,10 +6,10 @@ function AdminPanel() {
     <div>
       <h1>Admin Panel</h1>
       <Button component={Link} to="/admin/allusers">
-        All Users
+        Tous les utilisateurs
       </Button>
       <Button component={Link} to="/admin/allproducts">
-        All Products
+        Tous les produits
       </Button>
     </div>
   );

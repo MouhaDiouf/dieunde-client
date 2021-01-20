@@ -42,7 +42,7 @@ export const signInUserHelper = (email, password) => {
 };
 
 export const logoutUserHelper = () => {
-  const data = JSON.parse(sessionStorage.user);
+  const data = JSON.parse(localStorage.user);
 
   return axios.delete(`${baseUrl}/auth/sign_out`, {
     params: {
@@ -54,7 +54,7 @@ export const logoutUserHelper = () => {
 };
 
 export const connectUserOnLoadHelper = () => {
-  const data = JSON.parse(sessionStorage.user);
+  const data = JSON.parse(localStorage.user);
 
   return axios.get(`${baseUrl}/auth/validate_token`, {
     params: {
@@ -84,7 +84,7 @@ export const removeFavoriteHelper = (params) => {
 };
 
 export const updatePasswordHeloper = (params) => {
-  const data = JSON.parse(sessionStorage.user);
+  const data = JSON.parse(localStorage.user);
 
   return axios.put(`${baseUrl}/auth/password`, {
     ...data,
@@ -93,7 +93,7 @@ export const updatePasswordHeloper = (params) => {
 };
 
 export const deleteAccountHelper = () => {
-  const data = JSON.parse(sessionStorage.user);
+  const data = JSON.parse(localStorage.user);
   return axios.delete(`${baseUrl}/auth`, {
     params: {
       'access-token': data['access-token'],
@@ -125,7 +125,7 @@ export const resetPasswordEmailHelper = (params) => {
 };
 
 export const changeProfileInfoHelper = (user) => {
-  const data = JSON.parse(sessionStorage.user);
+  const data = JSON.parse(localStorage.user);
 
   return axios.patch(`${baseUrl}/auth`, {
     ...user,

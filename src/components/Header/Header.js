@@ -83,7 +83,7 @@ function Header() {
             component={Link}
             to="/"
           >
-            Dieunde
+            DakarVoitures
           </Typography>
 
           {user && (
@@ -103,7 +103,7 @@ function Header() {
                 color="primary"
               >
                 {' '}
-                Sign In
+                Connexion
               </MenuItem>
               <MenuItem
                 component={Link}
@@ -112,7 +112,7 @@ function Header() {
                 color="primary"
               >
                 {' '}
-                Create Account
+                Créer un compte
               </MenuItem>
             </>
           )}
@@ -157,7 +157,7 @@ function Header() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose} component={Link} to="/profile">
-                  Profile
+                  Profil
                 </MenuItem>
 
                 <MenuItem

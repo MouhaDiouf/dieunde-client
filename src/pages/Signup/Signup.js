@@ -69,7 +69,7 @@ export default function SignUp() {
   // const [pseudo, setpseudo] = useState('');
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
-  const [passwordConfirmation, setpasswordConfirmation] = useState('');
+  // const [passwordConfirmation, setpasswordConfirmation] = useState('');
   const [telephone, settelephone] = useState('');
   const [nom, setnom] = useState('');
 
@@ -77,12 +77,16 @@ export default function SignUp() {
 
   const handleAccountCreation = (e) => {
     e.preventDefault();
+    if (!email) {
+      setemail('invalid');
+      return;
+    }
     const user = {
       // nickname: pseudo,
       name: nom,
       email,
       password,
-      password_confirmation: passwordConfirmation,
+      // password_confirmation: passwordConfirmation,
       telephone,
     };
 
@@ -94,13 +98,16 @@ export default function SignUp() {
   }
   return (
     <Container component="main" maxWidth="xs">
+      {email === 'invalid' && (
+        <AlertMessage message="L'addresse email est invalide. Veuillez réessayer" />
+      )}
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Créer un compte
         </Typography>
         {signupErrorMessages &&
           signupErrorMessages.map((error) => (
@@ -120,7 +127,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="nom"
-                label="Full name"
+                label="Prénom et nom"
                 onChange={(e) => setnom(e.target.value)}
                 autoFocus
                 value={nom}
@@ -146,7 +153,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
                 autoComplete="email"
                 onChange={(e) => setemail(e.target.value)}
@@ -158,7 +165,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="telephone"
-                label="Telephone"
+                label="Téléphone"
                 type="text"
                 id="telephone"
                 autoComplete="telephone"
@@ -167,32 +174,32 @@ export default function SignUp() {
               />
             </Grid>
             <Grid container spacing={2}>
-              <Grid item sm={6} xs={12}>
+              <Grid item sm={12} xs={12}>
                 <TextField
                   variant="outlined"
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Mot de passe"
                   type="password"
                   id="password"
                   autoComplete="current-password"
                   onChange={(e) => setpassword(e.target.value)}
                 />
               </Grid>
-              <Grid item sm={6} xs={12}>
+              {/* <Grid item sm={6} xs={12}>
                 <TextField
                   variant="outlined"
                   required
                   fullWidth
                   name="password"
-                  label="Password Confirmation"
+                  label="Confirmation mot de passe"
                   type="password"
                   id="password"
                   autoComplete="current-password"
                   onChange={(e) => setpasswordConfirmation(e.target.value)}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
           <Button
@@ -210,16 +217,16 @@ export default function SignUp() {
                   src={loadingImg}
                   alt="loading"
                 />
-                <Typography variant="body2">Hold Tight...</Typography>
+                <Typography variant="body2">Patientez...</Typography>
               </div>
             ) : (
-              'Sign Up'
+              'Créer compte'
             )}
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/connexion" variant="body2">
-                Already have an account? Sign in
+                Vous avez déjà un compte? se connecter{' '}
               </Link>
             </Grid>
           </Grid>

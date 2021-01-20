@@ -1,6 +1,7 @@
 import { Button, Container, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ChoiceHome from '../ChoiceHome/ChoiceHome';
 const useStyles = makeStyles({
   hero: {
     height: '300px',
@@ -22,7 +23,7 @@ function Hero() {
     <div className={classes.hero}>
       <Container maxWidth="xl">
         <Typography className={classes.title} variant="h3">
-          Bienvenue!
+          Trouvez votre voiture!
         </Typography>
         <Button
           component={Link}

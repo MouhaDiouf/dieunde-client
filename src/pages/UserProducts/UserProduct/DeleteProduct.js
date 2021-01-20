@@ -95,7 +95,7 @@ function DeleteProduct({ productName, productImg, id }) {
         onClick={handleOpenDelete}
         size="small"
       >
-        Delete
+        Supprimer
       </Button>
       <Modal
         className={classes.modal}
@@ -115,8 +115,8 @@ function DeleteProduct({ productName, productImg, id }) {
                 type="error"
               />
             )}
-            <Typography id="transition-modal-title" variant="h3">
-              Delete {productName} ?
+            <Typography id="transition-modal-title" variant="h4">
+              Supprimer {productName} ?
             </Typography>
             <div className={classes.imgDiv}>
               <img
@@ -128,8 +128,8 @@ function DeleteProduct({ productName, productImg, id }) {
 
             <form className={classes.form} onSubmit={handleProductDeletion}>
               <Typography>
-                Are your sure you want to delete this product? Type "
-                {testToEnter}" to confirm
+                Êtes-vous sûr de supprimer ce produit? Tapez "{testToEnter}"
+                pour confirmer
               </Typography>
               <FormControl className={classes.formControl}>
                 <TextField
@@ -154,11 +154,11 @@ function DeleteProduct({ productName, productImg, id }) {
                         className={classes.loader}
                       />
                       <span className={classes.loaderSpan}>
-                        Deleting Product
+                        Suppression Produit
                       </span>
                     </div>
                   ) : (
-                    'Delete'
+                    'Supprimer'
                   )}
                 </Button>
               </FormControl>

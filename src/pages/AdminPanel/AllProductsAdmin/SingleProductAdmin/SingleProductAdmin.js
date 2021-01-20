@@ -121,7 +121,7 @@ function SingleProductAdmin() {
   }, [id, validateSuccess]);
 
   if (errorFetch) {
-    return <Typography>Could not find the product</Typography>;
+    return <Typography>Nous ne pouvons pas trouver le produit</Typography>;
   }
   if (loading) {
     return 'Chargement...';
@@ -133,11 +133,11 @@ function SingleProductAdmin() {
   return (
     <Container maxWidth="lg" className={classes.root}>
       {productDeleteSuccess && (
-        <AlertMessage message="product deleted successfully" />
+        <AlertMessage message="produit supprimé avec succès" />
       )}
       {productDeleteFailure && (
         <AlertMessage
-          message="Could not delete the product. It's either deleted or not in our database"
+          message="Nous ne pouvons pas supprimer le produit pour le moment. Réactualisez la page et réessayez."
           type="error"
         />
       )}
