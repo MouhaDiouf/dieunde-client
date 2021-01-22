@@ -21,7 +21,7 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProduitsSimilaires from '../../components/ProduitsSimilaires/ProduitsSimilaires';
 import { useSelector } from 'react-redux';
@@ -29,7 +29,16 @@ import { useDispatch } from 'react-redux';
 import { addToFavorites } from '../../actions/actions';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import CurrencyFormat from 'react-currency-format';
-
+import Carousel from 'react-elastic-carousel';
+import { Flex, Square } from 'react-elastic-carousel';
+const breakpoints = [
+  { width: 1, itemsToShow: 1 },
+  { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
+  { width: 850, itemsToShow: 3 },
+  { width: 1150, itemsToShow: 4, itemsToScroll: 2 },
+  { width: 1450, itemsToShow: 5 },
+  { width: 1750, itemsToShow: 6 },
+];
 const useStyles = makeStyles({
   root: {
     textAlign: 'center',
@@ -39,6 +48,14 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
+  },
+  productImgCarousel: {
+    width: '5px',
+  },
+  imagesContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
   },
   title: {
     margin: '10px 0',
@@ -72,6 +89,12 @@ const useStyles = makeStyles({
   gridContainer: {
     margin: '20px 0',
   },
+  whatsappLinkMessage: {
+    display: 'none',
+  },
+  whatsappMessageIcon: {
+    cursor: 'pointer',
+  },
 
   modalContainer: {
     backgroundColor: 'white',
@@ -80,8 +103,9 @@ const useStyles = makeStyles({
     textAlign: 'center',
     maxWidth: '60%',
   },
+
   productImg: {
-    width: '50%',
+    width: '100%',
     maxWidth: '300px',
   },
   innerContainer: {
@@ -98,6 +122,7 @@ function ProductPage() {
   const [product, setProduct] = useState(null);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
+  const whatsappLink = useRef(null);
   const [alert, setalert] = useState(false);
   const { user } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
@@ -122,6 +147,9 @@ function ProductPage() {
       setalert(true);
     }
   };
+  const sendWhatsappMessage = () => {
+    whatsappLink.current.click();
+  };
   useEffect(() => {
     const fetchOneProduct = async () => {
       try {
@@ -143,7 +171,6 @@ function ProductPage() {
   }, [id]);
 
   const handleCallVendor = (e, vendor) => {
-    console.log("Let's call the user", vendor);
     window.open(`tel:+221${vendor}`, '_self');
   };
 
@@ -170,12 +197,37 @@ function ProductPage() {
           Details pour {product.nom}
         </Typography>
         <Grid className={classes.gridContainer} container spacing={1}>
-          <Grid item xs={12} md={6}>
-            <img
-              src={product.image.url}
-              alt=""
-              className={classes.productImg}
-            />
+          <Grid
+            className={classes.imagesContainer}
+            item
+            container
+            xs={12}
+            md={6}
+          >
+            <Carousel
+              className={classes.carouselContainer}
+              breakPoints={breakpoints}
+              renderPagination={({ pages, activePage, onClick }) => {
+                return (
+                  <div>
+                    {pages.map((page) => {
+                      const isActivePage = activePage === page;
+                      return (
+                        <div
+                          key={page}
+                          onClick={() => onClick(page)}
+                          active={isActivePage}
+                        ></div>
+                      );
+                    })}
+                  </div>
+                );
+              }}
+            >
+              {product.images.map((image) => (
+                <img src={image.url} alt="" className={classes.productImg} />
+              ))}
+            </Carousel>
           </Grid>
 
           <Grid item xs={12} md={5} className={classes.contentAndBtn}>
@@ -202,7 +254,7 @@ function ProductPage() {
                 Ajouter Aux Favoris
               </Button>
               <Button className={classes.faorisBtn} onClick={handleOpen}>
-                Contacter Vendeur
+                Informations Vendeur
               </Button>
             </ButtonGroup>
             <div className={classes.shareIcons}>
@@ -251,12 +303,30 @@ function ProductPage() {
           <List className={classes.infosVendeur}>
             <p>{product.user.name}</p>
             <p>{product.user.email}</p>
-            <p>
-              <Chip
-                label={product.user.telephone}
+            <div>
+              <Button
                 onClick={(e) => handleCallVendor(e, product.user.telephone)}
+                variant="contained"
+                color="primary"
+              >
+                Appeler
+              </Button>
+              <a
+                href={`https://api.whatsapp.com/send?phone=+221${product.user.telephone}&text=Bonjour, je suis intéressé par votre annonce ${window.location.href}`}
+                target="_blank"
+                rel="noreferrer"
+                className={classes.whatsappLinkMessage}
+                ref={whatsappLink}
+              >
+                whatsapp
+              </a>
+              <WhatsappIcon
+                size={32}
+                round
+                className={classes.whatsappMessageIcon}
+                onClick={sendWhatsappMessage}
               />
-            </p>
+            </div>
           </List>
         </Container>
       </Modal>

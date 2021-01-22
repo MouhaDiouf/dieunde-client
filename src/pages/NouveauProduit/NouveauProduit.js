@@ -13,13 +13,17 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { newProduct } from '../../actions/actions';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import CurrencyFormat from 'react-currency-format';
 import { marques } from '../../data';
+import DropzoneComponent from 'react-dropzone-component';
+import '../../../node_modules/react-dropzone-component/styles/filepicker.css';
+import '../../../node_modules/dropzone/dist/min/dropzone.min.css';
+import Cloudinary from '../../components/Cloudinary/Cloudinary';
 const useStyles = makeStyles({
   root: {
     height: '100vh',
@@ -31,6 +35,11 @@ const useStyles = makeStyles({
     alignItems: 'center',
     flexDirection: 'column',
     width: '80%',
+  },
+  imagePreview: {
+    width: '100px',
+    height: '100px',
+    contentFit: 'contain',
   },
 
   title: {
@@ -54,16 +63,45 @@ const useStyles = makeStyles({
     backgroundColor: 'red',
   },
 });
+var componentConfig = {
+  iconFiletypes: ['.jpg', '.png', '.gif'],
+  showFiletypeIcon: true,
+  postUrl: '/uploadHandler',
+};
 function NouveauProduit() {
+  var djsConfig = { autoProcessQueue: false };
+  var eventHandlers = { addedfile: (file) => console.log(file) };
   const dispatch = useDispatch();
+  const imagesContainer = useRef(null);
+  const filesContainer = useRef(null);
   const [nom, setNom] = useState('');
   const [description, setDescription] = useState('');
   const [prix, setPrix] = useState(0);
   const [marque, setmarque] = useState('smartphones');
-  const [image, setimage] = useState(null);
+  const [fileArray, setFileArray] = useState([]);
+  const [fileObj] = useState([]);
+  const [images, setimages] = useState([]);
+  const [file, setFile] = useState([null]);
+
   const onImageChange = (e) => {
-    setimage(e.target.files[0]);
+    fileObj.push(e.target.files);
+    console.log('fileObj is ', fileObj);
+    console.log(e.target.files[0]);
+    images.push(e.target.files[0]);
+    console.log('images', images);
+    console.log(e.target.files);
+    for (let i = 0; i < fileObj.length; i++) {
+      fileArray.push(URL.createObjectURL(fileObj[i][0]));
+    }
+
+    setFile(fileArray);
+    // const picture = document.createElement('img');
+    // picture.src = fileArray[fileArray.length - 1];
+    // picture.className = classes.imagePreview;
+    // imagesContainer.current.appendChild(picture);
   };
+  useEffect(() => {}, [fileArray.length, fileObj, file]);
+
   const { creatingProduct, productCreated } = useSelector(
     (state) => state.products
   );
@@ -72,11 +110,16 @@ function NouveauProduit() {
   const classes = useStyles();
   const handleCreateProduct = (e) => {
     e.preventDefault();
+    console.log(images);
     const formData = new FormData();
     formData.append('nom', nom);
     formData.append('description', description);
     formData.append('marque', marque);
-    formData.append('image', image);
+    let imgFiles = filesContainer.current.files;
+    for (let i = 0; i < imgFiles.length; i++) {
+      let file = imgFiles[i];
+      formData.append('images[]', file, file.name);
+    }
     formData.append('prix', prix);
     formData.append('user_id', user.id);
     dispatch(newProduct(formData));
@@ -133,11 +176,20 @@ function NouveauProduit() {
               variant="outlined"
             />
             <br />
-            <TextField
+            <input
+              className="files"
               type="file"
+              id="files"
+              ref={filesContainer}
               accept="image/*"
-              multiple={false}
+              multiple={true}
               onChange={onImageChange}
+              data-buttonText="Your label here"
+            />
+            <DropzoneComponent
+              config={componentConfig}
+              eventHandlers={eventHandlers}
+              djsConfig={djsConfig}
             />
           </FormControl>
 
@@ -153,6 +205,7 @@ function NouveauProduit() {
               ))}
             </Select>{' '}
             <br />
+            <Cloudinary />
             <Button
               color="primary"
               variant="contained"
@@ -163,6 +216,7 @@ function NouveauProduit() {
               {creatingProduct ? 'Patientez...' : 'Vendre'}
             </Button>
           </FormControl>
+          <div className="form-group multi-preview" ref={imagesContainer}></div>
         </form>
       </Grid>
     </Grid>

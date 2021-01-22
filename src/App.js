@@ -30,6 +30,7 @@ import AdminPanel from './pages/AdminPanel/AdminPanel';
 import AllUsers from './pages/AdminPanel/AllUsers/AllUsers';
 import AllProductsAdmin from './pages/AdminPanel/AllProductsAdmin/AllProductsAdmin';
 import SingleProductAdmin from './pages/AdminPanel/AllProductsAdmin/SingleProductAdmin/SingleProductAdmin';
+import AllCars from './pages/AllCars/AllCars';
 
 function App() {
   const [minprix, setminprix] = useState(0);
@@ -137,6 +138,9 @@ function App() {
             setsearchnom={setsearchnom}
             setsearchcat={setsearchcat}
           />
+        </Route>
+        <Route exact path="/voitures">
+          <AllCars />
         </Route>
         <Route exact path="/connexion">
           <Connexion />

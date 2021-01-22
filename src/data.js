@@ -1,3 +1,7 @@
+import range from './images/brands/landRover.png';
+import mercedes from './images/brands/benz.png';
+import ford from './images/brands/ford.png';
+import peugeot from './images/brands/peugeot.png';
 export const marques = [
   'Toyota',
   'Honda',
@@ -6,6 +10,7 @@ export const marques = [
   'Mercedes-Benz',
   'Jeep',
   'BMW',
+  'Peugeot',
   'Porsche',
   'Subaru',
   'Nissan',
@@ -31,3 +36,10 @@ export const marques = [
   'Renault',
   'Citroen',
 ].sort();
+
+export const logos = {
+  'Land Rover': range,
+  'Mercedes-Benz': mercedes,
+  Ford: ford,
+  Peugeot: peugeot,
+};

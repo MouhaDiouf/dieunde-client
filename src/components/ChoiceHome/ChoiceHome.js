@@ -6,7 +6,12 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
+import benz from '../../images/brands/benz.png';
+import landRover from '../../images/brands/landRover.png';
+import { Link } from 'react-router-dom';
+import './ChoiceHome.css';
 import Carousel from 'react-elastic-carousel';
+import { logos } from '../../data';
 
 import React from 'react';
 import Produit from '../Produits/Produit/Produit';
@@ -21,6 +26,16 @@ const breakpoints = [
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: 'center',
+    width: '95%',
+    margin: '0 auto',
+  },
+  logosContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  carouselContainer: {
+    margin: '20px 0',
   },
   paper: {
     padding: theme.spacing(2),
@@ -28,15 +43,41 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   vendreVoiture: {
-    background: 'red',
+    margin: '20px 0',
+    height: '250px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontWeight: 'bold',
+    fontSize: '30px',
+  },
+  marque: {
+    width: '100px',
+    height: '100px',
+    objectFit: 'contain',
+  },
+  lastCars: {
+    margin: '30px 0',
   },
   acheterVoiture: {
-    background: 'green',
+    margin: '20px 0',
+    height: '250px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontWeight: 'bold',
+    fontSize: '30px',
+    '&:hover': {
+      backgroundColor: 'yello',
+    },
   },
+
   acheter: {
     height: '100px',
     width: '100px',
     background: 'red',
+    fontWeight: 'bold',
+    fontSize: '30px',
   },
   vendre: {
     height: '200px',
@@ -47,38 +88,63 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  title: {
+    margin: '20px 0',
+  },
 }));
 function ChoiceHome({ produits }) {
+  console.log(produits);
   const classes = useStyles();
   return (
     <>
       <div className={classes.root}>
-        <Typography variant="h3">Je veux...</Typography>
+        <Typography variant="h3" className={classes.title}>
+          Je veux...
+        </Typography>
 
         <Grid container spacing={4} className={classes.grid}>
           <Grid item xs={4}>
-            <Paper className={`${classes.paper} ${classes.acheterVoiture}`}>
+            <Paper
+              className={`${classes.paper} ${classes.acheterVoiture}`}
+              component={Link}
+              to="/voitures"
+            >
               Acheter Une Voiture
             </Paper>
           </Grid>
           <Grid item xs={4}>
-            <Paper className={`${classes.paper} ${classes.vendreVoiture}`}>
-              Vender Ma Voiture
+            <Paper
+              className={`${classes.paper} ${classes.vendreVoiture} vendreContainer`}
+              component={Link}
+              to="/vendre-produit"
+            >
+              Vendre Ma Voiture
             </Paper>
           </Grid>
         </Grid>
-        <Typography variant="h3">Dernières Voitures</Typography>
-        <Carousel
-          className={classes.carouselContainer}
-          breakPoints={breakpoints}
-        >
-          {produits &&
-            produits.map((produit) => {
-              return <Produit {...produit} />;
-            })}
-        </Carousel>
+        <div className={classes.lastCars}>
+          <Typography variant="h4">Dernières Voitures</Typography>
+          <Carousel
+            className={classes.carouselContainer}
+            breakPoints={breakpoints}
+          >
+            {produits &&
+              produits.map((produit) => {
+                return <Produit {...produit} />;
+              })}
+          </Carousel>
+        </div>
         <div>
-          <Typography variant="h3">Les principales marques</Typography>
+          <Typography variant="h4">Marques disponibles</Typography>
+          <div className={classes.logosContainer}>
+            {produits.map((produit) => (
+              <img
+                className={classes.marque}
+                src={logos[produit.marque]}
+                alt={`logo ${produit.marque}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </>

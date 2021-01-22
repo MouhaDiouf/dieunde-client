@@ -31,7 +31,7 @@ function ProduitsSimilaires({ similaires }) {
   return (
     <>
       <Container maxWidth="lg" className={classes.root}>
-        <Typography variant="h4">Produits Similaires</Typography>
+        <Typography variant="h4">Autres Voitures</Typography>
 
         <Carousel
           className={classes.carouselContainer}

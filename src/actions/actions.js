@@ -82,6 +82,7 @@ export const signUpUser = (newUserCredentials) => async (dispatch) => {
 };
 
 export const newProduct = (formData) => async (dispatch) => {
+  console.log('ANOTHER  *****');
   try {
     dispatch({
       type: CREATING_PRODUCT,
@@ -174,9 +175,13 @@ export const createUser = (user) => async (dispatch) => {
     );
   } catch (error) {
     if (error.response) {
+      const errors = error.response.data.errors.full_messages.map((error) =>
+        error.split(' ').slice(1).join(' ')
+      );
+
       dispatch({
         type: SIGNUP_ERROR,
-        payload: error.response.data.errors.full_messages,
+        payload: errors,
       });
     }
   }

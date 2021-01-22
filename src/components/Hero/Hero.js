@@ -2,11 +2,11 @@ import { Button, Container, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ChoiceHome from '../ChoiceHome/ChoiceHome';
+import hero from '../../images/hero.jpg';
 const useStyles = makeStyles({
   hero: {
     height: '300px',
-    backgroundImage:
-      'url(https://images.unsplash.com/photo-1585155770447-2f66e2a397b5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1489&q=80)',
+    backgroundImage: `url(${hero})`,
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     display: 'flex',

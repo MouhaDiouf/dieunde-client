@@ -82,6 +82,7 @@ export default function SignInSide() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
     dispatch(signInUser(email, password, checked));
   };
   return (

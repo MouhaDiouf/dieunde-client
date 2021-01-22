@@ -17,12 +17,12 @@ const useStyles = makeStyles({
     height: '200px',
   },
 });
-function ProduitSimilaire({ nom, description, catégorie, prix, image, id }) {
+function ProduitSimilaire({ nom, description, catégorie, prix, images, id }) {
   const classes = useStyles();
   return (
     <Container className={classes.root}>
       <Paper>
-        <img className={classes.image} src={image.url} alt={nom} />
+        <img className={classes.image} src={images[0].url} alt={nom} />
 
         <Typography>{nom}</Typography>
         <Button
