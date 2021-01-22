@@ -31,6 +31,7 @@ import AllUsers from './pages/AdminPanel/AllUsers/AllUsers';
 import AllProductsAdmin from './pages/AdminPanel/AllProductsAdmin/AllProductsAdmin';
 import SingleProductAdmin from './pages/AdminPanel/AllProductsAdmin/SingleProductAdmin/SingleProductAdmin';
 import AllCars from './pages/AllCars/AllCars';
+import { CloudinaryContext } from 'cloudinary-react';
 
 function App() {
   const [minprix, setminprix] = useState(0);
@@ -87,105 +88,113 @@ function App() {
   }
   return (
     <Router>
-      {accountRemovalSuccess && (
-        <AlertMessage message="Compte supprimé avec succès" type="success" />
-      )}
-      {logoutSuccess && (
-        <AlertMessage
-          message="Vous êtes déconnecté avec succès"
-          type="success"
-        />
-      )}
-      {signinSuccess && <AlertMessage message="Bon retour!" />}
-      {signupSuccess && (
-        <AlertMessage
-          message="Compte créé avec succès. Vous devez l'activer maintenant par email"
-          type="success"
-        />
-      )}
-      {logoutSuccess && <Redirect to="/" />}
+      <>
+        <CloudinaryContext cloudName="mouhamadou">
+          {accountRemovalSuccess && (
+            <AlertMessage
+              message="Compte supprimé avec succès"
+              type="success"
+            />
+          )}
+          {logoutSuccess && (
+            <AlertMessage
+              message="Vous êtes déconnecté avec succès"
+              type="success"
+            />
+          )}
+          {signinSuccess && <AlertMessage message="Bon retour!" />}
+          {signupSuccess && (
+            <AlertMessage
+              message="Compte créé avec succès. Vous devez l'activer maintenant par email"
+              type="success"
+            />
+          )}
+          {logoutSuccess && <Redirect to="/" />}
 
-      {accountRemovalSuccess && <Redirect to="/" />}
+          {accountRemovalSuccess && <Redirect to="/" />}
 
-      <Header />
-      <Switch>
-        {user?.admin && (
-          <Route exact path="/admin-panel">
-            <AdminPanel />
-          </Route>
-        )}
-        {user?.admin && (
-          <Route exact path="/admin/allusers">
-            <AllUsers />
-          </Route>
-        )}
-        {user?.admin && (
-          <Route exact path="/admin/allproducts">
-            <AllProductsAdmin />
-          </Route>
-        )}
-        {user?.admin && (
-          <Route exact path="/admin/product/:id">
-            <SingleProductAdmin />
-          </Route>
-        )}
+          <Header />
 
-        <Route exact path="/">
-          <Home
-            produits={produitsFilter}
-            setminprix={setminprix}
-            setmaxprix={setmaxprix}
-            setsearchnom={setsearchnom}
-            setsearchcat={setsearchcat}
-          />
-        </Route>
-        <Route exact path="/voitures">
-          <AllCars />
-        </Route>
-        <Route exact path="/connexion">
-          <Connexion />
-        </Route>
-        <Route exact path="/produits/:id">
-          <ProductPage />
-        </Route>
-        <Route exact path="/signup">
-          <SignUp />
-        </Route>
-        <Route exact path="/forgot-password">
-          <ForgotPassword />
-        </Route>
-        <Route exact path="/new-password">
-          <NewPassword />
-        </Route>
-        <Route exact path="/account-confirmation">
-          <AccountActivation />
-        </Route>
+          <Switch>
+            {user?.admin && (
+              <Route exact path="/admin-panel">
+                <AdminPanel />
+              </Route>
+            )}
+            {user?.admin && (
+              <Route exact path="/admin/allusers">
+                <AllUsers />
+              </Route>
+            )}
+            {user?.admin && (
+              <Route exact path="/admin/allproducts">
+                <AllProductsAdmin />
+              </Route>
+            )}
+            {user?.admin && (
+              <Route exact path="/admin/product/:id">
+                <SingleProductAdmin />
+              </Route>
+            )}
 
-        {user && (
-          <>
-            <Route exact path="/vendre-produit">
-              <NouveauProduit />
+            <Route exact path="/">
+              <Home
+                produits={produitsFilter}
+                setminprix={setminprix}
+                setmaxprix={setmaxprix}
+                setsearchnom={setsearchnom}
+                setsearchcat={setsearchcat}
+              />
             </Route>
-            <Route exact path="/cart">
-              <Cart />
+            <Route exact path="/voitures">
+              <AllCars />
             </Route>
-            <Route path="/:product/:id/edit">
-              <EditProduct />
+            <Route exact path="/connexion">
+              <Connexion />
             </Route>
-            <Route exact path="/profile">
-              <Profile />
+            <Route exact path="/produits/:id">
+              <ProductPage />
             </Route>
-            <Route exact path="/:email/products">
-              <UserProducts />
+            <Route exact path="/signup">
+              <SignUp />
             </Route>
-          </>
-        )}
+            <Route exact path="/forgot-password">
+              <ForgotPassword />
+            </Route>
+            <Route exact path="/new-password">
+              <NewPassword />
+            </Route>
+            <Route exact path="/account-confirmation">
+              <AccountActivation />
+            </Route>
 
-        <Route>
-          <NotFound />
-        </Route>
-      </Switch>
-      <Footer />
+            {user && (
+              <>
+                <Route exact path="/vendre-produit">
+                  <NouveauProduit />
+                </Route>
+                <Route exact path="/cart">
+                  <Cart />
+                </Route>
+                <Route path="/:product/:id/edit">
+                  <EditProduct />
+                </Route>
+                <Route exact path="/profile">
+                  <Profile />
+                </Route>
+                <Route exact path="/:email/products">
+                  <UserProducts />
+                </Route>
+              </>
+            )}
+
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+          <Footer />
+        </CloudinaryContext>
+      </>
     </Router>
   );
 }

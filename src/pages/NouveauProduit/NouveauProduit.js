@@ -20,10 +20,10 @@ import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import CurrencyFormat from 'react-currency-format';
 import { marques } from '../../data';
+import axios from 'axios';
 import DropzoneComponent from 'react-dropzone-component';
-import '../../../node_modules/react-dropzone-component/styles/filepicker.css';
-import '../../../node_modules/dropzone/dist/min/dropzone.min.css';
-import Cloudinary from '../../components/Cloudinary/Cloudinary';
+import { Image } from 'cloudinary-react';
+
 const useStyles = makeStyles({
   root: {
     height: '100vh',
@@ -62,46 +62,45 @@ const useStyles = makeStyles({
     marginBottom: '10px',
     backgroundColor: 'red',
   },
+  imagePreview: {
+    width: '100px',
+  },
 });
-var componentConfig = {
-  iconFiletypes: ['.jpg', '.png', '.gif'],
-  showFiletypeIcon: true,
-  postUrl: '/uploadHandler',
-};
+
 function NouveauProduit() {
-  const [images, setimages] = useState([]);
-  var djsConfig = { autoProcessQueue: false };
-  var eventHandlers = { addedfile: (file) => console.log(file) };
+  const [imageUploaded, setimageUploaded] = useState(null);
+  const [imageError, setimageError] = useState('');
   const dispatch = useDispatch();
-  const imagesContainer = useRef(null);
   const filesContainer = useRef(null);
   const [nom, setNom] = useState('');
   const [description, setDescription] = useState('');
   const [prix, setPrix] = useState(0);
   const [marque, setmarque] = useState('smartphones');
-  const [fileArray, setFileArray] = useState([]);
-  const [fileObj] = useState([]);
   const [images, setimages] = useState([]);
-  const [file, setFile] = useState([null]);
 
   const onImageChange = (e) => {
-    fileObj.push(e.target.files);
-    console.log('fileObj is ', fileObj);
-    console.log(e.target.files[0]);
-    images.push(e.target.files[0]);
-    console.log('images', images);
-    console.log(e.target.files);
-    for (let i = 0; i < fileObj.length; i++) {
-      fileArray.push(URL.createObjectURL(fileObj[i][0]));
-    }
+    setimageError('');
+    const file = e.target.files[0];
+    console.log(file);
+    if (file.size > 1048576) {
+      setimageError(
+        "L'image est trop grande! Utilisez des images en dessous de 1MB"
+      );
 
-    setFile(fileArray);
-    // const picture = document.createElement('img');
-    // picture.src = fileArray[fileArray.length - 1];
-    // picture.className = classes.imagePreview;
-    // imagesContainer.current.appendChild(picture);
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'upload');
+    axios
+      .post('https://api.cloudinary.com/v1_1/mouhamadou/image/upload', formData)
+      .then((res) => {
+        const { data } = res;
+        console.log(data);
+        const { url, asset_id } = data;
+        setimages((images) => [...images, { url, asset_id }]);
+      });
   };
-  useEffect(() => {}, [fileArray.length, fileObj, file]);
 
   const { creatingProduct, productCreated } = useSelector(
     (state) => state.products
@@ -109,6 +108,7 @@ function NouveauProduit() {
   const { user } = useSelector((state) => state.userReducer);
 
   const classes = useStyles();
+
   const handleCreateProduct = (e) => {
     e.preventDefault();
     console.log(images);
@@ -116,11 +116,6 @@ function NouveauProduit() {
     formData.append('nom', nom);
     formData.append('description', description);
     formData.append('marque', marque);
-    let imgFiles = filesContainer.current.files;
-    for (let i = 0; i < imgFiles.length; i++) {
-      let file = imgFiles[i];
-      formData.append('images[]', file, file.name);
-    }
     formData.append('prix', prix);
     formData.append('user_id', user.id);
     dispatch(newProduct(formData));
@@ -141,6 +136,7 @@ function NouveauProduit() {
         {productCreated && (
           <AlertMessage message="Votre produit a été créé. Nous le mettrons en ligne après révision." />
         )}
+        {imageError && <AlertMessage message={imageError} type="error" />}
         <Typography variant="h4" className={classes.title}>
           Vendez votre voiture
         </Typography>
@@ -180,17 +176,11 @@ function NouveauProduit() {
             <input
               className="files"
               type="file"
-              id="files"
+              id="file"
               ref={filesContainer}
               accept="image/*"
-              multiple={true}
               onChange={onImageChange}
               data-buttonText="Your label here"
-            />
-            <DropzoneComponent
-              config={componentConfig}
-              eventHandlers={eventHandlers}
-              djsConfig={djsConfig}
             />
           </FormControl>
 
@@ -216,12 +206,12 @@ function NouveauProduit() {
               {creatingProduct ? 'Patientez...' : 'Vendre'}
             </Button>
           </FormControl>
-          <section>
-            {images.map((i) => (
-              <img src={i} alt="" />
-            ))}
-          </section>
         </form>
+        <div>
+          {images.map((img) => (
+            <img src={img.url} alt="" className={classes.imagePreview} />
+          ))}
+        </div>
       </Grid>
     </Grid>
   );
