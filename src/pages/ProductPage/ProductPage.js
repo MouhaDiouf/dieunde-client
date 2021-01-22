@@ -94,14 +94,19 @@ const useStyles = makeStyles({
   },
   whatsappMessageIcon: {
     cursor: 'pointer',
+    margin: '0 10px',
   },
 
   modalContainer: {
     backgroundColor: 'white',
-    height: 300,
-    minWidth: '50%',
+    minWidth: '30%',
     textAlign: 'center',
     maxWidth: '60%',
+  },
+  messageIconsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   productImg: {
@@ -242,31 +247,24 @@ function ProductPage() {
                 )}
                 thousandSeparator={' '}
               />
-              <Chip label={product.catégorie} />
+              <Chip label={product.marque} />
             </Container>
 
             <ButtonGroup className={classes.btnGroup}>
-              <Button
+              {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={handleAddToFavorites}
               >
                 Ajouter Aux Favoris
-              </Button>
+              </Button> */}
               <Button className={classes.faorisBtn} onClick={handleOpen}>
                 Informations Vendeur
               </Button>
             </ButtonGroup>
             <div className={classes.shareIcons}>
               <Typography className="h6">Partager ce produit: </Typography>
-              <EmailShareButton
-                subject={`Informations sur ${product.nom}`}
-                body={`Bonjour ${
-                  product.user.nom ? product.use.nom : ''
-                }. J'aimerais avoir plus de détails sur ${product.nom}.`}
-              >
-                <EmailIcon size={32} round />
-              </EmailShareButton>
+
               <FacebookShareButton
                 url="www.github.com"
                 quote="J'ai trouvé ceci sur dieunde.com"
@@ -285,7 +283,7 @@ function ProductPage() {
                 url="www.github.com"
                 title="J'ai trouvé ceci sur dieunde.com"
               >
-                <TwitterIcon size={32} round />
+                <TwitterIcon size={35} round />
               </TwitterShareButton>
             </div>
           </Grid>
@@ -299,11 +297,9 @@ function ProductPage() {
         className={classes.modal}
       >
         <Container className={classes.modalContainer}>
-          <Typography variant="h5">Informations Vendeur</Typography>
           <List className={classes.infosVendeur}>
             <p>{product.user.name}</p>
-            <p>{product.user.email}</p>
-            <div>
+            <div className={classes.messageIconsContainer}>
               <Button
                 onClick={(e) => handleCallVendor(e, product.user.telephone)}
                 variant="contained"
@@ -326,6 +322,15 @@ function ProductPage() {
                 className={classes.whatsappMessageIcon}
                 onClick={sendWhatsappMessage}
               />
+              {/* <EmailShareButton
+                to={product.user.email}
+                subject={`Informations sur ${product.nom}`}
+                body={`Bonjour ${
+                  product.user.nom ? product.use.nom : ''
+                }. J'aimerais avoir plus de détails sur ${product.nom}.`}
+              >
+                <EmailIcon size={32} round />
+              </EmailShareButton> */}
             </div>
           </List>
         </Container>

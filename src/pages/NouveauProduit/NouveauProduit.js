@@ -69,6 +69,7 @@ var componentConfig = {
   postUrl: '/uploadHandler',
 };
 function NouveauProduit() {
+  const [images, setimages] = useState([]);
   var djsConfig = { autoProcessQueue: false };
   var eventHandlers = { addedfile: (file) => console.log(file) };
   const dispatch = useDispatch();
@@ -205,7 +206,6 @@ function NouveauProduit() {
               ))}
             </Select>{' '}
             <br />
-            <Cloudinary />
             <Button
               color="primary"
               variant="contained"
@@ -216,7 +216,11 @@ function NouveauProduit() {
               {creatingProduct ? 'Patientez...' : 'Vendre'}
             </Button>
           </FormControl>
-          <div className="form-group multi-preview" ref={imagesContainer}></div>
+          <section>
+            {images.map((i) => (
+              <img src={i} alt="" />
+            ))}
+          </section>
         </form>
       </Grid>
     </Grid>
