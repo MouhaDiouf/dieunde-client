@@ -22,33 +22,25 @@ const useStyles = makeStyles({
     margin: '0 auto',
   },
 });
-function Search({
-  produits,
-  setsearchnom,
-  setminprix,
-  setmaxprix,
-  setsearchcat,
-}) {
+function Search({ voitures, setsearchnom, setsearchmarque, setmaxprix }) {
   const classes = useStyles();
-  let Allproduits = useSelector((state) => state.products);
 
-  let catégories = [];
-
-  if (Allproduits) {
-    Allproduits = Allproduits.produits[0];
-
-    catégories = Allproduits.map((produit) => {
-      return produit.catégorie;
+  let marques = [];
+  console.log(voitures);
+  if (voitures) {
+    marques = voitures.map((voiture) => {
+      return voiture.marque;
     });
-    catégories = [...new Set(catégories), 'Tout'];
+    marques = [...new Set(marques), 'Tout'];
   }
 
-  const [selectCatégorie, setselectCatégorie] = useState('Tout');
+  const [selectMarques, setselectMarques] = useState('Tout');
   const [range, setrange] = useState([0, 900000]);
-  const handleChangeCat = (e) => {
-    setselectCatégorie(e.target.value);
-    setsearchcat(e.target.value);
+  const handleChangeMarque = (e) => {
+    setsearchmarque(e.target.value);
+    setselectMarques(e.target.value);
   };
+
   return (
     <FormControl className={classes.formContainer}>
       <TextField
@@ -60,14 +52,14 @@ function Search({
       />{' '}
       <br />
       <Select
-        name="catégories"
-        id="catégories"
-        value={selectCatégorie}
-        onChange={handleChangeCat}
+        name="marques"
+        id="marques"
+        value={selectMarques}
+        onChange={handleChangeMarque}
       >
-        {catégories.map((catégorie, idx) => (
-          <MenuItem name={catégorie} key={idx} value={catégorie}>
-            {catégorie}
+        {marques.map((marque, idx) => (
+          <MenuItem name={marque} key={idx} value={marque}>
+            {marque}
           </MenuItem>
         ))}
       </Select>

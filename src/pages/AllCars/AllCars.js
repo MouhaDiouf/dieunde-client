@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Container, makeStyles, Typography } from '@material-ui/core';
 import Produit from '../../components/Produits/Produit/Produit';
 import Carousel from 'react-elastic-carousel';
+import Search from '../../components/Search/Search';
 const breakpoints = [
   { width: 1, itemsToShow: 1 },
   { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
@@ -25,10 +26,13 @@ function AllCars() {
   const classes = useStyles();
   const [voitures, setvoitures] = useState(null);
   const [loading, setloading] = useState(true);
+  const [minPrix, setminPrix] = useState(0);
+  const [maxPrix, setmaxPrix] = useState(1999999999);
+  const [searchmarque, setsearchmarque] = useState('');
+  const [searchnom, setsearchnom] = useState('');
   useEffect(() => {
     try {
       axios.get('http://localhost:3001/produits').then((res) => {
-        console.log(res);
         if (res.status === 200) {
           setvoitures(res.data);
           setloading(false);
@@ -44,6 +48,18 @@ function AllCars() {
   if (loading) {
     return <h2>Chargement...</h2>;
   }
+  let filterVoitures = [...voitures];
+
+  filterVoitures = filterVoitures.filter((voiture) =>
+    voiture.nom.toLowerCase().includes(searchnom.toLowerCase())
+  );
+  filterVoitures = filterVoitures.filter((voiture) =>
+    voiture.marque.toLowerCase().includes(searchmarque.toLowerCase())
+  );
+
+  if (searchmarque === 'Tout') {
+    filterVoitures = [...voitures];
+  }
   return (
     <Container>
       <div className={classes.selection}>
@@ -58,11 +74,18 @@ function AllCars() {
             })}
         </Carousel>
       </div>
-      <Typography>Toutes Les Voitures</Typography>
-      <div className={classes.AllCarsContainer}>
-        {voitures.map((voiture) => (
-          <Produit {...voiture} />
-        ))}
+      <div className={classes.allCarsParent}>
+        <Search
+          voitures={voitures}
+          setsearchnom={setsearchnom}
+          setsearchmarque={setsearchmarque}
+        />
+        <Typography>Toutes Les Voitures</Typography>
+        <div className={classes.AllCarsContainer}>
+          {filterVoitures.map((voiture) => (
+            <Produit {...voiture} />
+          ))}
+        </div>
       </div>
     </Container>
   );

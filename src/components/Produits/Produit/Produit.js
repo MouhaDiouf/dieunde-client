@@ -55,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Produit({ nom, description, images, id }) {
-  console.log(images);
   const classes = useStyles();
   const { user } = useSelector((state) => state.userReducer);
   const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(

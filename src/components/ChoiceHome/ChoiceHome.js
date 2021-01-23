@@ -95,7 +95,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function ChoiceHome({ produits }) {
-  console.log(produits);
   const classes = useStyles();
   return (
     <>
