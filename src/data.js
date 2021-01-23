@@ -2,6 +2,8 @@ import range from './images/brands/landRover.png';
 import mercedes from './images/brands/benz.png';
 import ford from './images/brands/ford.png';
 import peugeot from './images/brands/peugeot.png';
+import bmw from './images/brands/bmw.png';
+import citroen from './images/brands/citroen.png';
 export const marques = [
   'Toyota',
   'Honda',
@@ -40,6 +42,8 @@ export const marques = [
 export const logos = {
   'Land Rover': range,
   'Mercedes-Benz': mercedes,
+  BMW: bmw,
   Ford: ford,
   Peugeot: peugeot,
+  Citroen: citroen,
 };

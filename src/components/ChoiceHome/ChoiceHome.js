@@ -50,10 +50,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     fontWeight: 'bold',
     fontSize: '30px',
+    textDecoration: 'none',
   },
   marque: {
-    width: '100px',
-    height: '100px',
+    width: '50px',
+    height: '50x',
     objectFit: 'contain',
   },
   lastCars: {
@@ -67,6 +68,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     fontWeight: 'bold',
     fontSize: '30px',
+    textDecoration: 'none',
     '&:hover': {
       backgroundColor: 'yello',
     },
@@ -103,7 +105,7 @@ function ChoiceHome({ produits }) {
         </Typography>
 
         <Grid container spacing={4} className={classes.grid}>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4} sm={6}>
             <Paper
               className={`${classes.paper} ${classes.acheterVoiture}`}
               component={Link}
@@ -112,7 +114,7 @@ function ChoiceHome({ produits }) {
               Acheter Une Voiture
             </Paper>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4} sm={6}>
             <Paper
               className={`${classes.paper} ${classes.vendreVoiture} vendreContainer`}
               component={Link}

@@ -18,7 +18,7 @@ function ProduitsSimilaires({ similaires }) {
   if (produits) {
     produits = produits.produits;
   } else {
-    return 'fetching similaires';
+    return 'chargement produits similaires';
   }
   const breakpoints = [
     { width: 1, itemsToShow: 1 },

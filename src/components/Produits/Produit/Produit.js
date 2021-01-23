@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Produit({ nom, description, images, id }) {
+  console.log(images);
   const classes = useStyles();
   const { user } = useSelector((state) => state.userReducer);
   const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(
@@ -83,7 +84,11 @@ function Produit({ nom, description, images, id }) {
         // subheader="September 14, 2016"
       />
 
-      <CardMedia className={classes.media} image={images[0].url} title={nom} />
+      <CardMedia
+        className={classes.media}
+        image={JSON.parse(images)[0].secure_url}
+        title={nom}
+      />
       <CardContent>
         {productAddedId === id && favoriteCreated && (
           <AlertMessage message="Ajouté aux favoris" />

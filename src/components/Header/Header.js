@@ -19,6 +19,7 @@ import { logoutUser } from '../../actions/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import headerStyles from './Header.module.css';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -75,8 +76,6 @@ function Header() {
         position="static"
       >
         <Toolbar>
-          <DrawerController />
-
           <Typography
             variant="h6"
             className={classes.title}
@@ -95,7 +94,7 @@ function Header() {
           )}
 
           {!user && (
-            <>
+            <div className={headerStyles.menuItems}>
               <MenuItem
                 component={Link}
                 to="/connexion"
@@ -114,7 +113,7 @@ function Header() {
                 {' '}
                 Créer un compte
               </MenuItem>
-            </>
+            </div>
           )}
           {user?.admin && (
             <>
@@ -171,6 +170,7 @@ function Header() {
               </Menu>
             </div>
           )}
+          <DrawerController />
         </Toolbar>
       </AppBar>
     </>

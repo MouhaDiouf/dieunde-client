@@ -105,6 +105,7 @@ function SingleProductAdmin() {
         const data = await response.json();
         if (data) {
           setProduct(data);
+
           setLoading(false);
         } else {
           setProduct(null);
@@ -130,6 +131,7 @@ function SingleProductAdmin() {
   if (!product) {
     return <h2>Aucun produit à afficher</h2>;
   }
+
   return (
     <Container maxWidth="lg" className={classes.root}>
       {productDeleteSuccess && (
@@ -146,7 +148,7 @@ function SingleProductAdmin() {
         <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
             <img
-              src={product.image?.url}
+              src={JSON.parse(product.images)[0].secure_url}
               alt=""
               className={classes.productImg}
             />

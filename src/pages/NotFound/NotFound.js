@@ -17,7 +17,7 @@ function NotFound() {
         et réessayez.
       </p>
       <p>
-        <Link to="/">Go Back</Link>
+        <Link to="/">Retour</Link>
       </p>
     </div>
   );

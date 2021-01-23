@@ -13,6 +13,17 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import { IconButton } from '@material-ui/core';
 import DrawerStyles from './DrawerController.module.css';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { logoutUser } from '../../../actions/actions';
+import { useDispatch } from 'react-redux';
+import {
+  AccountCircleRounded,
+  DriveEta,
+  ExitToApp,
+  SupervisedUserCircle,
+  VpnKeyRounded,
+} from '@material-ui/icons';
 
 const useStyles = makeStyles({
   list: {
@@ -29,10 +40,12 @@ const useStyles = makeStyles({
 
 export default function TemporaryDrawer() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [state, setState] = React.useState({
     left: false,
   });
 
+  const { user } = useSelector((state) => state.userReducer);
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === 'keydown' &&
@@ -43,7 +56,9 @@ export default function TemporaryDrawer() {
 
     setState({ ...state, [anchor]: open });
   };
-
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -54,26 +69,48 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        {!user && (
+          <>
+            <ListItem button component={Link} to="/connexion">
+              <ListItemIcon>
+                <VpnKeyRounded />
+              </ListItemIcon>
+              <ListItemText primary="Connexion" />
+            </ListItem>
+            <ListItem button component={Link} to="/signup">
+              <ListItemIcon>
+                <SupervisedUserCircle />
+              </ListItemIcon>
+              <ListItemText primary="Créer compte" />
+            </ListItem>
+          </>
+        )}
       </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+
+      {user && (
+        <>
+          <List>
+            <ListItem button component={Link} to="/profile">
+              <ListItemIcon>
+                <AccountCircleRounded />
+              </ListItemIcon>
+              <ListItemText primary="Profil" />
+            </ListItem>
+            <ListItem button component={Link} to="/vendre-produit">
+              <ListItemIcon>
+                <DriveEta />
+              </ListItemIcon>
+              <ListItemText primary="Vendre" />
+            </ListItem>{' '}
+            <ListItem button component={Link} onClick={handleLogout}>
+              <ListItemIcon>
+                <ExitToApp />
+              </ListItemIcon>
+              <ListItemText primary="Déconnexion" />
+            </ListItem>
+          </List>
+        </>
+      )}
     </div>
   );
 

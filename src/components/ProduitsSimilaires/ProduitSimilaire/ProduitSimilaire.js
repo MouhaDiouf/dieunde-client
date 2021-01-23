@@ -22,7 +22,11 @@ function ProduitSimilaire({ nom, description, catégorie, prix, images, id }) {
   return (
     <Container className={classes.root}>
       <Paper>
-        <img className={classes.image} src={images[0].url} alt={nom} />
+        <img
+          className={classes.image}
+          src={JSON.parse(images)[0].secure_url}
+          alt={nom}
+        />
 
         <Typography>{nom}</Typography>
         <Button

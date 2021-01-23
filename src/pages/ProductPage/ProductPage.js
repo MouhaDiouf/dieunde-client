@@ -185,6 +185,8 @@ function ProductPage() {
   if (!product) {
     return <h2>Aucun produit à afficher</h2>;
   }
+  console.log('HELLO');
+  console.log(JSON.parse(product.images));
   return (
     <Container maxWidth="lg" className={classes.root}>
       {productAddedId === id && favoriteCreated && (
@@ -229,8 +231,12 @@ function ProductPage() {
                 );
               }}
             >
-              {product.images.map((image) => (
-                <img src={image.url} alt="" className={classes.productImg} />
+              {JSON.parse(product.images).map((image) => (
+                <img
+                  src={image.secure_url}
+                  alt=""
+                  className={classes.productImg}
+                />
               ))}
             </Carousel>
           </Grid>
@@ -248,6 +254,9 @@ function ProductPage() {
                 thousandSeparator={' '}
               />
               <Chip label={product.marque} />
+              <Chip label={product.année} />
+              <Chip label={`${product.kilométrage} km`} />
+              <Chip label={product.etat} />
             </Container>
 
             <ButtonGroup className={classes.btnGroup}>
