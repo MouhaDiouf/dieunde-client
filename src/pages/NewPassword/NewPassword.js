@@ -129,7 +129,7 @@ export default function NewPassword() {
               required
               fullWidth
               type="password"
-              label="New Password"
+              label="Nouveau mot de passe"
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
@@ -139,7 +139,7 @@ export default function NewPassword() {
               required
               fullWidth
               type="password"
-              label="Confirm Password"
+              label="Confirmer mot de passe"
               name="password_confirmation"
               onChange={(e) => setpasswordconfirmation(e.target.value)}
               value={passwordconfirmation}

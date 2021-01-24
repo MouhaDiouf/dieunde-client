@@ -30,7 +30,7 @@ import { addToFavorites } from '../../actions/actions';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import CurrencyFormat from 'react-currency-format';
 import Carousel from 'react-elastic-carousel';
-import { Flex, Square } from 'react-elastic-carousel';
+
 const breakpoints = [
   { width: 1, itemsToShow: 1 },
   // { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
@@ -47,7 +47,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
   },
   productImgCarousel: {
     width: '5px',
@@ -207,7 +206,7 @@ function ProductPage() {
             item
             container
             xs={12}
-            md={6}
+            md={7}
           >
             <Carousel
               className={classes.carouselContainer}

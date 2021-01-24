@@ -20,12 +20,16 @@ const useStyles = makeStyles({
     height: 140,
   },
 });
-function UserProduct({ nom, image, id }) {
+function UserProduct({ nom, images, id }) {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <CardMedia className={classes.media} image={image.url} title={nom} />
+        <CardMedia
+          className={classes.media}
+          image={JSON.parse(images)[0].secure_url}
+          title={nom}
+        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {nom}
@@ -47,7 +51,11 @@ function UserProduct({ nom, image, id }) {
         >
           Modifier
         </Button>
-        <DeleteProduct productName={nom} productImg={image} id={id} />
+        <DeleteProduct
+          productName={nom}
+          productImg={JSON.parse(images)[0]}
+          id={id}
+        />
       </CardActions>
     </Card>
   );

@@ -15,7 +15,6 @@ const useStyles = makeStyles({
   validation: {
     display: 'flex',
     width: '100%',
-    display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
     textAlign: 'center',

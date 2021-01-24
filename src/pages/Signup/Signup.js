@@ -82,7 +82,7 @@ export default function SignUp() {
   const validatePhonenumber = (telephone) => {
     const phoneno = /^\d{9}$/;
     const phoneWithoutSpace = telephone.replace(/ /g, '');
-    if (telephone.match(phoneWithoutSpace)) {
+    if (phoneWithoutSpace.match(phoneno)) {
       return true;
     } else {
       return false;

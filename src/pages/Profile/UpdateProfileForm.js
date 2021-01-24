@@ -68,9 +68,9 @@ function DeleteAccount() {
   };
   return (
     <>
-      <Button variant="text" color="secondary" onClick={handleOpenDelete}>
+      {/* <Button variant="text" color="secondary" onClick={handleOpenDelete}>
         Changer Téléphone
-      </Button>
+      </Button> */}
       <Modal
         className={classes.modal}
         open={deteleAccountModal}

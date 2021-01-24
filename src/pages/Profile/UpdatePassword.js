@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     width: '100%',
   },
+  changePasswordBtn: {
+    margin: '10px auto',
+  },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
@@ -39,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function UpdatePassword() {
-  const { user } = useSelector((state) => state.userReducer);
   const classes = useStyles();
   const [openPassword, setOpenPassword] = useState(false);
   const [password, setPassword] = useState('');
@@ -76,8 +78,9 @@ function UpdatePassword() {
         type="button"
         onClick={handleOpenPassword}
         variant="contained"
-        size="large"
+        size="medium"
         color="primary"
+        className={classes.changePasswordBtn}
       >
         Changer mot de passe
       </Button>
@@ -106,7 +109,7 @@ function UpdatePassword() {
                 type="success"
               />
             )}
-            <Typography id="transition-modal-title" variant="h3">
+            <Typography id="transition-modal-title" variant="h5">
               Changer votre mot de passe
             </Typography>
             <form className={classes.form} onSubmit={handleUpdatePassword}>
@@ -117,12 +120,14 @@ function UpdatePassword() {
                   variant="outlined"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
+                  type="password"
                 ></TextField>
                 <TextField
                   label="Confirmation mot de passe"
                   variant="filled"
                   onChange={(e) => setPasswordConf(e.target.value)}
                   value={passwordConf}
+                  type="password"
                 ></TextField>
                 <TextField
                   label="Ancien mot de passe"

@@ -26,10 +26,18 @@ import {
   FacebookIcon,
   TwitterIcon,
 } from 'react-share';
+import produitStyles from './Produit.module.css';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 290,
     height: 380,
+    margin: '10px',
+    textAlign: 'center',
+  },
+  cardActions: {
+    display: 'flex',
+    justifyContent: 'center',
   },
   media: {
     height: 0,
@@ -48,10 +56,10 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
-  cardHeader: {
-    width: 300,
-    height: 50,
-  },
+  // cardHeader: {
+  //   width: 300,
+  //   height: 50,
+  // },
 }));
 
 function Produit({ nom, description, images, id }) {
@@ -70,36 +78,37 @@ function Produit({ nom, description, images, id }) {
     user && !creatingFavorite && dispatch(addToFavorites(params));
   };
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        className={classes.cardHeader}
-        // avatar={
-        //   <Avatar aria-label="recipe" className={classes.avatar}>
-        //     P
-        //   </Avatar>
-        // }
+    <div>
+      <Card className={classes.root}>
+        <CardHeader
+          className={`${classes.cardHeader} ${produitStyles.cardHeader}`}
+          // avatar={
+          //   <Avatar aria-label="recipe" className={classes.avatar}>
+          //     P
+          //   </Avatar>
+          // }
 
-        title={`${nom}`}
-        // subheader="September 14, 2016"
-      />
+          title={`${nom}`}
+          // subheader="September 14, 2016"
+        />
 
-      <CardMedia
-        className={classes.media}
-        image={JSON.parse(images)[0].secure_url}
-        title={nom}
-      />
-      <CardContent>
-        {productAddedId === id && favoriteCreated && (
-          <AlertMessage message="Ajouté aux favoris" />
-        )}
+        <CardMedia
+          className={classes.media}
+          image={JSON.parse(images)[0].secure_url}
+          title={nom}
+        />
+        <CardContent>
+          {productAddedId === id && favoriteCreated && (
+            <AlertMessage message="Ajouté aux favoris" />
+          )}
 
-        {/* <Typography variant="body2" color="textSecondary" component="p">
+          {/* <Typography variant="body2" color="textSecondary" component="p">
           {description}
         </Typography> */}
-      </CardContent>
+        </CardContent>
 
-      <CardActions disableSpacing>
-        {/* {user && (
+        <CardActions className={classes.cardActions}>
+          {/* {user && (
           <IconButton
             aria-label="add to favorites"
             onClick={handleAddToFavorites}
@@ -108,11 +117,10 @@ function Produit({ nom, description, images, id }) {
             <FavoriteIcon />
           </IconButton>
         )} */}
-        {/* <IconButton aria-label="share">
+          {/* <IconButton aria-label="share">
           <ShareIcon />
         </IconButton> */}
 
-        <ButtonGroup>
           <Button
             component={Link}
             to={`/produits/${id}`}
@@ -121,9 +129,9 @@ function Produit({ nom, description, images, id }) {
           >
             Consulter
           </Button>
-        </ButtonGroup>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
+    </div>
   );
 }
 

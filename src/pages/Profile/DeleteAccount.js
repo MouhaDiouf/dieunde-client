@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  supprimerCompteBtn: {
+    margin: '10px auto',
+  },
   form: {
     width: '100%',
     margin: '20px 0',
@@ -62,6 +65,7 @@ function DeleteAccount() {
         variant="contained"
         color="secondary"
         onClick={handleOpenDelete}
+        className={classes.supprimerCompteBtn}
       >
         Supprimer compte
       </Button>
@@ -77,12 +81,12 @@ function DeleteAccount() {
       >
         <Fade in={deteleAccountModal}>
           <div className={classes.paper}>
-            <Typography id="transition-modal-title" variant="h3">
+            <Typography id="transition-modal-title" variant="h5">
               Supprimer votre compte
             </Typography>
             <form className={classes.form} onSubmit={handleAccountDeletion}>
               <Typography>
-                Êtes-vous sûr de supprimer votre mot de passe? Tapez "Oui" pour
+                Êtes-vous sûr de supprimer votre compte? Tapez "Oui" pour
                 confirmer
               </Typography>
               <FormControl className={classes.formControl}>
@@ -98,7 +102,7 @@ function DeleteAccount() {
                   variant="contained"
                   className={classes.submitBtn}
                 >
-                  Delete
+                  Supprimer
                 </Button>
               </FormControl>
             </form>

@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
+
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -72,7 +73,7 @@ function Header() {
   return (
     <>
       <AppBar
-        className={`${user?.admin && classes.appBarAdmin}`}
+        className={`${user?.admin && classes.appBarAdmin} ${classes.appBar}`}
         position="static"
       >
         <Toolbar>
@@ -130,7 +131,7 @@ function Header() {
           )}
 
           {user && (
-            <div>
+            <div className={headerStyles.menuItems}>
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"

@@ -28,8 +28,13 @@ const useStyles = makeStyles({
   navigation: {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '80%',
+    width: '100%',
     margin: '0 auto',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  vosProduits: {
+    margin: '10px auto',
   },
   avatar: {
     width: '100px',
@@ -61,10 +66,16 @@ function Profile() {
           </List>
         </div>
         <div className={classes.navigation}>
-          <Button component={Link} to={`${user.email}/products`}>
+          <Button
+            component={Link}
+            to={`${user.email}/products`}
+            size="medium"
+            color="secondary"
+            variant="contained"
+            className={classes.vosProduits}
+          >
             Vos Produits
           </Button>
-
           <UpdatePassword />
           {!user.admin && <DeleteAccount />}
         </div>

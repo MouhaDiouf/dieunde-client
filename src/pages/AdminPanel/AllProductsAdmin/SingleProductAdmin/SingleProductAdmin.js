@@ -45,6 +45,8 @@ const useStyles = makeStyles({
 
   btnGroup: {
     margin: '25px 0',
+    display: 'flex',
+    flexWrap: 'wrap',
   },
 
   modalContainer: {
@@ -174,6 +176,9 @@ function SingleProductAdmin() {
               </Button>
               <Button onClick={() => handleDeleteProduct(product.id)}>
                 Supprimer
+              </Button>
+              <Button onClick={() => handleDeleteProduct(product.id)}>
+                Ajouter à la sélection
               </Button>
             </ButtonGroup>
           </Grid>

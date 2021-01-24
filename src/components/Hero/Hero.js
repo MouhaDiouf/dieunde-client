@@ -6,7 +6,7 @@ import hero from '../../images/hero.jpg';
 const useStyles = makeStyles({
   hero: {
     height: '300px',
-    backgroundImage: `url(${hero})`,
+    backgroundImage: `linear-gradient( to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0,0.7)), url(${hero})`,
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     display: 'flex',
@@ -27,12 +27,12 @@ function Hero() {
         </Typography>
         <Button
           component={Link}
-          to="/"
+          to="/voitures"
           variant="contained"
           color="primary"
           size="large"
         >
-          Voir Produits
+          Voir Voitures
         </Button>
       </Container>
     </div>

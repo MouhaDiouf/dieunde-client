@@ -15,6 +15,7 @@ import { logos } from '../../data';
 
 import React from 'react';
 import Produit from '../Produits/Produit/Produit';
+import { DriveEtaRounded, MonetizationOnOutlined } from '@material-ui/icons';
 const breakpoints = [
   { width: 1, itemsToShow: 1 },
   { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
@@ -51,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     fontSize: '30px',
     textDecoration: 'none',
+    flexDirection: 'column',
   },
   marque: {
     width: '50px',
@@ -69,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     fontSize: '30px',
     textDecoration: 'none',
+    flexDirection: 'column',
     '&:hover': {
       backgroundColor: 'yello',
     },
@@ -85,6 +88,11 @@ const useStyles = makeStyles((theme) => ({
     height: '200px',
     width: '100px',
   },
+  choiceIcon: {
+    fontSize: '50px',
+    color: 'green',
+    margin: ' 20px',
+  },
   grid: {
     display: 'flex',
     justifyContent: 'center',
@@ -99,7 +107,7 @@ function ChoiceHome({ produits }) {
   return (
     <>
       <div className={classes.root}>
-        <Typography variant="h3" className={classes.title}>
+        <Typography variant="h4" className={classes.title}>
           Je veux...
         </Typography>
 
@@ -110,7 +118,8 @@ function ChoiceHome({ produits }) {
               component={Link}
               to="/voitures"
             >
-              Acheter Une Voiture
+              <DriveEtaRounded className={classes.choiceIcon} />
+              <Typography variant="h5">Acheter Une Voiture</Typography>
             </Paper>
           </Grid>
           <Grid item xs={12} md={4} sm={6}>
@@ -119,7 +128,8 @@ function ChoiceHome({ produits }) {
               component={Link}
               to="/vendre-produit"
             >
-              Vendre Ma Voiture
+              <MonetizationOnOutlined className={classes.choiceIcon} />
+              <Typography variant="h5">Vendre Ma Voiture</Typography>
             </Paper>
           </Grid>
         </Grid>

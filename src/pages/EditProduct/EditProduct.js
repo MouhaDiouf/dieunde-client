@@ -50,6 +50,9 @@ const useStyles = makeStyles({
   },
   img: {
     width: '100%',
+    zIndex: '-2',
+    height: '100%',
+    objectFit: 'contain',
   },
   avatar: {
     marginBottom: '10px',
@@ -126,12 +129,16 @@ function EditProduct() {
   if (loading) {
     return 'Loading...';
   }
-  let { nom, image, description, catégorie, prix } = productToEdit;
+  let { nom, images, description, catégorie, prix } = productToEdit;
   redirect && history.goBack();
   return (
     <Grid container className={classes.root}>
       <Grid item md={6} xs={false} sm={5} className={classes.right}>
-        <img src={image.url} className={classes.img} alt={nom} />
+        <img
+          src={JSON.parse(images)[0].secure_url}
+          className={classes.img}
+          alt={nom}
+        />
       </Grid>
       <Grid
         item

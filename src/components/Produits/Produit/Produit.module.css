@@ -1,0 +1,6 @@
+@media screen and(max-width: 500px) {
+  .cardHeader {
+    font-size: 35px !important;
+    text-align: center;
+  }
+}

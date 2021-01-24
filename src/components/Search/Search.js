@@ -1,6 +1,7 @@
 import {
   Container,
   FormControl,
+  Grid,
   makeStyles,
   MenuItem,
   Select,
@@ -11,6 +12,7 @@ import {
 } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import PriceSlider from '../../components/PriceSlider/PriceSlider';
 
 const useStyles = makeStyles({
   range: {
@@ -22,23 +24,37 @@ const useStyles = makeStyles({
     margin: '0 auto',
   },
 });
-function Search({ voitures, setsearchnom, setsearchmarque, setmaxprix }) {
+function Search({
+  voitures,
+  setsearchnom,
+  setsearchmarque,
+  setmaxPrix,
+  setminPrix,
+  minPrix,
+  maxPrix,
+}) {
   const classes = useStyles();
-
   let marques = [];
   console.log(voitures);
   if (voitures) {
     marques = voitures.map((voiture) => {
       return voiture.marque;
     });
-    marques = [...new Set(marques), 'Tout'];
+    marques = [...new Set(marques), 'Toutes les marques'];
   }
 
-  const [selectMarques, setselectMarques] = useState('Tout');
-  const [range, setrange] = useState([0, 900000]);
+  const [selectMarques, setselectMarques] = useState('Toutes les marques');
   const handleChangeMarque = (e) => {
     setsearchmarque(e.target.value);
     setselectMarques(e.target.value);
+  };
+
+  const handleMaxPrix = (e) => {
+    setmaxPrix(Number(e.target.value));
+  };
+
+  const handleMinPrix = (e) => {
+    setminPrix(Number(e.target.value));
   };
 
   return (
@@ -63,18 +79,29 @@ function Search({ voitures, setsearchnom, setsearchmarque, setmaxprix }) {
           </MenuItem>
         ))}
       </Select>
-      <div className={classes.root}>
-        {/* <Typography id="range-slider" gutterBottom>
-          Prix
-        </Typography>
-        <Slider
-          value={range}
-          onChange={handleRangeChange}
-          valueLabelDisplay="auto"
-          aria-labelledby="range-slider"
-          getAriaValueText={valuetext}
-        /> */}
-      </div>
+      {/* <PriceSlider /> */}
+      {/* <PriceSlider /> */}
+      <Typography>Prix:</Typography>
+      <Grid container spacing={2}>
+        <Grid item md={5} xs={12}>
+          <TextField
+            type="number"
+            id="min"
+            label="min"
+            value={minPrix}
+            onChange={handleMinPrix}
+          />
+        </Grid>
+        <Grid item md={5} xs={12}>
+          <TextField
+            type="number"
+            id="max"
+            label="max"
+            value={maxPrix}
+            onChange={handleMaxPrix}
+          />
+        </Grid>
+      </Grid>
     </FormControl>
   );
 }
