@@ -73,7 +73,7 @@ function Header() {
   return (
     <>
       <AppBar
-        className={`${user?.admin && classes.appBarAdmin} ${classes.appBar}`}
+        className={`${user?.isadmin && classes.appBarAdmin} ${classes.appBar}`}
         position="static"
       >
         <Toolbar>
@@ -116,7 +116,7 @@ function Header() {
               </MenuItem>
             </div>
           )}
-          {user?.admin && (
+          {user?.isadmin && (
             <>
               <IconButton component={Link} to="/admin/allproducts">
                 <Badge badgeContent={unconfirmedProducts} color="secondary">
@@ -163,7 +163,7 @@ function Header() {
                 <MenuItem
                   onClick={handleClose}
                   component={Link}
-                  to="/vendre-produit"
+                  to="/vendre-voiture"
                 >
                   Vendre
                 </MenuItem>

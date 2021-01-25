@@ -4,6 +4,7 @@ import { Container, makeStyles, Typography } from '@material-ui/core';
 import Produit from '../../components/Produits/Produit/Produit';
 import Carousel from 'react-elastic-carousel';
 import Search from '../../components/Search/Search';
+import Pagination from '../../components/Pagination/Pagination';
 const breakpoints = [
   { width: 1, itemsToShow: 1 },
   { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
@@ -39,10 +40,17 @@ function AllCars() {
   const classes = useStyles();
   const [voitures, setvoitures] = useState(null);
   const [loading, setloading] = useState(true);
-  const [minPrix, setminPrix] = useState('');
-  const [maxPrix, setmaxPrix] = useState('');
+  const [minPrix, setminPrix] = useState(null);
+  const [maxPrix, setmaxPrix] = useState(null);
   const [searchmarque, setsearchmarque] = useState('');
   const [searchnom, setsearchnom] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(30);
+
+  // get current post
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   useEffect(() => {
     try {
       axios.get('http://localhost:3001/produits').then((res) => {
@@ -63,29 +71,40 @@ function AllCars() {
   }
   let filterVoitures = [...voitures];
 
-  for (let i = 0; i < voitures.length; i++) {
-    if (voitures[i].prix < minPrix) {
-      setminPrix(voitures[i].prix);
-    }
-    // if (voitures[i].prix > maxPrix) {
-    //   setmaxPrix(voitures[i].prix);
-    // }
-  }
+  // for (let i = 0; i < voitures.length; i++) {
+  //   if (voitures[i].prix < minPrix) {
+  //     setminPrix(voitures[i].prix);
+  //   }
+  // if (voitures[i].prix > maxPrix) {
+  //   setmaxPrix(voitures[i].prix);
+  // }
+
   filterVoitures = filterVoitures.filter((voiture) =>
     voiture.nom.toLowerCase().includes(searchnom.toLowerCase())
   );
   filterVoitures = filterVoitures.filter((voiture) =>
     voiture.marque.toLowerCase().includes(searchmarque.toLowerCase())
   );
+  if (minPrix) {
+    filterVoitures = filterVoitures.filter(
+      (voiture) => voiture.prix >= minPrix
+    );
+  }
   if (maxPrix) {
     filterVoitures = filterVoitures.filter(
-      (voiture) => voiture.prix >= minPrix && voiture.prix <= maxPrix
+      (voiture) => voiture.prix <= maxPrix
     );
   }
 
   if (searchmarque === 'Toutes les marques') {
     filterVoitures = [...voitures];
   }
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const voituresPerPage = filterVoitures.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
   return (
     <Container>
       <div className={classes.selection}>
@@ -114,17 +133,22 @@ function AllCars() {
           setmaxPrix={setmaxPrix}
         />
 
-        {filterVoitures.length === 0 && (
+        {voituresPerPage.length === 0 && (
           <div className={classes.noResult}>
             <Typography>Aucun résultat pour vos recherches</Typography>
           </div>
         )}
         <div className={classes.AllCarsContainer}>
-          {filterVoitures.map((voiture) => (
+          {voituresPerPage.map((voiture) => (
             <Produit {...voiture} />
           ))}
         </div>
       </div>
+      <Pagination
+        productsPerPage={productsPerPage}
+        totalProducts={filterVoitures.length}
+        paginate={paginate}
+      />
     </Container>
   );
 }

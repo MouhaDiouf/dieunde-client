@@ -5,15 +5,12 @@ import {
   Container,
   Grid,
   List,
-  ListItem,
   makeStyles,
   Modal,
   Paper,
   Typography,
 } from '@material-ui/core';
 import {
-  EmailIcon,
-  EmailShareButton,
   FacebookIcon,
   FacebookShareButton,
   TwitterIcon,
@@ -109,8 +106,9 @@ const useStyles = makeStyles({
   },
 
   productImg: {
-    width: '100%',
-    maxWidth: '300px',
+    maxWidth: '500px',
+    minWidth: '350px',
+    objectFit: 'contain',
   },
   innerContainer: {
     width: '100%',
@@ -159,6 +157,7 @@ function ProductPage() {
       try {
         const response = await fetch(`http://localhost:3001/produits/${id}`);
         const data = await response.json();
+        console.log(data);
         if (data) {
           setProduct(data);
           setLoading(false);
@@ -206,7 +205,7 @@ function ProductPage() {
             item
             container
             xs={12}
-            md={7}
+            xl={12}
           >
             <Carousel
               className={classes.carouselContainer}
@@ -238,7 +237,7 @@ function ProductPage() {
             </Carousel>
           </Grid>
 
-          <Grid item xs={12} md={5} className={classes.contentAndBtn}>
+          <Grid item xs={12} xl={12} className={classes.contentAndBtn}>
             <Container>
               <Typography variant="body1">{product.description}</Typography>
               <CurrencyFormat
@@ -341,7 +340,9 @@ function ProductPage() {
           </List>
         </Container>
       </Modal>
-      <ProduitsSimilaires similaires={product.similaires} />
+      {product.similaires.length && (
+        <ProduitsSimilaires similaires={product.similaires} />
+      )}
     </Container>
   );
 }

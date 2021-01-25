@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import loadingImg from '../../images/loading.gif';
 import { Redirect, useHistory } from 'react-router-dom';
+import NumberFormat from 'react-number-format';
 
 function Copyright() {
   return (
@@ -60,9 +61,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
-  const { signupAttempt, signupErrorMessages, signupSuccess } = useSelector(
-    (state) => state.userReducer
-  );
+  const {
+    signupAttempt,
+    signupErrorMessages,
+    signupSuccess,
+    redirectAfterSignup,
+  } = useSelector((state) => state.userReducer);
   const history = useHistory();
 
   const classes = useStyles();
@@ -76,7 +80,7 @@ export default function SignUp() {
   const [telephoneError, settelephoneError] = useState('');
   const [nom, setnom] = useState('');
   const [nomError, setnomError] = useState('');
-
+  const errorsContainer = useRef(null);
   const dispatch = useDispatch();
 
   const validatePhonenumber = (telephone) => {
@@ -100,30 +104,7 @@ export default function SignUp() {
     setemailError('');
     setpasswordError('');
     settelephoneError('');
-    if (!validatePhonenumber(telephone)) {
-      settelephoneError('Veuillez entrer un numéro de téléphone valide');
-    }
-    if (!validateEmail(email)) {
-      setemailError('Veuillez entrer une addresse email valide.');
-    }
-
-    if (!password) {
-      setpasswordError(
-        "Veuillez entrez un mot de passe d'au moins 6 caractères"
-      );
-    }
-
-    if (nom.length < 3) {
-      setnomError('Veuillez saisir un nom avec au moins 3 caractères');
-    }
-    if (
-      !password ||
-      !validateEmail(email) ||
-      !validatePhonenumber(telephone) ||
-      !nom
-    ) {
-      return;
-    }
+    console.log('telephone is ', telephone);
     const user = {
       // nickname: pseudo,
       name: nom,
@@ -134,9 +115,33 @@ export default function SignUp() {
     };
 
     dispatch(createUser(user));
+    // if (!validatePhonenumber(telephone)) {
+    //   settelephoneError('Veuillez entrer un numéro de téléphone valide');
+    // }
+    // if (!validateEmail(email)) {
+    //   setemailError('Veuillez entrer une addresse email valide.');
+    // }
+
+    // if (!password) {
+    //   setpasswordError(
+    //     "Veuillez entrez un mot de passe d'au moins 6 caractères"
+    //   );
+    // }
+
+    // if (nom.length < 3) {
+    //   setnomError('Veuillez saisir un nom avec au moins 3 caractères');
+    // }
+    // if (
+    //   !password ||
+    //   !validateEmail(email) ||
+    //   !validatePhonenumber(telephone) ||
+    //   !nom
+    // ) {
+    //   return;
+    // }
   };
 
-  if (signupSuccess) {
+  if (redirectAfterSignup) {
     history.push('/');
   }
   return (
@@ -149,25 +154,27 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Créer un compte
         </Typography>
-        {signupErrorMessages &&
-          signupErrorMessages.map((error) => (
-            <AlertMessage message={error} type="warning" />
-          ))}
-        {nomError && <AlertMessage message={nomError} type="warning" />}
+        <div className={classes.errorsContainer} ref={errorsContainer}>
+          {signupErrorMessages &&
+            signupErrorMessages.map((error) => (
+              <AlertMessage message={error} type="warning" />
+            ))}
+          {nomError && <AlertMessage message={nomError} type="warning" />}
 
-        {emailError && (
-          <AlertMessage
-            message="L'addresse email est invalide. Veuillez réessayer"
-            type="warning"
-          />
-        )}
+          {emailError && (
+            <AlertMessage
+              message="L'addresse email est invalide. Veuillez réessayer"
+              type="warning"
+            />
+          )}
 
-        {telephoneError && (
-          <AlertMessage message={telephoneError} type="warning" />
-        )}
-        {passwordError && (
-          <AlertMessage message={passwordError} type="warning" />
-        )}
+          {telephoneError && (
+            <AlertMessage message={telephoneError} type="warning" />
+          )}
+          {passwordError && (
+            <AlertMessage message={passwordError} type="warning" />
+          )}
+        </div>
         <form
           className={classes.form}
           noValidate
@@ -208,14 +215,16 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="email"
+                value={email}
                 label="Email"
                 name="email"
                 autoComplete="email"
-                onChange={(e) => setemail(e.target.value)}
+                onChange={(e) => setemail(e.target.value.toLowerCase())}
               />
             </Grid>
             <Grid item sm={12} xs={12}>
-              <TextField
+              <NumberFormat
+                customInput={TextField}
                 variant="outlined"
                 required
                 fullWidth
@@ -226,6 +235,7 @@ export default function SignUp() {
                 autoComplete="telephone"
                 onChange={(e) => settelephone(e.target.value)}
                 value={telephone}
+                format="## ### ## ##"
               />
             </Grid>
             <Grid container spacing={2}>

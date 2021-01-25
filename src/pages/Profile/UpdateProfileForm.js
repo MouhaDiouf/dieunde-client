@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { changeProfileInfo, deleteAccount } from '../../actions/actions';
+import NumberFormat from 'react-number-format';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -97,14 +98,16 @@ function DeleteAccount() {
                   className={classes.textField}
                 ></TextField> */}
 
-                <TextField
+                <NumberFormat
                   variant="outlined"
                   label="Telephone"
                   placeholder="Laisser vide pour ne pas changer"
                   onChange={(e) => settelephone(e.target.value)}
                   className={classes.textField}
                   required
-                ></TextField>
+                  customInput={TextField}
+                  format="##-###-##-##"
+                ></NumberFormat>
                 <Button
                   type="submit"
                   color="secondary"

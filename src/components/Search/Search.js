@@ -11,8 +11,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import PriceSlider from '../../components/PriceSlider/PriceSlider';
+import NumberFormat from 'react-number-format';
 
 const useStyles = makeStyles({
   range: {
@@ -35,7 +34,6 @@ function Search({
 }) {
   const classes = useStyles();
   let marques = [];
-  console.log(voitures);
   if (voitures) {
     marques = voitures.map((voiture) => {
       return voiture.marque;
@@ -50,11 +48,13 @@ function Search({
   };
 
   const handleMaxPrix = (e) => {
-    setmaxPrix(Number(e.target.value));
+    const number = e.target.value.replace(/ /g, '');
+    setmaxPrix(number);
   };
 
   const handleMinPrix = (e) => {
-    setminPrix(Number(e.target.value));
+    const number = e.target.value.replace(/ /g, '');
+    setminPrix(number);
   };
 
   return (
@@ -84,20 +84,19 @@ function Search({
       <Typography>Prix:</Typography>
       <Grid container spacing={2}>
         <Grid item md={5} xs={12}>
-          <TextField
-            type="number"
-            id="min"
+          <NumberFormat
+            thousandSeparator={' '}
+            customInput={TextField}
             label="min"
-            value={minPrix}
             onChange={handleMinPrix}
           />
+          {/* </TextField> */}
         </Grid>
         <Grid item md={5} xs={12}>
-          <TextField
-            type="number"
-            id="max"
+          <NumberFormat
+            thousandSeparator={' '}
+            customInput={TextField}
             label="max"
-            value={maxPrix}
             onChange={handleMaxPrix}
           />
         </Grid>

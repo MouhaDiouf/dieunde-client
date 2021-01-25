@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     margin: '20px 0',
   },
+  container: {
+    height: '100vh',
+  },
   modal: {
     display: 'flex',
     alignItems: 'center',
@@ -66,7 +69,7 @@ function AllProductsAdmin() {
     return 'Loading...';
   }
   return (
-    <Container>
+    <Container className={classes.container}>
       {products.map((product) => (
         <Paper className={classes.root}>
           <div className={classes.productDetails}>

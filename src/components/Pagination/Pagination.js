@@ -22,8 +22,9 @@ function PaginationController({ productsPerPage, totalProducts, paginate }) {
     setPage(value);
     paginate(value);
   };
-  const numberOfPages = Math.ceil(totalProducts / productsPerPage);
 
+  const numberOfPages = Math.ceil(totalProducts / productsPerPage);
+  console.log('number of pages is ', numberOfPages);
   return (
     <Container className={classes.root} maxWidth="xl">
       <Pagination count={numberOfPages} page={page} onChange={handleChange} />

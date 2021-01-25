@@ -77,7 +77,7 @@ function Profile() {
             Vos Produits
           </Button>
           <UpdatePassword />
-          {!user.admin && <DeleteAccount />}
+          {!user.isadmin && <DeleteAccount />}
         </div>
       </div>
     </Container>

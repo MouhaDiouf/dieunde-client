@@ -16,6 +16,7 @@ import { logos } from '../../data';
 import React from 'react';
 import Produit from '../Produits/Produit/Produit';
 import { DriveEtaRounded, MonetizationOnOutlined } from '@material-ui/icons';
+import { useSelector } from 'react-redux';
 const breakpoints = [
   { width: 1, itemsToShow: 1 },
   { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
@@ -103,7 +104,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function ChoiceHome({ produits }) {
+  const { user } = useSelector((state) => state.userReducer);
+
   const classes = useStyles();
+  if (!produits) {
+    return 'Chargement...';
+  }
+  const marquesDispo = [...new Set(produits.map((produit) => produit.marque))];
+  console.log('marques dispo', marquesDispo);
+  const dernieresVoitures = produits.slice(0, 9);
   return (
     <>
       <div className={classes.root}>
@@ -126,7 +135,7 @@ function ChoiceHome({ produits }) {
             <Paper
               className={`${classes.paper} ${classes.vendreVoiture} vendreContainer`}
               component={Link}
-              to="/vendre-produit"
+              to={user ? '/vendre-voiture' : '/connexion'}
             >
               <MonetizationOnOutlined className={classes.choiceIcon} />
               <Typography variant="h5">Vendre Ma Voiture</Typography>
@@ -139,8 +148,8 @@ function ChoiceHome({ produits }) {
             className={classes.carouselContainer}
             breakPoints={breakpoints}
           >
-            {produits &&
-              produits.map((produit) => {
+            {dernieresVoitures &&
+              dernieresVoitures.map((produit) => {
                 return <Produit {...produit} />;
               })}
           </Carousel>
@@ -148,11 +157,11 @@ function ChoiceHome({ produits }) {
         <div>
           <Typography variant="h4">Marques disponibles</Typography>
           <div className={classes.logosContainer}>
-            {produits.map((produit) => (
+            {marquesDispo.map((marque) => (
               <img
                 className={classes.marque}
-                src={logos[produit.marque]}
-                alt={`logo ${produit.marque}`}
+                src={logos[marque]}
+                alt={`logo ${marque}`}
               />
             ))}
           </div>

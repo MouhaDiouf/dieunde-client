@@ -13,19 +13,6 @@ function Home({
   setsearchcat,
   setsearchnom,
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(20);
-
-  // get current post
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = produits.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   return (
     <>
       <Hero />

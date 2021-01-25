@@ -57,9 +57,14 @@ export const RESET_PASSWORD_EMAIL_SENT = 'RESET_PASSWORD_EMAIL_SENT';
 export const RESET_PASSWORD_EMAIL_UNSENT = 'RESET_PASSWORD_EMAIL_UNSENT';
 export const PASSWORD_RESET_FROM_EMAIL_SUCCESS = 'PASSWORD_RESET_SUCCESS';
 export const PASSWORD_RESET_FROM_EMAIL_FAILURE = 'PASSWORD_RESET_FAILURE';
-
-export const getAllProducts = (admin = false) => async (dispatch) => {
-  const { data } = await fetchProducts(admin);
+export const LOGOUT_USER_FAILURE = 'LOGOUT_USER_FAILURE';
+export const SIGNUP_SUCCESS_FINISH = 'SIGNUP_SUCCESS_FINISH';
+export const REDIRECT_AFTER_CREATING_PRODUCT =
+  'REDIRECT_AFTER_CREATING_PRODUCT';
+export const STOP_REDIRECT_AFTER_CREATING_PRODUCT =
+  'STOP_REDIRECT_AFTER_CREATING_PRODUCT';
+export const getAllProducts = (isadmin = false) => async (dispatch) => {
+  const { data } = await fetchProducts(isadmin);
   dispatch({
     type: FETCH_ALL_PRODUCTS,
     payload: data,
@@ -82,22 +87,44 @@ export const signUpUser = (newUserCredentials) => async (dispatch) => {
 };
 
 export const newProduct = (formData) => async (dispatch) => {
-  console.log('ANOTHER  *****');
   try {
     dispatch({
       type: CREATING_PRODUCT,
     });
-    // const response = await createProduct(formData);
-    const response = await fetch('http://localhost:3001/produits/', {
+    fetch('http://localhost:3001/produits/', {
       method: 'POST',
       body: formData,
-    });
-
-    const resp = await response.json();
-    dispatch({
-      type: PRODUCT_CREATION_SUCCESS,
-      payload: response.data,
-    });
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log('res is ', res);
+        if (res.status === 'created') {
+          dispatch({
+            type: PRODUCT_CREATION_SUCCESS,
+            payload: res.data,
+          });
+          setTimeout(() => {
+            dispatch({
+              type: REDIRECT_AFTER_CREATING_PRODUCT,
+            });
+            dispatch({
+              type: STOP_REDIRECT_AFTER_CREATING_PRODUCT,
+            });
+          }, 2000);
+        } else {
+          const productErrors = [];
+          const newErrors = { ...res.errors };
+          for (const [key, value] of Object.entries(newErrors)) {
+            for (let i = 0; i < value.length; i++) {
+              productErrors.push(value[i]);
+            }
+          }
+          dispatch({
+            type: PRODUCT_CREATION_FAILURE,
+            payload: productErrors,
+          });
+        }
+      });
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATION_FAILURE,
@@ -164,6 +191,12 @@ export const createUser = (user) => async (dispatch) => {
       type: SIGNUP_SUCCESS,
       payload: res.data,
     });
+    setTimeout(() => {
+      dispatch({
+        type: SIGNUP_SUCCESS_FINISH,
+      });
+    }, 2000);
+
     const { data, headers } = res;
     localStorage.setItem(
       'user',
@@ -197,7 +230,7 @@ export const logoutUser = () => async (dispatch) => {
       localStorage.removeItem('user');
     } else {
       dispatch({
-        type: LOGOUT_USER_SUCCESS,
+        type: LOGOUT_USER_FAILURE,
       });
     }
   } catch (error) {

@@ -14,7 +14,9 @@ import {
   PRODUCT_EDIT_FAILURE,
   PRODUCT_EDIT_SUCCESS,
   REDIRECT,
+  REDIRECT_AFTER_CREATING_PRODUCT,
   STOP_REDIRECT,
+  STOP_REDIRECT_AFTER_CREATING_PRODUCT,
   UPDATING_PRODUCT,
 } from '../actions/actions';
 import {
@@ -26,16 +28,38 @@ const products = (state = { allProductsFetched: false }, action) => {
     case FETCH_ALL_PRODUCTS:
       return { ...state, produits: [action.payload], allProductsFetched: true };
     case CREATING_PRODUCT:
-      return { ...state, creatingProduct: true };
+      return {
+        ...state,
+        creatingProduct: true,
+        productCreationErrors: [],
+        productCreated: false,
+      };
     case PRODUCT_CREATION_SUCCESS:
       return {
         ...state,
         product: action.payload,
         creatingProduct: false,
         productCreated: true,
+        productCreationErrors: [],
       };
     case PRODUCT_CREATION_FAILURE:
-      return { ...state, productCreationErro: action.payload };
+      return {
+        ...state,
+        productCreationErrors: action.payload,
+        productCreated: false,
+        creatingProduct: false,
+      };
+    case REDIRECT_AFTER_CREATING_PRODUCT:
+      return {
+        ...state,
+        redirectAfterCreatingProduct: true,
+      };
+    case STOP_REDIRECT_AFTER_CREATING_PRODUCT:
+      return {
+        ...state,
+        redirectAfterCreatingProduct: false,
+      };
+
     case ONE_PRODUCT_FETCH_SUCCESS:
       return { ...state, productToShow: action.payload };
     case CREATING_FAVORITE: {

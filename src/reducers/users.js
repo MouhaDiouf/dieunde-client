@@ -2,6 +2,7 @@ import {
   ACCOUNT_REMOVAL_SUCCESS,
   CREATE_USER_ERROR,
   CREATE_USER_SUCCESS,
+  LOGOUT_USER_FAILURE,
   LOGOUT_USER_SUCCESS,
   PASSWORD_RESET_FROM_EMAIL_FAILURE,
   PASSWORD_RESET_FROM_EMAIL_SUCCESS,
@@ -15,6 +16,7 @@ import {
   SIGNUP_ATTEMPT,
   SIGNUP_ERROR,
   SIGNUP_SUCCESS,
+  SIGNUP_SUCCESS_FINISH,
   UPDATE_PASSWORD_ERROR,
   UPDATE_PASSWORD_SUCCESS,
   UPDATING_PASSWORD,
@@ -60,6 +62,13 @@ const usersReducer = (state = { user: null }, action) => {
         ...state,
         signupAttempt: false,
         signupSuccess: true,
+        redirectAfterSignup: true,
+      };
+    }
+    case SIGNUP_SUCCESS_FINISH: {
+      return {
+        ...state,
+        redirectAfterSignup: false,
       };
     }
     case SIGNUP_ERROR: {
@@ -142,6 +151,11 @@ const usersReducer = (state = { user: null }, action) => {
       return {
         user: null,
         logoutSuccess: true,
+      };
+    }
+    case LOGOUT_USER_FAILURE: {
+      return {
+        logoutSuccess: false,
       };
     }
     case ACCOUNT_REMOVAL_SUCCESS: {

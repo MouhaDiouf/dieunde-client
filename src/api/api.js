@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const baseUrl = 'http://localhost:3001';
 
-export const fetchProducts = (admin) => {
-  if (admin) {
+export const fetchProducts = (isadmin) => {
+  if (isadmin) {
     return axios.get(`${baseUrl}/admin/products`);
   }
   return axios.get(`${baseUrl}/produits`);

@@ -32,6 +32,8 @@ import AllProductsAdmin from './pages/AdminPanel/AllProductsAdmin/AllProductsAdm
 import SingleProductAdmin from './pages/AdminPanel/AllProductsAdmin/SingleProductAdmin/SingleProductAdmin';
 import AllCars from './pages/AllCars/AllCars';
 import { CloudinaryContext } from 'cloudinary-react';
+import ConseilsVendeurAcheteur from './pages/ConseilsVendeurAcheteur/ConseilsVendeurAcheteur';
+import About from './pages/About/About';
 
 function App() {
   const [minprix, setminprix] = useState(0);
@@ -54,7 +56,7 @@ function App() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (user?.admin) {
+    if (user?.isadmin) {
       dispatch(getAllProducts(true));
     } else {
       dispatch(getAllProducts());
@@ -63,7 +65,7 @@ function App() {
     if (localStorage.user) {
       dispatch(connectUser());
     }
-  }, [dispatch, user?.admin, validateSuccess]);
+  }, [dispatch, user?.isadmin, validateSuccess]);
 
   if (allProductsFetched) {
     produits = produits[0];
@@ -81,10 +83,6 @@ function App() {
         produit.catégorie.toLowerCase().includes(searchcat.toLowerCase())
       );
     }
-
-    // produitsFilter = produitsFilter.filter(
-    //   (produit) => produit.prix >= minprix && produit.prix <= maxprix
-    // );
   }
   return (
     <Router>
@@ -116,22 +114,22 @@ function App() {
           <Header />
 
           <Switch>
-            {user?.admin && (
+            {user?.isadmin && (
               <Route exact path="/admin-panel">
                 <AdminPanel />
               </Route>
             )}
-            {user?.admin && (
+            {user?.isadmin && (
               <Route exact path="/admin/allusers">
                 <AllUsers />
               </Route>
             )}
-            {user?.admin && (
+            {user?.isadmin && (
               <Route exact path="/admin/allproducts">
                 <AllProductsAdmin />
               </Route>
             )}
-            {user?.admin && (
+            {user?.isadmin && (
               <Route exact path="/admin/product/:id">
                 <SingleProductAdmin />
               </Route>
@@ -167,12 +165,17 @@ function App() {
             <Route exact path="/account-confirmation">
               <AccountActivation />
             </Route>
-
+            <Route exact path="/anti-fraude">
+              <ConseilsVendeurAcheteur />
+            </Route>
+            <Route exact path="/à-propos">
+              <About />
+            </Route>
+            <Route exact path="/vendre-voiture">
+              <NouveauProduit />
+            </Route>
             {user && (
               <>
-                <Route exact path="/vendre-produit">
-                  <NouveauProduit />
-                </Route>
                 <Route exact path="/cart">
                   <Cart />
                 </Route>

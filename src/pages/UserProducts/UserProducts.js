@@ -47,7 +47,7 @@ function UserProducts() {
       {!userProducts.length ? (
         <Typography variant="h6">
           Vous n'avez pas de produits.{' '}
-          <Link to="/vendre-produit"> Créer un nouveau produit</Link>
+          <Link to="/vendre-voiture"> Créer un nouveau produit</Link>
         </Typography>
       ) : (
         <Typography>

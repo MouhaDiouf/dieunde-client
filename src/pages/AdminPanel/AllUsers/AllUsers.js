@@ -92,7 +92,7 @@ function AllUsers() {
                 <div className={classes.userInfo}>
                   <p>{user.email}</p>
                   <p>{user.name}</p>
-                  {user.admin && (
+                  {user.isadmin && (
                     <Button color="primary" variant="text">
                       Admin
                     </Button>

@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  Chip,
   CircularProgress,
   Container,
   FormControl,
@@ -25,10 +26,14 @@ import axios from 'axios';
 import DropzoneComponent from 'react-dropzone-component';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import NumberFormat from 'react-number-format';
+import { useHistory } from 'react-router-dom';
+
 const useStyles = makeStyles({
   root: {
-    height: '100vh',
     textAlign: 'center',
+
+    marginBottom: '30px',
   },
   fileInput: {
     display: 'none',
@@ -60,6 +65,7 @@ const useStyles = makeStyles({
     width: '100px',
     height: '100px',
     contentFit: 'contain',
+    maxWidth: '100%',
   },
   uploadingDiv: {
     width: '100px',
@@ -93,13 +99,22 @@ const useStyles = makeStyles({
   },
   right: {
     height: '100vh',
-    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundImage:
+      'url(https://res.cloudinary.com/mouhamadou/image/upload/v1611505756/n1u045fftdelinmlpnld.jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
   submitBtn: {
     marginBottom: '20px',
+  },
+  first: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'column-reverse',
+    height: '100px',
+    width: '100px',
   },
   avatar: {
     marginBottom: '10px',
@@ -108,6 +123,7 @@ const useStyles = makeStyles({
 });
 
 function NouveauProduit() {
+  const history = useHistory();
   const [imageError, setimageError] = useState('');
   const dispatch = useDispatch();
   const filesContainer = useRef(null);
@@ -124,7 +140,7 @@ function NouveauProduit() {
     setimageError('');
     const file = e.target.files[0];
     console.log(file);
-    if (file?.size > 10485760) {
+    if (file?.size > 1048576) {
       setimageError(
         "L'image est trop grande! Utilisez des images en dessous de 1MB"
       );
@@ -183,10 +199,16 @@ function NouveauProduit() {
       });
   };
 
-  const { creatingProduct, productCreated } = useSelector(
+  const {
+    creatingProduct,
+    productCreated,
+    productCreationErrors,
+  } = useSelector((state) => state.products);
+  const { user } = useSelector((state) => state.userReducer);
+  const { redirectAfterCreatingProduct } = useSelector(
     (state) => state.products
   );
-  const { user } = useSelector((state) => state.userReducer);
+  console.log('productcreationErrors', productCreationErrors);
 
   const classes = useStyles();
 
@@ -205,7 +227,9 @@ function NouveauProduit() {
     formData.append('année', année);
     dispatch(newProduct(formData));
   };
-
+  if (redirectAfterCreatingProduct) {
+    history.push('/');
+  }
   return (
     <Grid container className={classes.root}>
       <Grid item md={7} xs={false} sm={5} className={classes.right}></Grid>
@@ -221,7 +245,10 @@ function NouveauProduit() {
         {productCreated && (
           <AlertMessage message="Votre produit a été créé. Nous le mettrons en ligne après révision." />
         )}
-        {imageError && <AlertMessage message={imageError} type="error" />}
+        {productCreationErrors &&
+          productCreationErrors.map((error) => (
+            <AlertMessage message={error} />
+          ))}
         <Typography variant="h4" className={classes.title}>
           Vendez votre voiture
         </Typography>
@@ -245,12 +272,13 @@ function NouveauProduit() {
               name="description"
               id="description"
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Description du produit"
+              placeholder="Description"
               cols="7"
             />
             <br />
-            <TextField
-              type="number"
+            <NumberFormat
+              thousandSeparator={' '}
+              customInput={TextField}
               name="prix"
               id="prix"
               onChange={(e) => setPrix(e.target.value)}
@@ -258,21 +286,25 @@ function NouveauProduit() {
               variant="outlined"
             />
             <br />
-            <TextField
+            <NumberFormat
+              customInput={TextField}
               type="text"
               name="année"
               id="année"
-              label="Aneée"
+              label="Année"
               variant="outlined"
+              format="####"
               onChange={(e) => setannée(e.target.value)}
             />
             <br />
-            <TextField
+            <NumberFormat
+              customInput={TextField}
               type="text"
-              name="année"
-              id="année"
+              name="kilométrage"
+              id="kilométrage"
               label="Kilométrage"
               variant="outlined"
+              thousandSeparator={' '}
               onChange={(e) => setkilométrage(e.target.value)}
             />
             <br />
@@ -310,6 +342,7 @@ function NouveauProduit() {
               onChange={onImageChange}
               data-buttonText="Your label here"
             />
+            {imageError && <AlertMessage message={imageError} type="error" />}
             <label htmlFor="files" className={classes.addPictures}>
               <PhotoLibraryIcon /> Cliquez pour l'ajout d'images
             </label>
@@ -320,10 +353,18 @@ function NouveauProduit() {
                 </Typography>
               )}
               <div className={classes.previewsParent}>
-                {images.map((img) => {
+                {images.map((img, key) => {
                   const { secure_url, public_id } = img;
+
                   return (
-                    <div className={classes.imagePreviewContainer}>
+                    <div
+                      className={`${key === 0 && classes.first} ${
+                        classes.imagePreviewContainer
+                      }`}
+                    >
+                      {key === 0 && (
+                        <Chip label="Première image" color="secondary" />
+                      )}
                       <HighlightOffIcon
                         className={classes.closeIcon}
                         onClick={(e) => handleRemoveImage(e, public_id)}
@@ -337,7 +378,7 @@ function NouveauProduit() {
                   );
                 })}
 
-                {uploadings.map((uploading) => (
+                {uploadings.map(() => (
                   <Paper className={classes.uploadingDiv}>
                     <CircularProgress disableShrink />
                   </Paper>
