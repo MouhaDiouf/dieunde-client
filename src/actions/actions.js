@@ -97,7 +97,6 @@ export const newProduct = (formData) => async (dispatch) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('res is ', res);
         if (res.status === 'created') {
           dispatch({
             type: PRODUCT_CREATION_SUCCESS,

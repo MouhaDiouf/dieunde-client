@@ -13,12 +13,15 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Email } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { validateProduct } from '../../../../actions/adminactions';
+import {
+  addToSelection,
+  validateProduct,
+} from '../../../../actions/adminactions';
 import { deleteProduct } from '../../../../actions/actions';
 import AlertMessage from '../../../../components/AlertMessage/AlertMessage';
+import Carousel from 'react-elastic-carousel';
 const useStyles = makeStyles({
   root: {
     textAlign: 'center',
@@ -75,16 +78,20 @@ const useStyles = makeStyles({
 function SingleProductAdmin() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+
   const [product, setProduct] = useState(null);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
-  const { user } = useSelector((state) => state.userReducer);
   const [errorFetch, setErrorFetch] = useState(false);
   const dispatch = useDispatch();
   const {
     validateSuccess,
     productDeleteSuccess,
     productDeleteFailure,
+    addingToSelection,
+    addedToSelection,
+    removingFromSelection,
+    removedToSelection,
   } = useSelector((state) => state.products);
   const handleOpen = () => {
     setOpen(true);
@@ -97,6 +104,9 @@ function SingleProductAdmin() {
     dispatch(deleteProduct(id));
   };
 
+  const handleAddToSelection = (id) => {
+    dispatch(addToSelection(id));
+  };
   const handleValidateProduct = () => {
     dispatch(validateProduct(id));
   };
@@ -121,7 +131,7 @@ function SingleProductAdmin() {
       }
     };
     fetchOneProduct();
-  }, [id, validateSuccess]);
+  }, [id, validateSuccess, addedToSelection]);
 
   if (errorFetch) {
     return <Typography>Nous ne pouvons pas trouver le produit</Typography>;
@@ -136,6 +146,9 @@ function SingleProductAdmin() {
 
   return (
     <Container maxWidth="lg" className={classes.root}>
+      {addedToSelection && (
+        <AlertMessage message="Ajouté à la sélection" type="info" />
+      )}
       {productDeleteSuccess && (
         <AlertMessage message="produit supprimé avec succès" />
       )}
@@ -148,18 +161,26 @@ function SingleProductAdmin() {
       <Typography variant="h4">Details pour {product.nom}</Typography>
       <Paper className={classes.innerContainer} elevation={3}>
         <Grid container spacing={1}>
-          <Grid item xs={12} md={6}>
-            <img
-              src={JSON.parse(product.images)[0].secure_url}
-              alt=""
-              className={classes.productImg}
-            />
+          <Grid item xs={12} md={7}>
+            <Carousel className={classes.carouselContainer}>
+              {product.images &&
+                JSON.parse(product.images).map((img) => {
+                  return (
+                    <img
+                      src={img.secure_url}
+                      alt=""
+                      className={classes.productImg}
+                    />
+                  );
+                })}
+            </Carousel>
           </Grid>
 
           <Grid item xs={12} md={5} className={classes.contentAndBtn}>
             <Container>
               <Typography variant="body1">{product.description}</Typography>
-              <Chip label={product.catégorie} />
+              <Chip label={product.marque} />
+              <div>{product.description}</div>
             </Container>
 
             <ButtonGroup className={classes.btnGroup}>
@@ -177,8 +198,14 @@ function SingleProductAdmin() {
               <Button onClick={() => handleDeleteProduct(product.id)}>
                 Supprimer
               </Button>
-              <Button onClick={() => handleDeleteProduct(product.id)}>
-                Ajouter à la sélection
+              <Button
+                onClick={() => handleAddToSelection(product.id)}
+                color="primary"
+                disabled={addingToSelection}
+              >
+                {product.inSelection
+                  ? 'Enlever de la sélection'
+                  : 'Ajouter à la sélection'}
               </Button>
             </ButtonGroup>
           </Grid>

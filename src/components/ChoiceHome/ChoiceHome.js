@@ -110,8 +110,13 @@ function ChoiceHome({ produits }) {
   if (!produits) {
     return 'Chargement...';
   }
-  const marquesDispo = [...new Set(produits.map((produit) => produit.marque))];
-  console.log('marques dispo', marquesDispo);
+  const marquesDispo = [
+    ...new Set(
+      produits.map((produit) => {
+        if (produit.marque) return produit.marque;
+      })
+    ),
+  ];
   const dernieresVoitures = produits.slice(0, 9);
   return (
     <>

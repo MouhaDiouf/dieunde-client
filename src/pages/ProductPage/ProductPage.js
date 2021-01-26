@@ -56,6 +56,7 @@ const useStyles = makeStyles({
   title: {
     margin: '10px 0',
   },
+
   modal: {
     display: 'flex',
     justifyContent: 'center',
@@ -70,7 +71,8 @@ const useStyles = makeStyles({
   },
   productPrice: {
     margin: '10px 0',
-    color: 'red',
+    color: '#dd0426',
+    fontWeight: 'bold',
   },
   contentAndBtn: {
     display: 'flex',
@@ -157,7 +159,6 @@ function ProductPage() {
       try {
         const response = await fetch(`http://localhost:3001/produits/${id}`);
         const data = await response.json();
-        console.log(data);
         if (data) {
           setProduct(data);
           setLoading(false);
@@ -197,7 +198,7 @@ function ProductPage() {
 
       <Paper className={classes.innerContainer} elevation={3}>
         <Typography variant="h4" className={classes.title}>
-          Details pour {product.nom}
+          Détails pour {product.nom}
         </Typography>
         <Grid className={classes.gridContainer} container spacing={1}>
           <Grid

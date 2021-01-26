@@ -83,7 +83,7 @@ function Search({
       {/* <PriceSlider /> */}
       <Typography>Prix:</Typography>
       <Grid container spacing={2}>
-        <Grid item md={5} xs={12}>
+        <Grid item md={6} xs={12}>
           <NumberFormat
             thousandSeparator={' '}
             customInput={TextField}
@@ -92,7 +92,7 @@ function Search({
           />
           {/* </TextField> */}
         </Grid>
-        <Grid item md={5} xs={12}>
+        <Grid item md={6} xs={12}>
           <NumberFormat
             thousandSeparator={' '}
             customInput={TextField}

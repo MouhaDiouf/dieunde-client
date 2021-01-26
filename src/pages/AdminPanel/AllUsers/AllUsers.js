@@ -122,7 +122,7 @@ function AllUsers() {
         >
           <div className={classes.paper}>
             <h2 id="simple-modal-title">
-              Details for {userToShow.name ? userToShow.name : 'User'}
+              Details pour {userToShow.name ? userToShow.name : 'User'}
             </h2>
             <p id="simple-modal-description">Name: {userToShow.name}</p>
             <p>Email: {userToShow.email}</p>

@@ -11,11 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useDispatch } from 'react-redux';
-import { createUser, recoverPassword } from '../../actions/actions';
+import { recoverPassword } from '../../actions/actions';
 import { useSelector } from 'react-redux';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
-import loadingImg from '../../images/loading.gif';
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -90,8 +89,8 @@ export default function ForgotPassword() {
         <AlertMessage message={emailSentMessage} type="success" />
       )}
       {resetPasswordEmailUnsent &&
-        emailUnsentMessage.map((error) => (
-          <AlertMessage message={error} type="error" />
+        emailUnsentMessage.map((error, idx) => (
+          <AlertMessage key={idx} message={error} type="error" />
         ))}
       <CssBaseline />
       <div className={classes.paper}>

@@ -5,6 +5,7 @@ import peugeot from './images/brands/peugeot.png';
 import bmw from './images/brands/bmw.png';
 import citroen from './images/brands/citroen.png';
 import toyota from './images/brands/toyota.png';
+import renault from './images/brands/renault.png';
 export const marques = [
   'Toyota',
   'Honda',
@@ -48,4 +49,5 @@ export const logos = {
   Peugeot: peugeot,
   Citroen: citroen,
   Toyota: toyota,
+  Renault: renault,
 };

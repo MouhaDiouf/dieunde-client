@@ -27,7 +27,7 @@ function Copyright() {
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/"></Link>{' '}
       {new Date().getFullYear()}
-      {' Dieunde .'}
+      {' Dakar Voitures .'}
     </Typography>
   );
 }

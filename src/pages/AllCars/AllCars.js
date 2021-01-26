@@ -40,8 +40,8 @@ function AllCars() {
   const classes = useStyles();
   const [voitures, setvoitures] = useState(null);
   const [loading, setloading] = useState(true);
-  const [minPrix, setminPrix] = useState(null);
-  const [maxPrix, setmaxPrix] = useState(null);
+  const [minPrix, setminPrix] = useState(0);
+  const [maxPrix, setmaxPrix] = useState(0);
   const [searchmarque, setsearchmarque] = useState('');
   const [searchnom, setsearchnom] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -114,8 +114,10 @@ function AllCars() {
           breakPoints={breakpoints}
         >
           {voitures &&
-            voitures.map((voiture) => {
-              return <Produit {...voiture} />;
+            voitures.map((voiture, idx) => {
+              if (voiture.inSelection) {
+                return <Produit key={idx} {...voiture} />;
+              }
             })}
         </Carousel>
       </div>

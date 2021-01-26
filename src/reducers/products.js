@@ -20,6 +20,8 @@ import {
   UPDATING_PRODUCT,
 } from '../actions/actions';
 import {
+  ADDING_TO_SELECTION,
+  ADD_TO_SELECTION_SUCCESS,
   PRODUCT_VALIDATE_SUCCESS,
   VALIDATING_PRODUCT,
 } from '../actions/adminactions';
@@ -160,6 +162,18 @@ const products = (state = { allProductsFetched: false }, action) => {
         validateSuccess: true,
       };
 
+    case ADDING_TO_SELECTION:
+      return {
+        ...state,
+        addingToSelection: true,
+        addedToSelection: false,
+      };
+    case ADD_TO_SELECTION_SUCCESS:
+      return {
+        ...state,
+        addingToSelection: false,
+        addedToSelection: true,
+      };
     default:
       return state;
   }

@@ -56,10 +56,10 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
-  // cardHeader: {
-  //   width: 300,
-  //   height: 50,
-  // },
+  cardHeader: {
+    height: 90,
+    textOverflow: 'ellipsis',
+  },
 }));
 
 function Produit({ nom, description, images, id }) {

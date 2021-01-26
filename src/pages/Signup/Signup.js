@@ -15,7 +15,7 @@ import { createUser } from '../../actions/actions';
 import { useSelector } from 'react-redux';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import loadingImg from '../../images/loading.gif';
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
 
 function Copyright() {
@@ -24,7 +24,7 @@ function Copyright() {
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/"></Link>{' '}
       {new Date().getFullYear()}
-      {' Dieunde .'}
+      {' Dakar Voitures.'}
     </Typography>
   );
 }
@@ -64,7 +64,6 @@ export default function SignUp() {
   const {
     signupAttempt,
     signupErrorMessages,
-    signupSuccess,
     redirectAfterSignup,
   } = useSelector((state) => state.userReducer);
   const history = useHistory();
@@ -104,7 +103,6 @@ export default function SignUp() {
     setemailError('');
     setpasswordError('');
     settelephoneError('');
-    console.log('telephone is ', telephone);
     const user = {
       // nickname: pseudo,
       name: nom,

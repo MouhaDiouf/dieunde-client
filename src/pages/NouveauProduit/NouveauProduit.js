@@ -3,7 +3,6 @@ import {
   Button,
   Chip,
   CircularProgress,
-  Container,
   FormControl,
   Grid,
   InputLabel,
@@ -11,7 +10,6 @@ import {
   MenuItem,
   Paper,
   Select,
-  TextareaAutosize,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -20,10 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { newProduct } from '../../actions/actions';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import CurrencyFormat from 'react-currency-format';
 import { marques } from '../../data';
 import axios from 'axios';
-import DropzoneComponent from 'react-dropzone-component';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import NumberFormat from 'react-number-format';
@@ -132,14 +128,13 @@ function NouveauProduit() {
   const [prix, setPrix] = useState(0);
   const [marque, setmarque] = useState('smartphones');
   const [images, setimages] = useState([]);
-  const [uploadings, setuploadings] = useState([]);
+  let [uploadings, setuploadings] = useState([]);
   const [année, setannée] = useState('');
   const [kilométrage, setkilométrage] = useState('');
   const [etat, setetat] = useState('');
   const onImageChange = async (e) => {
     setimageError('');
     const file = e.target.files[0];
-    console.log(file);
     if (file?.size > 1048576) {
       setimageError(
         "L'image est trop grande! Utilisez des images en dessous de 1MB"
@@ -147,26 +142,18 @@ function NouveauProduit() {
 
       return;
     }
-    if (images.length >= 4) {
+    setuploadings((uploadings) => [...uploadings, 1]);
+
+    if (images.length + uploadings.length >= 4) {
       setimageError(
         'Vous pouvez avoir 4 images au maximum. Remplacez les images précédentes ou supprimez les.'
       );
       return;
     }
-    await setuploadings((uploadings) => [...uploadings, 1]);
 
     const formData = new FormData();
     formData.append('image', file);
-    // formData.append('upload_preset', 'upload');
-    // axios
-    //   .post('https://api.cloudinary.com/v1_1/mouhamadou/image/upload', formData)
-    //   .then((res) => {
-    //     const { data } = res;
-    //     console.log(res);
-    //     console.log(data);
-    //     const { url, asset_id } = data;
-    //     setimages((images) => [...images, url]);
-    //   });
+
     fetch('http://localhost:3001/upload_image', {
       method: 'POST',
       body: formData,
@@ -175,9 +162,10 @@ function NouveauProduit() {
       .then((res) => {
         const remainingUploadings = [...uploadings];
         remainingUploadings.pop();
-        setuploadings(remainingUploadings);
         const { secure_url, public_id } = res;
+        setuploadings(remainingUploadings);
         setimages((images) => [...images, { secure_url, public_id }]);
+
         filesContainer.current.value = '';
       });
   };
@@ -208,13 +196,11 @@ function NouveauProduit() {
   const { redirectAfterCreatingProduct } = useSelector(
     (state) => state.products
   );
-  console.log('productcreationErrors', productCreationErrors);
 
   const classes = useStyles();
 
   const handleCreateProduct = (e) => {
     e.preventDefault();
-    console.log(images);
     const formData = new FormData();
     formData.append('nom', nom);
     formData.append('description', description);
@@ -281,7 +267,9 @@ function NouveauProduit() {
               customInput={TextField}
               name="prix"
               id="prix"
-              onChange={(e) => setPrix(e.target.value)}
+              onChange={(e) =>
+                setPrix(parseInt(e.target.value.replace(/ /g, '')))
+              }
               label="Prix (CFA)"
               variant="outlined"
             />
@@ -393,9 +381,9 @@ function NouveauProduit() {
             type="submit"
             fullWidth
             className={classes.submitBtn}
-            disabled={creatingProduct}
+            disabled={creatingProduct || uploadings.length}
           >
-            {creatingProduct ? 'Patientez...' : 'Vendre'}
+            {creatingProduct || uploadings.length ? 'Patientez...' : 'Vendre'}
           </Button>
         </form>
       </Grid>
