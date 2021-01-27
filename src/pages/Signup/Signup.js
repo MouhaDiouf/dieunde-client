@@ -17,6 +17,7 @@ import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import loadingImg from '../../images/loading.gif';
 import { useHistory } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
 
 function Copyright() {
   return (
@@ -80,22 +81,9 @@ export default function SignUp() {
   const [nom, setnom] = useState('');
   const [nomError, setnomError] = useState('');
   const errorsContainer = useRef(null);
+  const whatsappCheck = useRef(null);
+  const [isOnWhatsapp, setisOnWhatsapp] = useState(true);
   const dispatch = useDispatch();
-
-  const validatePhonenumber = (telephone) => {
-    const phoneno = /^\d{9}$/;
-    const phoneWithoutSpace = telephone.replace(/ /g, '');
-    if (phoneWithoutSpace.match(phoneno)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  function validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
 
   const handleAccountCreation = (e) => {
     e.preventDefault();
@@ -110,6 +98,7 @@ export default function SignUp() {
       password,
       // password_confirmation: passwordConfirmation,
       telephone,
+      whatsapp: isOnWhatsapp,
     };
 
     dispatch(createUser(user));
@@ -154,8 +143,8 @@ export default function SignUp() {
         </Typography>
         <div className={classes.errorsContainer} ref={errorsContainer}>
           {signupErrorMessages &&
-            signupErrorMessages.map((error) => (
-              <AlertMessage message={error} type="warning" />
+            signupErrorMessages.map((error, idx) => (
+              <AlertMessage message={error} key={idx} type="warning" />
             ))}
           {nomError && <AlertMessage message={nomError} type="warning" />}
 
@@ -193,19 +182,7 @@ export default function SignUp() {
                 value={nom}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
-              {/* <TextField
-                autoComplete="pseudo"
-                name="pseudo"
-                variant="outlined"
-  
-                fullWidth
-                id="pseudo"
-                label="Pseudo"
-                onChange={(e) => setpseudo(e.target.value)}
-                autoFocus
-              /> */}
-            </Grid>
+            <Grid item xs={12} sm={12}></Grid>
 
             <Grid item xs={12}>
               <TextField
@@ -234,6 +211,14 @@ export default function SignUp() {
                 onChange={(e) => settelephone(e.target.value)}
                 value={telephone}
                 format="## ### ## ##"
+              />
+              <label htmlFor="whatsapp">Whatsapp</label>
+              <Checkbox
+                checked={isOnWhatsapp}
+                color="primary"
+                id="whatsapp"
+                ref={whatsappCheck}
+                onChange={(e) => setisOnWhatsapp(e.target.checked)}
               />
             </Grid>
             <Grid container spacing={2}>

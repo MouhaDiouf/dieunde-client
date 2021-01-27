@@ -1,13 +1,10 @@
 import {
-  Container,
   FormControl,
   Grid,
   makeStyles,
   MenuItem,
   Select,
-  Slider,
   TextField,
-  Toolbar,
   Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
@@ -29,8 +26,6 @@ function Search({
   setsearchmarque,
   setmaxPrix,
   setminPrix,
-  minPrix,
-  maxPrix,
 }) {
   const classes = useStyles();
   let marques = [];

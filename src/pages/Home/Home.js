@@ -1,18 +1,8 @@
-import React, { useState } from 'react';
-import Produits from '../../components/Produits/Produits';
-import { Container, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import Hero from '../../components/Hero/Hero';
-import Pagination from '../../components/Pagination/Pagination';
 import ChoiceHome from '../../components/ChoiceHome/ChoiceHome';
 
-function Home({
-  produits,
-  setmaxprix,
-  setminprix,
-  setsearchcat,
-  setsearchnom,
-}) {
+function Home({ produits }) {
   return (
     <>
       <Hero />

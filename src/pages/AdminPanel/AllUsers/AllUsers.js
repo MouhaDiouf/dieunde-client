@@ -65,7 +65,7 @@ function AllUsers() {
   const classes = useStyles();
   useEffect(() => {
     axios
-      .get('http://localhost:3001/users')
+      .get(`${process.env.REACT_APP_API_URL}/users`)
       .then((res) => setusers(res.data))
       .catch((error) => {
         seterrors(error);
@@ -86,9 +86,9 @@ function AllUsers() {
       <Container className={classes.outerContainer}>
         <div className={classes.usersDivContainer}>
           <Typography>Utilisateurs</Typography>
-          {users.map((user) => {
+          {users.map((user, idx) => {
             return (
-              <Paper className={classes.userContainer}>
+              <Paper className={classes.userContainer} key={idx}>
                 <div className={classes.userInfo}>
                   <p>{user.email}</p>
                   <p>{user.name}</p>

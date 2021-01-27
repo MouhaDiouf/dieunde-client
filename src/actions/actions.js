@@ -91,7 +91,7 @@ export const newProduct = (formData) => async (dispatch) => {
     dispatch({
       type: CREATING_PRODUCT,
     });
-    fetch('http://localhost:3001/produits/', {
+    fetch(`${process.env.REACT_APP_API_URL}/produits/`, {
       method: 'POST',
       body: formData,
     })
@@ -113,7 +113,7 @@ export const newProduct = (formData) => async (dispatch) => {
         } else {
           const productErrors = [];
           const newErrors = { ...res.errors };
-          for (const [key, value] of Object.entries(newErrors)) {
+          for (const [_, value] of Object.entries(newErrors)) {
             for (let i = 0; i < value.length; i++) {
               productErrors.push(value[i]);
             }
@@ -332,7 +332,6 @@ export const getUserProducts = (id) => async (dispatch) => {
   });
   try {
     const { data } = await getUserProductsHelper(id);
-    console.log(data);
     dispatch({
       type: FETCH_USER_PRODUCTS_SUCCESS,
       payload: data,
@@ -362,10 +361,13 @@ export const updateProduct = (formData, id) => async (dispatch) => {
     type: UPDATING_PRODUCT,
   });
   try {
-    const response = await fetch(`http://localhost:3001/produits/${id}`, {
-      method: 'PUT',
-      body: formData,
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/produits/${id}`,
+      {
+        method: 'PUT',
+        body: formData,
+      }
+    );
     const resp = await response.json();
     if (resp.status === 'updated') {
       dispatch({

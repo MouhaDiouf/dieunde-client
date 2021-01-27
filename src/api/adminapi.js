@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001';
+const baseUrl = process.env.REACT_APP_API_URL;
 
 export const validateProductHelper = (id) => {
   return axios.post(`${baseUrl}/admin/validate_product/${id}`);

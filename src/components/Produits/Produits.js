@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Produit from './Produit/Produit';
@@ -69,9 +69,9 @@ function Produits({
             className={classes.root}
             spacing={4}
           >
-            {produits.map((produit) => {
+            {produits.map((produit, idx) => {
               return (
-                <Grid item>
+                <Grid item key={idx}>
                   <Produit key={produit.id} {...produit} />
                 </Grid>
               );

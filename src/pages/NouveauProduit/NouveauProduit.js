@@ -154,7 +154,7 @@ function NouveauProduit() {
     const formData = new FormData();
     formData.append('image', file);
 
-    fetch('http://localhost:3001/upload_image', {
+    fetch(`${process.env.REACT_APP_API_URL}/upload_image`, {
       method: 'POST',
       body: formData,
     })
@@ -171,7 +171,7 @@ function NouveauProduit() {
   };
   const handleRemoveImage = (e, public_id) => {
     axios
-      .delete('http://localhost:3001/delete_image', {
+      .delete(`${process.env.REACT_APP_API_URL}/delete_image`, {
         data: {
           public_id,
         },

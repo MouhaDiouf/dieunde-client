@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     height: '200px',
   },
 });
-function ProduitSimilaire({ nom, description, catégorie, prix, images, id }) {
+function ProduitSimilaire({ nom, images, id }) {
   const classes = useStyles();
   return (
     <Container className={classes.root}>

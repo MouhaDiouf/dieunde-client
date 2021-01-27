@@ -25,10 +25,9 @@ import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import { updateProduct } from '../../actions/actions';
 import { marques } from '../../data';
 import NumberFormat from 'react-number-format';
-
+import EditProductStyles from './EditProduct.module.css';
 const useStyles = makeStyles({
   root: {
-    height: '100vh',
     textAlign: 'center',
   },
   form: {
@@ -63,7 +62,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
   },
   right: {
-    height: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -117,24 +115,39 @@ const useStyles = makeStyles({
 });
 
 function EditProduct() {
+  const { id } = useParams();
+  const { userProducts } = useSelector((state) => state.products);
+  const { user } = useSelector((state) => state.userReducer);
+
+  const [fetchError, setfetchError] = useState(false);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/produits/${id}`)
+      .get(`${process.env.REACT_APP_API_URL}/show_produit_to_edit/${id}`, {
+        params: {
+          userId: user.id,
+          isadmin: user.isadmin,
+        },
+      })
       .then((res) => {
         const { data } = res;
-        setproductToEdit(data);
-        setproductNom(data.nom);
-        setproductDescription(data.description);
-        setproductPrix(data.prix);
-        setproductmarque(data.marque);
-        setproductimages(JSON.parse(data.images));
-        setLoading(false);
+        if (data.status === 500) {
+          setLoading(false);
+          setfetchError(true);
+        } else {
+          setproductToEdit(data);
+          setproductNom(data.nom);
+          setproductDescription(data.description);
+          setproductPrix(data.prix);
+          setproductmarque(data.marque);
+          setproductimages(JSON.parse(data.images));
+          setLoading(false);
+        }
       })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const { user } = useSelector((state) => state.userReducer);
-  const { id } = useParams();
+      .catch(() => {
+        setLoading(false);
+        setfetchError(true);
+      });
+  }, [id, userProducts]);
 
   const [productToEdit, setproductToEdit] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -170,8 +183,7 @@ function EditProduct() {
 
     const formData = new FormData();
     formData.append('image', file);
-    console.log('before fetching...');
-    fetch('http://localhost:3001/upload_image', {
+    fetch(`${process.env.REACT_APP_API_URL}/upload_image`, {
       method: 'POST',
       body: formData,
     })
@@ -190,7 +202,7 @@ function EditProduct() {
   };
   const handleRemoveImage = (e, public_id) => {
     axios
-      .delete('http://localhost:3001/delete_image', {
+      .delete(`${process.env.REACT_APP_API_URL}/delete_image`, {
         data: {
           public_id,
         },
@@ -239,6 +251,16 @@ function EditProduct() {
     dispatch(updateProduct(formData, id));
   };
 
+  if (fetchError) {
+    return (
+      <Grid className={classes.root}>
+        <h1>
+          Nous ne pouvons pas trouver ce produit ou vous n'êtes pas autorisé à
+          le modifier. Veuillez réessayer
+        </h1>
+      </Grid>
+    );
+  }
   if (loading) {
     return 'Chargement...';
   }
@@ -247,11 +269,17 @@ function EditProduct() {
   redirect && history.goBack();
   return (
     <Grid container className={classes.root}>
-      <Grid item md={6} sm={5} className={classes.right}>
+      <Grid
+        item
+        md={0}
+        sm={5}
+        xs={0}
+        className={`${classes.right} ${EditProductStyles.rightImg}`}
+      >
         {productimages.length ? (
           <img
             src={productimages[0].secure_url}
-            className={classes.img}
+            className={`${classes.img}`}
             alt={nom}
           />
         ) : (
@@ -340,6 +368,7 @@ function EditProduct() {
 
                 return (
                   <div
+                    key={key}
                     className={`${key === 0 && classes.first} ${
                       classes.imagePreviewContainer
                     }`}

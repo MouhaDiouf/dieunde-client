@@ -11,15 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useDispatch } from 'react-redux';
-import {
-  createUser,
-  recoverPassword,
-  resetPasswordEmail,
-} from '../../actions/actions';
+import { resetPasswordEmail } from '../../actions/actions';
 import { useSelector } from 'react-redux';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
-import loadingImg from '../../images/loading.gif';
-import { Redirect, useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -68,10 +63,8 @@ export default function NewPassword() {
   const token = params.get('access-token');
   const uid = params.get('uid');
   const client = params.get('client');
-  const redirectUrl = params.get('redirect_url');
   const {
     passwordRecovered,
-    passwordRecoveryFailed,
     passwordRecoverMessage,
     passwordRecoverFailMessage,
     user,
@@ -106,8 +99,8 @@ export default function NewPassword() {
         <AlertMessage message={passwordRecoverMessage} type="success" />
       )}
       {passwordRecoverFailMessage &&
-        passwordRecoverFailMessage.map((error) => (
-          <AlertMessage message={error} type="error" />
+        passwordRecoverFailMessage.map((error, idx) => (
+          <AlertMessage key={idx} message={error} type="error" />
         ))}
       <CssBaseline />
       <div className={classes.paper}>

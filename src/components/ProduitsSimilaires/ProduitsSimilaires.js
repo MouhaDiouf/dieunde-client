@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     padding: '50px 0',
   },
   carouselContainer: {
-    padding: '20px',
+    padding: '20px 0',
   },
 });
 function ProduitsSimilaires({ similaires }) {
@@ -38,13 +38,13 @@ function ProduitsSimilaires({ similaires }) {
           breakPoints={breakpoints}
         >
           {produits &&
-            similaires.map((produitSimilaire) => {
+            similaires.map((produitSimilaire, idx) => {
               const similaire = produits[0].find(
                 (produit) => produit.id === produitSimilaire.id
               );
 
               return (
-                <div>
+                <div key={idx}>
                   <ProduitSimilaire {...similaire} />
                 </div>
               );

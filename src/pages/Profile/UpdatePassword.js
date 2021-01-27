@@ -100,8 +100,8 @@ function UpdatePassword() {
         <Fade in={openPassword}>
           <div className={classes.paper}>
             {hasPasswordUpdateErrors &&
-              passwordErrors.map((error) => (
-                <AlertMessage message={error} type="error" />
+              passwordErrors.map((error, idx) => (
+                <AlertMessage key={idx} message={error} type="error" />
               ))}
             {passwordUpdateSuccess && (
               <AlertMessage

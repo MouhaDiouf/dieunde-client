@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001';
+const baseUrl = process.env.REACT_APP_API_URL;
 
 export const fetchProducts = (isadmin) => {
   if (isadmin) {
@@ -10,13 +10,13 @@ export const fetchProducts = (isadmin) => {
 };
 
 export const registerUser = (newUserCredentials) => {
-  return axios.post('http://localhost:3001/auth', newUserCredentials);
+  return axios.post(`${baseUrl}/auth`, newUserCredentials);
 };
 
 export const createUserHelper = (user) => {
-  return axios.post(`http://localhost:3001/auth`, {
+  return axios.post(`${baseUrl}/auth`, {
     ...user,
-    confirm_success_url: `http://localhost:3000/account-confirmation`,
+    confirm_success_url: `${process.env.REACT_APP_CLIENT_URL}/account-confirmation`,
   });
 };
 
@@ -35,7 +35,7 @@ export const getOneProduct = (id) => {
 };
 
 export const signInUserHelper = (email, password) => {
-  return axios.post(`http://localhost:3001/auth/sign_in/`, {
+  return axios.post(`${baseUrl}/auth/sign_in/`, {
     email,
     password,
   });
@@ -114,7 +114,7 @@ export const deleteProductHelper = (id) => {
 export const recoverPasswordHelper = (email) => {
   return axios.post(`${baseUrl}/auth/password`, {
     email,
-    redirect_url: `http://localhost:3000/new-password`,
+    redirect_url: `${process.env.REACT_APP_CLIENT_URL}/new-password`,
   });
 };
 

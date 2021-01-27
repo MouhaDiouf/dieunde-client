@@ -11,7 +11,7 @@ import {
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { changeProfileInfo, deleteAccount } from '../../actions/actions';
+import { changeProfileInfo } from '../../actions/actions';
 import NumberFormat from 'react-number-format';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,8 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 function DeleteAccount() {
   const [deteleAccountModal, setdeteleAccountModal] = useState(false);
-  const [confirmText, setconfirmText] = useState('');
-  const [email, setemail] = useState('');
+  const [email] = useState('');
   const [telephone, settelephone] = useState('');
   const { user } = useSelector((state) => state.userReducer);
   const { id } = user;
@@ -52,10 +51,6 @@ function DeleteAccount() {
   const classes = useStyles();
   const handleCloseDelete = () => {
     setdeteleAccountModal(false);
-  };
-
-  const handleOpenDelete = () => {
-    setdeteleAccountModal(true);
   };
 
   const handleProfileUpdate = (e) => {

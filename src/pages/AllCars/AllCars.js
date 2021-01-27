@@ -53,7 +53,7 @@ function AllCars() {
 
   useEffect(() => {
     try {
-      axios.get('http://localhost:3001/produits').then((res) => {
+      axios.get(`${process.env.REACT_APP_API_URL}/produits`).then((res) => {
         if (res.status === 200) {
           setvoitures(res.data);
           setloading(false);
@@ -106,7 +106,7 @@ function AllCars() {
     indexOfLastProduct
   );
   return (
-    <Container>
+    <Container className={classes.container} fullWidth>
       <div className={classes.selection}>
         <Typography variant="h3">Notre Sélection</Typography>
         <Carousel
@@ -141,8 +141,8 @@ function AllCars() {
           </div>
         )}
         <div className={classes.AllCarsContainer}>
-          {voituresPerPage.map((voiture) => (
-            <Produit {...voiture} />
+          {voituresPerPage.map((voiture, idx) => (
+            <Produit key={idx} {...voiture} />
           ))}
         </div>
       </div>

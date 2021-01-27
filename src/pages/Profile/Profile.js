@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
-  AppBar,
   Avatar,
   Button,
   Container,
-  FormControl,
   List,
   ListItem,
   makeStyles,
   Paper,
-  TextField,
-  Toolbar,
   Typography,
 } from '@material-ui/core';
 import UpdatePassword from './UpdatePassword';
@@ -68,7 +64,7 @@ function Profile() {
         <div className={classes.navigation}>
           <Button
             component={Link}
-            to={`${user.email}/products`}
+            to={`/vos-produits`}
             size="medium"
             color="secondary"
             variant="contained"

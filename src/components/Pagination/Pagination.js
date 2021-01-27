@@ -1,4 +1,4 @@
-import { Container, makeStyles, Typography } from '@material-ui/core';
+import { Container, makeStyles } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 
 import React from 'react';
@@ -24,7 +24,6 @@ function PaginationController({ productsPerPage, totalProducts, paginate }) {
   };
 
   const numberOfPages = Math.ceil(totalProducts / productsPerPage);
-  console.log('number of pages is ', numberOfPages);
   return (
     <Container className={classes.root} maxWidth="xl">
       <Pagination count={numberOfPages} page={page} onChange={handleChange} />

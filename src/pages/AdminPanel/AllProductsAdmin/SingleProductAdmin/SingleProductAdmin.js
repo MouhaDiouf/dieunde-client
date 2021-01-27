@@ -11,6 +11,7 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -90,8 +91,6 @@ function SingleProductAdmin() {
     productDeleteFailure,
     addingToSelection,
     addedToSelection,
-    removingFromSelection,
-    removedToSelection,
   } = useSelector((state) => state.products);
   const handleOpen = () => {
     setOpen(true);
@@ -113,7 +112,9 @@ function SingleProductAdmin() {
   useEffect(() => {
     const fetchOneProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/produits/${id}`);
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/produits/${id}`
+        );
         const data = await response.json();
         if (data) {
           setProduct(data);
@@ -164,11 +165,12 @@ function SingleProductAdmin() {
           <Grid item xs={12} md={7}>
             <Carousel className={classes.carouselContainer}>
               {product.images &&
-                JSON.parse(product.images).map((img) => {
+                JSON.parse(product.images).map((img, idx) => {
                   return (
                     <img
                       src={img.secure_url}
                       alt=""
+                      key={idx}
                       className={classes.productImg}
                     />
                   );
@@ -180,14 +182,21 @@ function SingleProductAdmin() {
             <Container>
               <Typography variant="body1">{product.description}</Typography>
               <Chip label={product.marque} />
-              <div>{product.description}</div>
+              <Chip label={`${product.prix} CFA`} />
+              <Chip label={`${product.kilométrage} km`} />
             </Container>
 
             <ButtonGroup className={classes.btnGroup}>
               <Button className={classes.faorisBtn} onClick={handleOpen}>
                 Voir Vendeur
               </Button>
-
+              <Button
+                className={classes.faorisBtn}
+                component={Link}
+                to={`/${product.nom}/${product.id}/edit`}
+              >
+                Modifier
+              </Button>
               <Button
                 variant="contained"
                 color="primary"

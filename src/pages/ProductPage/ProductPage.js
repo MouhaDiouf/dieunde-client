@@ -21,21 +21,12 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProduitsSimilaires from '../../components/ProduitsSimilaires/ProduitsSimilaires';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { addToFavorites } from '../../actions/actions';
+// import { addToFavorites } from '../../actions/actions';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
 import CurrencyFormat from 'react-currency-format';
 import Carousel from 'react-elastic-carousel';
 
-const breakpoints = [
-  { width: 1, itemsToShow: 1 },
-  // { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
-  // { width: 850, itemsToShow: 3 },
-  // { width: 1150, itemsToShow: 4, itemsToScroll: 2 },
-  // { width: 1450, itemsToShow: 5 },
-  // { width: 1750, itemsToShow: 6 },
-];
+const breakpoints = [{ width: 1, itemsToShow: 1 }];
 const useStyles = makeStyles({
   root: {
     textAlign: 'center',
@@ -127,12 +118,6 @@ function ProductPage() {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const whatsappLink = useRef(null);
-  const [alert, setalert] = useState(false);
-  const { user } = useSelector((state) => state.userReducer);
-  const dispatch = useDispatch();
-  const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(
-    (state) => state.products
-  );
   const handleOpen = () => {
     setOpen(true);
   };
@@ -140,24 +125,26 @@ function ProductPage() {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleAddToFavorites = () => {
-    if (user && !creatingFavorite) {
-      const params = {
-        user_id: user.id,
-        produit_id: id,
-      };
-      dispatch(addToFavorites(params));
-    } else {
-      setalert(true);
-    }
-  };
+  // const handleAddToFavorites = () => {
+  //   if (user && !creatingFavorite) {
+  //     const params = {
+  //       user_id: user.id,
+  //       produit_id: id,
+  //     };
+  //     dispatch(addToFavorites(params));
+  //   } else {
+  //     setalert(true);
+  //   }
+  // };
   const sendWhatsappMessage = () => {
     whatsappLink.current.click();
   };
   useEffect(() => {
     const fetchOneProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/produits/${id}`);
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/produits/${id}`
+        );
         const data = await response.json();
         if (data) {
           setProduct(data);
@@ -186,15 +173,15 @@ function ProductPage() {
   }
   return (
     <Container maxWidth="lg" className={classes.root}>
-      {productAddedId === id && favoriteCreated && (
+      {/* {productAddedId === id && favoriteCreated && (
         <AlertMessage message="Ajouté à vos favoris" />
-      )}
-      {alert && (
+      )} */}
+      {/* {alert && (
         <AlertMessage
           message="Vous ne pouvez pas ajouter aux favoris. Veuillez vous connecter pour cela."
           type="warning"
         />
-      )}
+      )} */}
 
       <Paper className={classes.innerContainer} elevation={3}>
         <Typography variant="h4" className={classes.title}>
@@ -211,27 +198,12 @@ function ProductPage() {
             <Carousel
               className={classes.carouselContainer}
               breakPoints={breakpoints}
-              renderPagination={({ pages, activePage, onClick }) => {
-                return (
-                  <div>
-                    {pages.map((page) => {
-                      const isActivePage = activePage === page;
-                      return (
-                        <div
-                          key={page}
-                          onClick={() => onClick(page)}
-                          active={isActivePage}
-                        ></div>
-                      );
-                    })}
-                  </div>
-                );
-              }}
             >
-              {JSON.parse(product.images).map((image) => (
+              {JSON.parse(product.images).map((image, idx) => (
                 <img
                   src={image.secure_url}
                   alt=""
+                  key={idx}
                   className={classes.productImg}
                 />
               ))}

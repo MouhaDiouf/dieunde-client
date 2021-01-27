@@ -14,6 +14,7 @@ const useStyles = makeStyles({
   },
   title: {
     color: 'white',
+    marginBottom: '10px',
   },
 });
 
@@ -23,7 +24,7 @@ function Hero() {
     <div className={classes.hero}>
       <Container maxWidth="xl">
         <Typography className={classes.title} variant="h3">
-          Trouvez votre voiture!
+          Trouvez votre voiture à Dakar!
         </Typography>
         <Button
           component={Link}

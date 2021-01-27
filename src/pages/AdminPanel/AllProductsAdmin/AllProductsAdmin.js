@@ -70,9 +70,9 @@ function AllProductsAdmin() {
   }
   return (
     <Container className={classes.container}>
-      {products.map((product) => (
-        <Paper className={classes.root}>
-          <div className={classes.productDetails}>
+      {products.map((product, idx) => (
+        <Paper key={idx} className={classes.root}>
+          <div className={classes.productDetails} key={idx}>
             <p>{product.nom}</p>
             <p className={classes.productConfirm}>
               {!product['confirmed?'] && 'non confirmé'}

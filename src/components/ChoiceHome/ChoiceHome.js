@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     flexDirection: 'column',
     '&:hover': {
-      backgroundColor: 'yello',
+      backgroundColor: '',
     },
   },
 
@@ -162,11 +162,12 @@ function ChoiceHome({ produits }) {
         <div>
           <Typography variant="h4">Marques disponibles</Typography>
           <div className={classes.logosContainer}>
-            {marquesDispo.map((marque) => (
+            {marquesDispo.map((marque, idx) => (
               <img
                 className={classes.marque}
                 src={logos[marque]}
                 alt={`logo ${marque}`}
+                key={idx}
               />
             ))}
           </div>

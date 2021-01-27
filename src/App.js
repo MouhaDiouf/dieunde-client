@@ -185,7 +185,7 @@ function App() {
                 <Route exact path="/profile">
                   <Profile />
                 </Route>
-                <Route exact path="/:email/products">
+                <Route exact path="/vos-produits">
                   <UserProducts />
                 </Route>
               </>
