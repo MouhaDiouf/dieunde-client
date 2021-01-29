@@ -135,7 +135,6 @@ export const newProduct = (formData) => async (dispatch) => {
 export const fetchOneProduct = (id) => async (dispatch) => {
   try {
     const { data } = await getOneProduct(id);
-
     dispatch({
       type: ONE_PRODUCT_FETCH_SUCCESS,
       payload: data,

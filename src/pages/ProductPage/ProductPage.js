@@ -141,11 +141,13 @@ function ProductPage() {
   };
   useEffect(() => {
     const fetchOneProduct = async () => {
+      console.log('FETCH ONE PRODUCT CALLED');
       try {
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/produits/${id}`
         );
         const data = await response.json();
+        console.log(data);
         if (data) {
           setProduct(data);
           setLoading(false);
