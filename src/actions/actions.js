@@ -155,6 +155,7 @@ export const signInUser = (email, password, remember) => async (dispatch) => {
   try {
     const res = await signInUserHelper(email, password);
     const { data, headers } = res;
+    console.log(headers, data);
     remember &&
       localStorage.setItem(
         'user',
