@@ -8,7 +8,7 @@ import {
   Paper,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import Axios from 'axios';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
 function AllProductsAdmin() {
   const classes = useStyles();
   useEffect(() => {
-    Axios.get('http://localhost:3001/admin/products')
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/admin/products`)
       .then((res) => {
         const { data } = res;
         setproducts(data);
