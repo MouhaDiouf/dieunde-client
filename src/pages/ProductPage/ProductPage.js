@@ -21,10 +21,14 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProduitsSimilaires from '../../components/ProduitsSimilaires/ProduitsSimilaires';
-// import { addToFavorites } from '../../actions/actions';
+import './ProductPage.css';
 import AlertMessage from '../../components/AlertMessage/AlertMessage';
-import CurrencyFormat from 'react-currency-format';
+import 'react-image-gallery/styles/css/image-gallery.css';
 import Carousel from 'react-elastic-carousel';
+import CurrencyFormat from 'react-currency-format';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const breakpoints = [{ width: 1, itemsToShow: 1 }];
 const useStyles = makeStyles({
@@ -35,6 +39,9 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  sliderContainer: {
+    width: '100%',
   },
   productImgCarousel: {
     width: '5px',
@@ -86,6 +93,10 @@ const useStyles = makeStyles({
     margin: '0 10px',
   },
 
+  imgContainer: {
+    width: '100%',
+  },
+
   modalContainer: {
     backgroundColor: 'white',
     minWidth: '30%',
@@ -98,11 +109,6 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
 
-  productImg: {
-    maxWidth: '500px',
-    minWidth: '350px',
-    objectFit: 'contain',
-  },
   innerContainer: {
     width: '100%',
     padding: '20px',
@@ -115,9 +121,12 @@ function ProductPage() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
+  const [pictures, setPictures] = useState([]);
   const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const classes = useStyles();
   const whatsappLink = useRef(null);
+  const pageUrl = window.location.href;
   const handleOpen = () => {
     setOpen(true);
   };
@@ -125,6 +134,15 @@ function ProductPage() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+  };
+
   // const handleAddToFavorites = () => {
   //   if (user && !creatingFavorite) {
   //     const params = {
@@ -136,21 +154,22 @@ function ProductPage() {
   //     setalert(true);
   //   }
   // };
+
   const sendWhatsappMessage = () => {
     whatsappLink.current.click();
   };
   useEffect(() => {
     const fetchOneProduct = async () => {
-      console.log('FETCH ONE PRODUCT CALLED');
       try {
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/produits/${id}`
         );
         const data = await response.json();
-        console.log(data);
         if (data) {
           setProduct(data);
           setLoading(false);
+          setPictures(JSON.parse(data.images));
+          console.log(data.images);
         } else {
           setProduct(null);
           setLoading(false);
@@ -197,7 +216,7 @@ function ProductPage() {
             xs={12}
             xl={12}
           >
-            <Carousel
+            {/* <Carousel
               className={classes.carouselContainer}
               breakPoints={breakpoints}
             >
@@ -209,7 +228,22 @@ function ProductPage() {
                   className={classes.productImg}
                 />
               ))}
-            </Carousel>
+            </Carousel> */}
+
+            <div className={classes.sliderContainer}>
+              <Slider {...settings}>
+                {JSON.parse(product.images).map((image, idx) => (
+                  <div className={classes.imgContainer}>
+                    <img
+                      src={image.secure_url}
+                      alt=""
+                      key={idx}
+                      className={classes.productImg}
+                    />
+                  </div>
+                ))}
+              </Slider>
+            </div>
           </Grid>
 
           <Grid item xs={12} xl={12} className={classes.contentAndBtn}>
@@ -253,15 +287,15 @@ function ProductPage() {
                 <FacebookIcon round={true} size={32} />
               </FacebookShareButton>
               <WhatsappShareButton
-                url="www.github.com"
-                title="J'ai trouvé ceci sur dieunde.com"
-                separator=":: "
+                url={pageUrl}
+                title="J'ai trouvé ceci sur dakarvoitures.com"
+                separator=": "
               >
                 <WhatsappIcon size={32} round />
               </WhatsappShareButton>
               <TwitterShareButton
-                url="www.github.com"
-                title="J'ai trouvé ceci sur dieunde.com"
+                url={pageUrl}
+                title="J'ai trouvé ceci sur dakarvoitures.com"
               >
                 <TwitterIcon size={35} round />
               </TwitterShareButton>
