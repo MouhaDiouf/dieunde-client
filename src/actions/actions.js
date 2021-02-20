@@ -23,7 +23,8 @@ export const CREATE_USER_SUCCESS = 'CREATE_USER';
 export const CREATE_USER_ERROR = 'CREATE_USER_ERROR';
 export const PRODUCT_CREATION_SUCCESS = 'PRODUCT_CREATION_SUCCESS';
 export const PRODUCT_CREATION_FAILURE = 'PRODUCT_CREATION_FAILURE';
-export const FETCH_ALL_PRODUCTS = 'FETCH_ALL_PRODUCTS';
+export const FETCHING_ALL_PRODUCTS = 'FETCHING_ALL_PRODUCTS';
+export const FETCHED_ALL_PRODUCTS = 'FETCHED_ALL_PRODUCTS';
 export const CREATING_PRODUCT = 'CREATING_PRODUCT';
 export const ONE_PRODUCT_FETCH_SUCCESS = 'ONE_PRODUCT_FETCH_SUCCESS';
 export const ONE_PRODUCT_FETCH_ERROR = 'ONE_PRODUCT_FETCH_ERROR';
@@ -64,9 +65,12 @@ export const REDIRECT_AFTER_CREATING_PRODUCT =
 export const STOP_REDIRECT_AFTER_CREATING_PRODUCT =
   'STOP_REDIRECT_AFTER_CREATING_PRODUCT';
 export const getAllProducts = (isadmin = false) => async (dispatch) => {
+  dispatch({
+    type: FETCHING_ALL_PRODUCTS,
+  });
   const { data } = await fetchProducts(isadmin);
   dispatch({
-    type: FETCH_ALL_PRODUCTS,
+    type: FETCHED_ALL_PRODUCTS,
     payload: data,
   });
 };

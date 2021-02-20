@@ -214,7 +214,7 @@ function NouveauProduit() {
     dispatch(newProduct(formData));
   };
   if (redirectAfterCreatingProduct) {
-    history.push('/');
+    history.replace('/');
   }
   return (
     <Grid container className={classes.root}>

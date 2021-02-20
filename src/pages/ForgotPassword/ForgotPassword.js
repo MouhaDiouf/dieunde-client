@@ -81,7 +81,7 @@ export default function ForgotPassword() {
   };
 
   if (user) {
-    history.push('/');
+    history.replace('/');
   }
   return (
     <Container component="main" maxWidth="xs">

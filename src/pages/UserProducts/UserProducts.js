@@ -41,12 +41,12 @@ function UserProducts() {
   return (
     <Container maxWidth="lg" className={classes.rootContainer}>
       {productDeleteSuccess && (
-        <AlertMessage message="Product deleted successfully" type="info" />
+        <AlertMessage message="Produit supprimé avec succès" type="info" />
       )}
       <Typography variant="h5">Vos produits</Typography>
       {!userProducts.length ? (
         <Typography variant="h6">
-          Vous n &apos avez pas de produits.{' '}
+          Vous n' avez pas de produits.{' '}
           <Link to="/vendre-voiture"> Créer un nouveau produit</Link>
         </Typography>
       ) : (

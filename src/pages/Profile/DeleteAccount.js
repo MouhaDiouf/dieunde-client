@@ -60,7 +60,7 @@ function DeleteAccount() {
   };
   return (
     <>
-      <Button
+      {/* <Button
         type="button"
         variant="contained"
         color="secondary"
@@ -68,7 +68,7 @@ function DeleteAccount() {
         className={classes.supprimerCompteBtn}
       >
         Supprimer compte
-      </Button>
+      </Button> */}
       <Modal
         className={classes.modal}
         open={deteleAccountModal}

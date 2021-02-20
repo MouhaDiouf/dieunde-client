@@ -91,7 +91,7 @@ export default function NewPassword() {
   };
 
   if (user) {
-    history.push('/');
+    history.replace('/');
   }
   return (
     <Container component="main" maxWidth="xs">

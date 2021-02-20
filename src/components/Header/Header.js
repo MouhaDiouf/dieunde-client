@@ -86,13 +86,13 @@ function Header() {
             DakarVoitures
           </Typography>
 
-          {user && (
+          {/* {user && (
             <IconButton component={Link} to="/cart">
               <Badge badgeContent={favorites?.length} color="secondary">
                 <FavoriteIcon className={classes.favoriteIcon} />
               </Badge>
             </IconButton>
-          )}
+          )} */}
 
           {!user && (
             <div className={headerStyles.menuItems}>

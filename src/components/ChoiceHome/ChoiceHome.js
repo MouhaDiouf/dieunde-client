@@ -6,8 +6,6 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
-import benz from '../../images/brands/benz.png';
-import landRover from '../../images/brands/landRover.png';
 import { Link } from 'react-router-dom';
 import './ChoiceHome.css';
 import Carousel from 'react-elastic-carousel';
@@ -105,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 function ChoiceHome({ produits }) {
   const { user } = useSelector((state) => state.userReducer);
+  const { fetchingAllProducts } = useSelector((state) => state.products);
 
   const classes = useStyles();
   if (!produits) {
@@ -148,6 +147,7 @@ function ChoiceHome({ produits }) {
           </Grid>
         </Grid>
         <div className={classes.lastCars}>
+          {fetchingAllProducts && <Typography>Patientez ...</Typography>}
           <Typography variant="h4">Dernières Voitures</Typography>
           <Carousel
             className={classes.carouselContainer}

@@ -129,7 +129,7 @@ export default function SignUp() {
   };
 
   if (redirectAfterSignup) {
-    history.push('/');
+    history.replace('/');
   }
   return (
     <Container component="main" maxWidth="xs">

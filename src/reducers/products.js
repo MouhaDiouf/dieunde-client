@@ -6,6 +6,8 @@ import {
   DELETING_USER_PRODUCT,
   FAVORITES_FETCH_SUCCESS,
   FAVORITE_CREATED,
+  FETCHED_ALL_PRODUCTS,
+  FETCHING_ALL_PRODUCTS,
   FETCH_ALL_PRODUCTS,
   FETCH_USER_PRODUCTS_SUCCESS,
   ONE_PRODUCT_FETCH_SUCCESS,
@@ -27,8 +29,16 @@ import {
 } from '../actions/adminactions';
 const products = (state = { allProductsFetched: false }, action) => {
   switch (action.type) {
-    case FETCH_ALL_PRODUCTS:
-      return { ...state, produits: [action.payload], allProductsFetched: true };
+    case FETCHING_ALL_PRODUCTS: {
+      return { ...state, fetchingAllProducts: true, allProductsFetched: false };
+    }
+    case FETCHED_ALL_PRODUCTS:
+      return {
+        ...state,
+        produits: [action.payload],
+        allProductsFetched: true,
+        fetchingAllProducts: false,
+      };
     case CREATING_PRODUCT:
       return {
         ...state,

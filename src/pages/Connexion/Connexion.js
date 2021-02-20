@@ -74,7 +74,7 @@ export default function SignInSide() {
   );
 
   if (user) {
-    history.push('/');
+    history.replace('/');
   }
 
   const handleRemember = () => {

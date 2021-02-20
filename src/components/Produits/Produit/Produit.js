@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Produit({ nom, description, images, id }) {
+  // console.log(JSON.parse(images)[0]);
   const classes = useStyles();
   const { user } = useSelector((state) => state.userReducer);
   const { creatingFavorite, favoriteCreated, productAddedId } = useSelector(
@@ -70,6 +71,7 @@ function Produit({ nom, description, images, id }) {
   );
   const dispatch = useDispatch();
   const userId = user?.id;
+
   const handleAddToFavorites = () => {
     const params = {
       user_id: userId,
@@ -77,6 +79,7 @@ function Produit({ nom, description, images, id }) {
     };
     user && !creatingFavorite && dispatch(addToFavorites(params));
   };
+
   return (
     <div>
       <Card className={classes.root}>
@@ -94,7 +97,7 @@ function Produit({ nom, description, images, id }) {
 
         <CardMedia
           className={classes.media}
-          image={JSON.parse(images)[0].secure_url}
+          image={images && JSON.parse(images)[0].secure_url}
           title={nom}
         />
         <CardContent>
