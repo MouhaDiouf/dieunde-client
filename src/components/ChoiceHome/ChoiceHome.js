@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import './ChoiceHome.css';
 import Carousel from 'react-elastic-carousel';
 import { logos } from '../../data';
+import loading from '../../images/loading.gif';
 
 import React from 'react';
 import Produit from '../Produits/Produit/Produit';
@@ -100,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     margin: '20px 0',
   },
+  loadingImg: {
+    width: '100px',
+  },
 }));
 function ChoiceHome({ produits }) {
   const { user } = useSelector((state) => state.userReducer);
@@ -147,17 +151,29 @@ function ChoiceHome({ produits }) {
           </Grid>
         </Grid>
         <div className={classes.lastCars}>
-          {fetchingAllProducts && <Typography>Patientez ...</Typography>}
           <Typography variant="h4">Dernières Voitures</Typography>
-          <Carousel
-            className={classes.carouselContainer}
-            breakPoints={breakpoints}
-          >
-            {dernieresVoitures &&
-              dernieresVoitures.map((produit) => {
-                return <Produit {...produit} />;
-              })}
-          </Carousel>
+          {fetchingAllProducts && (
+            <div className={classes.loadingDiv}>
+              <Typography variant="h5">Patientez ...</Typography>
+              <img
+                src={loading}
+                className={classes.loadingImg}
+                alt="Chargement dernières voitures"
+              />
+            </div>
+          )}
+
+          {!fetchingAllProducts && (
+            <Carousel
+              className={classes.carouselContainer}
+              breakPoints={breakpoints}
+            >
+              {dernieresVoitures &&
+                dernieresVoitures.map((produit) => {
+                  return <Produit {...produit} />;
+                })}
+            </Carousel>
+          )}
         </div>
         <div>
           <Typography variant="h4">Marques disponibles</Typography>
