@@ -206,7 +206,7 @@ function ProductPage() {
 
       <Paper className={classes.innerContainer} elevation={3}>
         <Typography variant="h4" className={classes.title}>
-          Détails pour {product.nom}
+          {product.nom}
         </Typography>
         <Grid className={classes.gridContainer} container spacing={1}>
           <Grid
