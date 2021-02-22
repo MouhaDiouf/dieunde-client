@@ -9,6 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 import './ChoiceHome.css';
 import Carousel from 'react-elastic-carousel';
+import Slider from 'react-slick';
 import { logos } from '../../data';
 import loading from '../../images/loading.gif';
 
@@ -24,6 +25,42 @@ const breakpoints = [
   { width: 1450, itemsToShow: 5 },
   { width: 1750, itemsToShow: 6 },
 ];
+
+const settings = {
+  dots: false,
+  infinite: true,
+  slidesToShow: 5,
+  slidesToScroll: 1,
+  autoplay: true,
+  speed: 500,
+  autoplaySpeed: 2000,
+  cssEase: 'ease-in-out',
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        infinite: true,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        initialSlide: 2,
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      },
+    },
+  ],
+};
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: 'center',
@@ -37,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
   },
   carouselContainer: {
     margin: '20px 0',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   paper: {
     padding: theme.spacing(2),
@@ -173,6 +213,12 @@ function ChoiceHome({ produits }) {
                   return <Produit {...produit} />;
                 })}
             </Carousel>
+            // <Slider {...settings} className={classes.carouselContainer}>
+            //   {dernieresVoitures &&
+            //     dernieresVoitures.map((produit) => {
+            //       return <Produit {...produit} />;
+            //     })}
+            // </Slider>
           )}
         </div>
         <div>

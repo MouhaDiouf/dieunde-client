@@ -302,6 +302,7 @@ function NouveauProduit() {
                 name="etat"
                 id="etat"
                 onChange={(e) => setetat(e.target.value)}
+                value={etat}
               >
                 <MenuItem value="neuf">Neuf</MenuItem>
                 <MenuItem value="occasion">Occasion</MenuItem>
@@ -314,6 +315,7 @@ function NouveauProduit() {
                 name="marque"
                 id="marque"
                 onChange={(e) => setmarque(e.target.value)}
+                value={marque}
               >
                 {marques.map((marque) => (
                   <MenuItem value={marque}>{marque}</MenuItem>

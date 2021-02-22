@@ -7,7 +7,10 @@ import {
   Link,
   useHistory,
   Redirect,
+  useLocation,
+  withRouter,
 } from 'react-router-dom';
+import ScrollToTop from 'react-router-scroll-top';
 import Home from './pages/Home/Home';
 import Connexion from './pages/Connexion/Connexion';
 import { useEffect, useState } from 'react';
@@ -86,8 +89,8 @@ function App() {
   }
   return (
     <Router>
-      <>
-        <CloudinaryContext cloudName="mouhamadou">
+      <CloudinaryContext cloudName="mouhamadou">
+        <ScrollToTop>
           {accountRemovalSuccess && (
             <AlertMessage
               message="Compte supprimé avec succès"
@@ -196,8 +199,8 @@ function App() {
             </Route>
           </Switch>
           <Footer />
-        </CloudinaryContext>
-      </>
+        </ScrollToTop>
+      </CloudinaryContext>
     </Router>
   );
 }

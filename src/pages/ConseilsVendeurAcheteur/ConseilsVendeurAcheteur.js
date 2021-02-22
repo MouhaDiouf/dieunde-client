@@ -8,7 +8,8 @@ import {
 import React from 'react';
 const useStyles = makeStyles({
   image: {
-    width: 500,
+    width: '50%',
+    maxWidth: 200,
     margin: '0 auto',
     display: 'block',
   },
